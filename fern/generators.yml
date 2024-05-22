@@ -3,7 +3,7 @@ api:
   overrides: ./openapi/overrides.yaml
   settings:
     use-title: false
-default-group: sdk
+default-group: python-sdk-staging
 groups:
   python-sdk-staging:
     generators:
@@ -17,7 +17,7 @@ groups:
           package-name: label-studio-sdk
 #        output:
 #          location: local-file-system
-#          path: ../label_studio_python
+#          path: ../../label-studio-sdk/label_studio_python
         config:
           inline_request_params: false
           client_class_name: LabelStudio
