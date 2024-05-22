@@ -8,16 +8,14 @@ groups:
   python-sdk-staging:
     generators:
       - name: fernapi/fern-python-sdk
-        version: 2.2.0
-        github:
-          repository: HumanSignal/label-studio-sdk
-          mode: pull-request
+        version: 2.5.0-rc0
         output:
           location: pypi
           package-name: label-studio-sdk
-#        output:
-#          location: local-file-system
-#          path: ../../label-studio-sdk/label_studio_python
+        github:
+          repository: HumanSignal/label-studio-sdk
+          mode: pull-request
         config:
           inline_request_params: false
+          package_name: label_studio_sdk
           client_class_name: LabelStudio
