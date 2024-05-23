@@ -19,3 +19,14 @@ groups:
           inline_request_params: false
           package_name: label_studio_sdk
           client_class_name: LabelStudio
+  python-sdk-local:
+    generators:
+      - name: fernapi/fern-python-sdk
+        version: 2.5.0-rc0
+        output:
+          location: local-file-system
+          path: ../label_studio_sdk
+        config:
+          inline_request_params: false
+          package_name: label_studio_sdk
+          client_class_name: LabelStudio

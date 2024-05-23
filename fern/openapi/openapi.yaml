@@ -1,4 +1,11 @@
 openapi: 3.0.0
+x-origin:
+  - url: http://localhost:8080/docs/api?format=openapi
+    format: swagger
+    version: "2.0"
+    converter:
+      url: https://github.com/mermade/oas-kit
+      version: 7.0.8
 info:
   title: Label Studio API
   contact:
@@ -396,36 +403,6 @@ paths:
       summary: List label links
       description: List label links for a specific label and project.
       parameters:
-        - name: project
-          in: query
-          description: project
-          required: false
-          schema:
-            type: string
-        - name: label__created_at
-          in: query
-          description: label__created_at
-          required: false
-          schema:
-            type: string
-        - name: label__created_at__gte
-          in: query
-          description: label__created_at__gte
-          required: false
-          schema:
-            type: string
-        - name: label__created_at__lte
-          in: query
-          description: label__created_at__lte
-          required: false
-          schema:
-            type: string
-        - name: label__created_by
-          in: query
-          description: label__created_by
-          required: false
-          schema:
-            type: string
         - name: page
           in: query
           description: A page number within the paginated result set.
@@ -1084,25 +1061,6 @@ paths:
       operationId: api_predictions_list
       summary: List predictions
       description: List all predictions and their IDs.
-      parameters:
-        - name: task
-          in: query
-          description: Filter the returned list by task
-          required: false
-          schema:
-            type: string
-        - name: task__project
-          in: query
-          description: Filter the returned list by task__project
-          required: false
-          schema:
-            type: string
-        - name: project
-          in: query
-          description: Filter the returned list by project
-          required: false
-          schema:
-            type: string
       responses:
         "200":
           description: ""
@@ -1306,7 +1264,10 @@ paths:
       tags:
         - Projects
       x-fern-sdk-group-name: projects
-      x-fern-sdk-method-name: list
+      x-fern-sdk-method-name: get_many
+      x-fern-pagination:
+        offset: $request.page
+        results: $response.results
     post:
       operationId: api_projects_create
       summary: Create new project
@@ -3488,36 +3449,34 @@ paths:
             type: boolean
       responses:
         "200":
-          description: ""
+          description: Tasks list
           content:
             application/json:
               schema:
-                required:
-                  - count
-                  - results
                 type: object
                 properties:
-                  count:
-                    type: integer
-                  next:
-                    type: string
-                    format: uri
-                    nullable: true
-                  previous:
-                    type: string
-                    format: uri
-                    nullable: true
-                  results:
+                  tasks:
+                    description: List of tasks
                     type: array
                     items:
-                      $ref: "#/components/schemas/BaseTask"
+                      description: Task object
+                      type: object
+                  total:
+                    description: Total number of tasks
+                    type: integer
+                  total_annotations:
+                    description: Total number of annotations
+                    type: integer
+                  total_predictions:
+                    description: Total number of predictions
+                    type: integer
       tags:
         - Tasks
       x-fern-sdk-group-name: tasks
-      x-fern-sdk-method-name: list
+      x-fern-sdk-method-name: get_many
       x-fern-pagination:
         offset: $request.page
-        results: $response.results
+        results: $response.tasks
     post:
       operationId: api_tasks_create
       summary: Create task
@@ -4966,11 +4925,6 @@ components:
           title: Avatar
           type: string
           readOnly: true
-      default:
-        id: 1
-        first_name: ""
-        last_name: ""
-        email: heartex@heartex.net
     Project:
       type: object
       properties:
@@ -5151,7 +5105,7 @@ components:
         parsed_label_config:
           title: Parsed label config
           description: JSON-formatted labeling configuration
-          type: string
+          type: object
           readOnly: true
         evaluate_predictions_automatically:
           title: Evaluate predictions automatically
