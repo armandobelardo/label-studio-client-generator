@@ -44,33 +44,7 @@ paths:
           content:
             application/json:
               schema:
-                required: []
-                type: object
-                properties:
-                  result:
-                    description: Labeling result in JSON format
-                    type: object
-                  task:
-                    description: Corresponding task for this annotation
-                    type: integer
-                  project:
-                    description: Project ID for this annotation
-                    type: integer
-                  completed_by:
-                    description: User ID of the person who created this annotation
-                    type: integer
-                  updated_by:
-                    description: Last user who updated this annotation
-                    type: integer
-                  was_cancelled:
-                    description: User skipped the task
-                    type: boolean
-                  ground_truth:
-                    description: This annotation is a Ground Truth
-                    type: boolean
-                  lead_time:
-                    description: How much time it took to annotate the task
-                    type: number
+                $ref: "#/components/schemas/Annotation"
       tags:
         - Annotations
       x-fern-sdk-group-name: annotations
@@ -1358,25 +1332,7 @@ paths:
           content:
             application/json:
               schema:
-                required:
-                  - task
-                  - result
-                type: object
-                properties:
-                  task:
-                    description: Task ID for which the prediction is created
-                    type: integer
-                  result:
-                    description: Prediction result
-                    type: array
-                    items:
-                      type: object
-                  score:
-                    description: Prediction score
-                    type: number
-                  model_version:
-                    description: Model version
-                    type: string
+                $ref: "#/components/schemas/Prediction"
       tags:
         - Predictions
     patch:
@@ -1398,25 +1354,7 @@ paths:
           content:
             application/json:
               schema:
-                required:
-                  - task
-                  - result
-                type: object
-                properties:
-                  task:
-                    description: Task ID for which the prediction is created
-                    type: integer
-                  result:
-                    description: Prediction result
-                    type: array
-                    items:
-                      type: object
-                  score:
-                    description: Prediction score
-                    type: number
-                  model_version:
-                    description: Model version
-                    type: string
+                $ref: "#/components/schemas/Prediction"
       tags:
         - Predictions
       x-fern-sdk-group-name: predictions
@@ -4710,18 +4648,7 @@ paths:
           content:
             application/json:
               schema:
-                type: object
-                properties:
-                  data:
-                    title: Task data
-                    description: Task data dictionary with arbitrary keys and values
-                    type: object
-                    example:
-                      id: 1
-                      my_image_url: /static/samples/kittens.jpg
-                  project:
-                    description: Project ID
-                    type: integer
+                $ref: "#/components/schemas/BaseTask"
       tags:
         - Tasks
       x-fern-sdk-group-name: tasks
@@ -4771,18 +4698,7 @@ paths:
           content:
             application/json:
               schema:
-                type: object
-                properties:
-                  data:
-                    title: Task data
-                    description: Task data dictionary with arbitrary keys and values
-                    type: object
-                    example:
-                      id: 1
-                      my_image_url: /static/samples/kittens.jpg
-                  project:
-                    description: Project ID
-                    type: integer
+                $ref: "#/components/schemas/BaseTask"
       tags:
         - Tasks
       x-fern-sdk-group-name: tasks
@@ -4882,33 +4798,7 @@ paths:
           content:
             application/json:
               schema:
-                required: []
-                type: object
-                properties:
-                  result:
-                    description: Labeling result in JSON format
-                    type: object
-                  task:
-                    description: Corresponding task for this annotation
-                    type: integer
-                  project:
-                    description: Project ID for this annotation
-                    type: integer
-                  completed_by:
-                    description: User ID of the person who created this annotation
-                    type: integer
-                  updated_by:
-                    description: Last user who updated this annotation
-                    type: integer
-                  was_cancelled:
-                    description: User skipped the task
-                    type: boolean
-                  ground_truth:
-                    description: This annotation is a Ground Truth
-                    type: boolean
-                  lead_time:
-                    description: How much time it took to annotate the task
-                    type: number
+                $ref: "#/components/schemas/Annotation"
       tags:
         - Annotations
       x-fern-sdk-group-name: annotations
@@ -8288,6 +8178,104 @@ components:
           title: Project
           description: A unique integer value identifying this project.
           type: integer
+    BaseTask:
+      required:
+        - data
+      type: object
+      properties:
+        id:
+          title: ID
+          type: integer
+          readOnly: true
+        data:
+          title: Data
+          description: User imported or uploaded data for a task. Data is formatted
+            according to the project label config. You can find examples of data
+            for your project on the Import page in the Label Studio Data Manager
+            UI.
+          type: object
+        meta:
+          title: Meta
+          description: Meta is user imported (uploaded) data and can be useful as input
+            for an ML Backend for embeddings, advanced vectors, and other info.
+            It is passed to ML during training/predicting steps.
+          type: object
+          nullable: true
+        created_at:
+          title: Created at
+          description: Time a task was created
+          type: string
+          format: date-time
+          readOnly: true
+        updated_at:
+          title: Updated at
+          description: Last time a task was updated
+          type: string
+          format: date-time
+          readOnly: true
+        is_labeled:
+          title: Is_labeled
+          description: True if the number of annotations for this task is greater than or
+            equal to the number of maximum_completions for the project
+          type: boolean
+        overlap:
+          title: Overlap
+          description: Number of distinct annotators that processed the current task
+          type: integer
+        inner_id:
+          title: Inner id
+          description: Internal task ID in the project, starts with 1
+          type: integer
+          nullable: true
+        total_annotations:
+          title: Total_annotations
+          description: Number of total annotations for the current task except cancelled
+            annotations
+          type: integer
+        cancelled_annotations:
+          title: Cancelled_annotations
+          description: Number of total cancelled annotations for the current task
+          type: integer
+        total_predictions:
+          title: Total_predictions
+          description: Number of total predictions for the current task
+          type: integer
+        comment_count:
+          title: Comment count
+          description: Number of comments in the task including all annotations
+          type: integer
+        unresolved_comment_count:
+          title: Unresolved comment count
+          description: Number of unresolved comments in the task including all annotations
+          type: integer
+        last_comment_updated_at:
+          title: Last comment updated at
+          description: When the last comment was updated
+          type: string
+          format: date-time
+          nullable: true
+        project:
+          title: Project
+          description: Project ID for this task
+          type: integer
+          nullable: true
+        updated_by:
+          title: Updated by
+          description: Last annotator or reviewer who updated this task
+          type: integer
+          nullable: true
+        file_upload:
+          title: File upload
+          description: Uploaded file used as data source for this task
+          type: integer
+          nullable: true
+        comment_authors:
+          description: Users who wrote comments
+          type: array
+          items:
+            description: Users who wrote comments
+            type: integer
+          uniqueItems: true
     data_manager_task_serializer:
       required:
         - data
