@@ -6,6 +6,8 @@ api:
 default-group: python-sdk-staging
 groups:
   python-sdk-staging:
+    audiences:
+      - public
     generators:
       - name: fernapi/fern-python-sdk
         version: 2.7.0
@@ -36,6 +38,8 @@ groups:
             lxml: '>=4.2.5'
         smart-casing: true
   python-sdk-local:
+    audiences:
+      - public
     generators:
       - name: fernapi/fern-python-sdk
         version: 2.7.0

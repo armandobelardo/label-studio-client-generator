@@ -3,6 +3,8 @@ instances:
 title: API Reference | Label Studio
 navigation:
   - api: API Reference
+    audiences:
+      - public
     snippets:
       python: label-studio-sdk
 
