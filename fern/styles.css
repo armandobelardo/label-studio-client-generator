@@ -20,19 +20,19 @@ body{
   --persimmon_400: #FF7557;
 }
 
-.fern-button{
+header .fern-button{
   border-radius: 2em;
   background-color: var(--sand_900);
 }
 
-.fern-button:not(.disabled).outlined.primary:hover{
+header .fern-button:not(.disabled).outlined.primary:hover{
   background-color: var(--persimmon_400);
 } 
 
-.fern-button-text{
+header .fern-button-text{
   color: var(--sand_0);
 }
 
-.fern-button-content>svg{
+header .fern-button-content>svg{
   color: var(--sand_0);
 }
