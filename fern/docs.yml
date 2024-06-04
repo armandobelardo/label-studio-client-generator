@@ -17,11 +17,11 @@ navbar-links:
     url: https://labelstud.io/guide/quick_start
 
 colors:
-  accentPrimary: '#FF7557'
+  accentPrimary: '#6B6860'
   background: '#FDFDFC'
 
 logo:
     light: ./images/logo.svg
     dark: ./images/logo.svg
-    height: 30
+    height: 24
     href: https://labelstud.io/guide/
