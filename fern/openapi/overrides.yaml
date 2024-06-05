@@ -1,7 +1,529 @@
 paths:
-  /api/projects/:
+  "/api/annotations/{id}/":
+    get:
+      summary: Get annotation by its ID
+      description: > 
+      
+        Tasks can have multiple annotations. Use this call to retrieve a specific annotation using its ID. 
+        
+
+        You can find the ID in the Label Studio UI listed at the top of the annotation in its tab. It is also listed in the History panel when viewing the annotation. Or you can use [Get all task annotations](list) to find all annotation IDs.  
+    patch:
+      summary: Update an annotation
+      description: >
+      
+        Update attributes for an existing annotation. 
+
+        
+        You will need to supply the annotation's unique ID. You can find the ID in the Label Studio UI listed at the top of the annotation in its tab. It is also listed in the History panel when viewing the annotation. Or you can use [Get all task annotations](list) to find all annotation IDs.  
+
+
+        For information about the JSON format used in the result, see [Label Studio JSON format of annotated tasks](https://labelstud.io/guide/export#Label-Studio-JSON-format-of-annotated-tasks).
+    delete:
+      summary: Delete annotation
+      description: >
+      
+        Delete an annotation. 
+        
+        
+        <Warning>This action can't be undone!</Warning>
+
+
+        You will need to supply the annotation's unique ID. You can find the ID in the Label Studio UI listed at the top of the annotation in its tab. It is also listed in the History panel when viewing the annotation. Or you can use [Get all task annotations](list) to find all annotation IDs.  
+
+  "/api/tasks/{id}/annotations/":
+    get:
+      summary: Get all task annotations
+      description: >
+      
+        List all annotations for a task.
+
+
+        You will need to supply the task ID. You can find this in Label Studio by opening a task and checking the URL. It is also listed at the top of the labeling interface. Or you can use [Get tasks list](../tasks/list). 
     post:
-      summary: List of Projects
+      summary: Create annotation
+      description: >
+        
+        Add annotations to a task like an annotator does. 
+
+
+        You will need to supply the task ID. You can find this in Label Studio by opening a task and checking the URL. It is also listed at the top of the labeling interface. Or you can use [Get tasks list](../tasks/list). 
+
+
+        
+        The content of the result field depends on your labeling configuration. For example, send the following data as part of your POST 
+
+        request to send an empty annotation with the ID of the user who completed the task:
+
+
+        ```json
+
+        {
+
+        "result": {},
+
+        "was_cancelled": true,
+
+        "ground_truth": true,
+
+        "lead_time": 0,
+
+        "task": 0
+
+        "completed_by": 123
+
+        } 
+
+        ```
+
+  /api/users/:
+    get:
+      summary: List users
+      description: >
+      
+        List all users in your Label Studio organization. 
+    post:
+      operationId: api_users_create
+      summary: Create a user
+      description: >
+      
+        Create a user in Label Studio.
+
+  "/api/users/{id}/":
+    get:
+      summary: Get user info
+      description: >
+      
+        Get info about a specific Label Studio user. 
+        
+        You will need to provide their user ID. You can find a list of all user IDs using [List users](list). 
+    patch:
+      summary: Update user details
+      description: >
+        
+        Update details for a specific Label Studio user, such as their name or contact information. 
+
+
+        You will need to provide their user ID. You can find a list of all user IDs using [List users](list). 
+    delete:
+      summary: Delete user
+      description: >
+      
+        Delete a specific Label Studio user.
+
+
+        You will need to provide their user ID. You can find a list of all user IDs using [List users](list).
+
+
+        <Warning>Use caution when deleting a user, as this can cause issues such as breaking the "Annotated by" filter or leaving orphaned records.</Warning>
+
+  /api/current-user/reset-token/:
+    post:
+      summary: Reset user token
+      description: Reset your access token or API key. When reset, any scripts or automations you have in place will need to be updated with the new key. 
+
+  /api/current-user/token:
+    get:
+      summary: Get user token
+      description: Get a access token to authenticate to the API as the current user. To find this in the Label Studio interface, click **Account & Settings** in the upper right. For more information, see [Access Token](https://labelstud.io/guide/user_account#Access-token). 
+
+  /api/current-user/whoami:
+    get:
+      summary: Retrieve my user
+      description: Get information about your user account, such as your username, email, and user ID. 
+
+  /api/dm/views/:
+    get:
+      summary: List views
+      description: >
+      
+        List all views for a specific project. A view is a tab in the Data Manager where you can set filters and customize which tasks and information appears. 
+        
+
+        You will need to provide the project ID. You can find this in the URL when viewing the project in Label Studio, or you can use [List all projects](../projects/list). 
+    post:
+      summary: Create view
+      description: >
+      
+        Create a new Data Manager view for a specific project. A view is a tab in the Data Manager where you can set filters and customize what tasks and information appears. 
+        
+
+        You will need to provide the project ID. You can find this in the URL when viewing the project in Label Studio, or you can use [List all projects](../projects/list). 
+
+  /api/dm/views/reset/:
+    delete:
+      summary: Delete all project views
+      description: >
+      
+        Delete all views for a specific project. A view is a tab in the Data Manager where you can set filters and customize what tasks appear. 
+        
+
+        You will need to provide the project ID. You can find this in the URL when viewing the project in Label Studio, or you can use [List all projects](../projects/list).
+
+  "/api/dm/views/{id}/":
+    get:
+      summary: Get view details
+      description: >
+      
+        Get the details about a specific Data Manager view (tab). You will need to supply the view ID. You can find this using [List views](list).  
+    patch:
+      summary: Update view
+      description: > 
+      
+        You can update a specific Data Manager view (tab) with additional filters and other customizations. You will need to supply the view ID. You can find this using [List views](list).  
+    delete:
+      summary: Delete view
+      description: Delete a specific Data Manager view (tab) by ID. You can find the view using [List views](list).  
+
+  /api/projects/:
+    get:
+      summary: List all projects
+      description: >
+        
+        Return a list of the projects within your organization.
+
+
+        To perform most tasks with the Label Studio API, you must specify the project ID, sometimes referred to as the `pk`. The project ID can be found in the URL when viewing the project in Label Studio, or you can retrieve all project IDs using this API call. 
+
+
+        To retrieve a list of your Label Studio projects, update the following command to match your own environment.
+
+        Replace the domain name, port, and authorization token, then run the following from the command line:
+
+        ```bash
+
+        curl -X GET https://localhost:8080/api/projects/ -H 'Authorization: Token abc123'
+
+        ```
+    post:
+      summary: Create new project
+      description: >
+        
+        Create a project and set up the labeling interface. For more information about setting up projects, see the following:
+
+        * [Create and configure projects](https://labelstud.io/guide/setup_project)
+
+        * [Configure labeling interface](https://labelstud.io/guide/setup)
+
+        * [Project settings](https://labelstud.io/guide/project_settings)
+
+
+        ```bash
+
+        curl -H Content-Type:application/json -H 'Authorization: Token abc123' -X POST 'https://localhost:8080/api/projects'     --data '{"label_config": "<View>[...]</View>"}'
+
+        ```
+  "/api/projects/{id}/":
+    get:
+      summary: Get project by ID
+      description: Retrieve information about a specific project by project ID. The project ID can be found in the URL when viewing the project in Label Studio, or you can retrieve all project IDs using [List all projects](list). 
+    delete:
+      summary: Delete project
+      description: > 
+      
+        Delete a project by specified project ID. Deleting a project permanently removes all tasks, annotations, and project data from Label Studio.
+        
+
+        The project ID can be found in the URL when viewing the project in Label Studio, or you can retrieve all project IDs using [List all projects](list). 
+    patch:
+      summary: Update a project
+      description: > 
+      
+        Update the project settings for a specific project. For more information, see the following:
+
+        * [Create and configure projects](https://labelstud.io/guide/setup_project)
+
+        * [Configure labeling interface](https://labelstud.io/guide/setup)
+
+        * [Project settings](https://labelstud.io/guide/project_settings)
+
+
+        The project ID can be found in the URL when viewing the project in Label Studio, or you can retrieve all project IDs using [List all projects](list). 
+
+
+        <Warning>
+        
+        If you are modifying the labeling config for project that has in-progress work, note the following:
+        
+        * You cannot remove labels or change the type of labeling being performed unless you delete any existing annotations that are using those labels. 
+        
+        * If you make changes to the labeling configuration, any tabs that you might have created in the Data Manager are removed.
+        
+        </Warning>
+
+  "/api/projects/{id}/import":
+    post:
+      summary: Import tasks
+      description: >
+        
+        Use this API endpoint to import labeling tasks in bulk. Note that each POST request is limited at 250K tasks and 200 MB.
+
+        The project ID can be found in the URL when viewing the project in Label Studio, or you can retrieve all project IDs using [List all projects](list). 
+
+
+        <Note>
+        
+        Imported data is verified against a project *label_config* and must include all variables that were used in the *label_config*. 
+        
+        
+        For example, if the label configuration has a *$text* variable, then each item in a data object must include a `text` field.
+
+        </Note>
+
+
+        There are three possible ways to import tasks with this endpoint:
+
+
+        #### 1\. **POST with data**
+
+        Send JSON tasks as POST data. Only JSON is supported for POSTing files directly.
+
+
+        Update this example to specify your authorization token and Label Studio instance host, then run the following from
+
+        the command line:
+
+
+        ```bash
+
+        curl -H 'Content-Type: application/json' -H 'Authorization: Token abc123' \
+
+        -X POST 'https://localhost:8080/api/projects/1/import' --data '[{"text": "Some text 1"}, {"text": "Some text 2"}]'
+
+        ```
+
+
+        #### 2\. **POST with files**
+
+        Send tasks as files. You can attach multiple files with different names.
+
+
+        - **JSON**: text files in JavaScript object notation format
+
+        - **CSV**: text files with tables in Comma Separated Values format
+
+        - **TSV**: text files with tables in Tab Separated Value format
+
+        - **TXT**: simple text files are similar to CSV with one column and no header, supported for projects with one source only
+
+
+        Update this example to specify your authorization token, Label Studio instance host, and file name and path,
+
+        then run the following from the command line:
+
+
+        ```bash
+
+        curl -H 'Authorization: Token abc123' \
+
+        -X POST 'https://localhost:8080/api/projects/1/import' -F ‘file=@path/to/my_file.csv’
+
+        ```
+
+
+        #### 3\. **POST with URL**
+
+        You can also provide a URL to a file with labeling tasks. Supported file formats are the same as in option 2.
+
+
+        ```bash
+
+        curl -H 'Content-Type: application/json' -H 'Authorization: Token abc123' \
+
+        -X POST 'https://localhost:8080/api/projects/1/import' \
+
+        --data '[{"url": "http://example.com/test1.csv"}, {"url": "http://example.com/test2.csv"}]'
+
+        ```
+
+
+        <br>
+
+  "/api/projects/{id}/validate/":
+    post:
+      summary: Validate project label config
+      description: >
+        
+        Determine whether the label configuration for a specific project is valid. For more information about setting up labeling configs, see [Configure labeling interface](https://labelstud.io/guide/setup) and our [Tags reference](https://labelstud.io/tags/).
+
+
+        The project ID can be found in the URL when viewing the project in Label Studio, or you can retrieve all project IDs using [List all projects](list). 
+
+  "/api/import/file-upload/{id}":
+    get:
+      summary: Get file upload
+      description: Retrieve details about a specific uploaded file. To get the file upload ID, use [Get files list](list). 
+    delete:
+      summary: Delete file upload
+      description: Delete a specific uploaded file. To get the file upload ID, use [Get files list](list). 
+    patch:
+      summary: Update file upload
+      description: > 
+      
+        Update a specific uploaded file. To get the file upload ID, use [Get files list](list). 
+
+
+        You will need to include the file data in the request body. For example:
+
+        ```bash
+
+        curl -H 'Authorization: Token abc123' \
+        -X POST 'https://localhost:8080/api/import/file-upload/245' -F ‘file=@path/to/my_file.csv’
+
+        ```
+  
+  "/api/projects/{id}/file-uploads":
+    get:
+      summary: Get files list
+      description: >
+        
+        Retrieve the list of uploaded files used to create labeling tasks for a specific project. These are files that have been uploaded directly to Label Studio. 
+
+
+        You must provide a project ID. The project ID can be found in the URL when viewing the project in Label Studio, or you can retrieve all project IDs using [List all projects](../list). 
+    delete:
+      summary: Delete files
+      description: >
+        
+        Delete uploaded files for a specific project. These are files that have been uploaded directly to Label Studio. 
+
+
+        You must provide a project ID. The project ID can be found in the URL when viewing the project in Label Studio, or you can retrieve all project IDs using [List all projects](../list). 
+
+  "/data/upload/{filename}":
+    get:
+      summary: Download file
+      description: Download a specific uploaded file. If you aren't sure of the file name, try [Get files list](list) first.
+
+  "/api/projects/{id}/export":
+    get:
+      summary: Easy export of tasks and annotations
+      description: >
+        
+        <Note>If you have a large project it's recommended to use export snapshots, this easy export endpoint might have timeouts.</Note>
+
+        Export annotated tasks as a file in a specific format.
+
+        For example, to export JSON annotations for a project to a file called `annotations.json`,
+
+        run the following from the command line:
+
+        ```bash
+
+        curl -X GET https://localhost:8080/api/projects/{id}/export?exportType=JSON -H 'Authorization: Token abc123' --output 'annotations.json'
+
+        ```
+
+        To export all tasks, including skipped tasks and others without annotations, run the following from the command line:
+
+        ```bash
+
+        curl -X GET https://localhost:8080/api/projects/{id}/export?exportType=JSON&download_all_tasks=true -H 'Authorization: Token abc123' --output 'annotations.json'
+
+        ```
+
+        To export specific tasks with IDs of 123 and 345, run the following from the command line:
+
+        ```bash
+
+        curl -X GET https://localhost:8080/api/projects/{id}/export?ids[]=123\&ids[]=345 -H 'Authorization: Token abc123' --output 'annotations.json'
+
+        ```
+
+
+        You must provide a project ID. The project ID can be found in the URL when viewing the project in Label Studio, or you can retrieve all project IDs using [List all projects](../list). 
+        
+      x-fern-sdk-group-name:
+        - projects
+        - exports
+
+  "/api/projects/{id}/export/formats":
+    get:
+      summary: Get export formats
+      description: >
+        
+        Before exporting annotations, you can check with formats are supported by the specified project. For more information about export formats, see [Export formats supported by Label Studio](https://labelstud.io/guide/export#Export-formats-supported-by-Label-Studio). 
+
+
+        You must provide a project ID. The project ID can be found in the URL when viewing the project in Label Studio, or you can retrieve all project IDs using [List all projects](../list). 
+
+  "/api/projects/{id}/exports/":
+    get:
+      summary: List all export snapshots
+      description: >
+        
+        Returns a list of exported files for a specific project by ID.
+    post:
+      summary: Create new export snapshot
+      description: >
+
+        Create a new export request to start a background task and generate an export file (snapshot) for a specific project by ID. The project ID can be found in the URL when viewing the project in Label Studio, or you can retrieve all project IDs using [List all projects](../list). 
+
+        
+        A snapshot is a static export of your project's data and annotations at a specific point in time. It captures the current state of your tasks, annotations, and other relevant data, allowing you to download and review them later. Snapshots are particularly useful for large projects as they help avoid timeouts during export operations by processing the data asynchronously.
+
+
+        For more information, see the [Label Studio documentation on exporting annotations](https://labelstud.io/guide/export.html).
+
+  "/api/projects/{id}/exports/{export_pk}":
+    get:
+      summary: Get export snapshot by ID
+      description: >
+        
+        Retrieve information about an export file by export ID for a specific project.   
+        
+    delete:
+      summary: Delete export snapshot
+      description: >
+        
+        Delete an export file by specified export ID.
+
+  "/api/projects/{id}/exports/{export_pk}/download":
+    get:
+      summary: Download export snapshot 
+      description: >
+        
+        Download an export snapshot as a file in a specified format. To see what formats are supported, you can use [Get export formats](list-formats) or see [Export formats supported by Label Studio](https://labelstud.io/guide/export#Export-formats-supported-by-Label-Studio). 
+
+
+        You will need to provide the project ID and export ID (`export_pk`). The export ID is returned when you create the export. 
+
+
+        The project ID can be found in the URL when viewing the project in Label Studio, or you can retrieve all project IDs using [List all projects](../list). 
+        
+
+
+
+
+
+
+
+
+
+
+
+
+  "/api/projects/{id}/tasks/":
+    delete:
+      summary: Delete all tasks
+      description: > 
+      
+        Delete all tasks from a specific project.
+
+
+        The project ID can be found in the URL when viewing the project in Label Studio, or you can retrieve all project IDs using [List all projects](list) API. 
+
+      x-fern-sdk-group-name: tasks
+
+
+
+
+
+
+
+
+
+
   /api/tasks/:
     get:
       responses:
