@@ -23,11 +23,38 @@ paths:
       description: Retrieve a specific annotation for a task using the annotation result ID.
       responses:
         "200":
-          description: ""
+          description: Retrieved annotation
           content:
             application/json:
               schema:
                 $ref: "#/components/schemas/Annotation"
+              examples:
+                response:
+                  value:
+                    id: 1
+                    result:
+                      - original_width: 1920
+                        original_height: 1080
+                        image_rotation: 0
+                        from_name: bboxes
+                        to_name: image
+                        type: rectanglelabels
+                        value:
+                          x: 20
+                          y: 30
+                          width: 50
+                          height: 60
+                          rotation: 0
+                          values:
+                            rectanglelabels:
+                              - Person
+                    task: 1
+                    project: 1
+                    completed_by: 1
+                    updated_by: 1
+                    was_cancelled: false
+                    ground_truth: false
+                    lead_time: 10
       tags:
         - Annotations
       x-fern-sdk-group-name: annotations
@@ -42,11 +69,38 @@ paths:
         $ref: "#/components/requestBodies/api_annotations_partial_updateData"
       responses:
         "200":
-          description: ""
+          description: Updated annotation
           content:
             application/json:
               schema:
                 $ref: "#/components/schemas/Annotation"
+              examples:
+                response:
+                  value:
+                    id: 1
+                    result:
+                      - original_width: 1920
+                        original_height: 1080
+                        image_rotation: 0
+                        from_name: bboxes
+                        to_name: image
+                        type: rectanglelabels
+                        value:
+                          x: 20
+                          y: 30
+                          width: 50
+                          height: 60
+                          rotation: 0
+                          values:
+                            rectanglelabels:
+                              - Person
+                    task: 1
+                    project: 1
+                    completed_by: 1
+                    updated_by: 1
+                    was_cancelled: false
+                    ground_truth: false
+                    lead_time: 10
       tags:
         - Annotations
       x-fern-sdk-group-name: annotations
@@ -1321,13 +1375,36 @@ paths:
       description: List all predictions and their IDs.
       responses:
         "200":
-          description: ""
+          description: Predictions list
           content:
             application/json:
               schema:
                 type: array
                 items:
                   $ref: "#/components/schemas/Prediction"
+              examples:
+                response:
+                  value:
+                    - id: 1
+                      task: 1
+                      result:
+                        - original_width: 1920
+                          original_height: 1080
+                          image_rotation: 0
+                          from_name: bboxes
+                          to_name: image
+                          type: rectanglelabels
+                          value:
+                            x: 20
+                            y: 30
+                            width: 50
+                            height: 60
+                            rotation: 0
+                            values:
+                              rectanglelabels:
+                                - Person
+                      score: 0.95
+                      model_version: yolo-v8
       tags:
         - Predictions
       x-fern-sdk-group-name: predictions
@@ -1347,6 +1424,29 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/Prediction"
+              examples:
+                response:
+                  value:
+                    id: 1
+                    task: 1
+                    result:
+                      - original_width: 1920
+                        original_height: 1080
+                        image_rotation: 0
+                        from_name: bboxes
+                        to_name: image
+                        type: rectanglelabels
+                        value:
+                          x: 20
+                          y: 30
+                          width: 50
+                          height: 60
+                          rotation: 0
+                          values:
+                            rectanglelabels:
+                              - Person
+                    score: 0.95
+                    model_version: yolo-v8
       tags:
         - Predictions
       x-fern-sdk-group-name: predictions
@@ -1368,11 +1468,34 @@ paths:
             type: integer
       responses:
         "200":
-          description: ""
+          description: Prediction details
           content:
             application/json:
               schema:
                 $ref: "#/components/schemas/Prediction"
+              examples:
+                response:
+                  value:
+                    id: 1
+                    task: 1
+                    result:
+                      - original_width: 1920
+                        original_height: 1080
+                        image_rotation: 0
+                        from_name: bboxes
+                        to_name: image
+                        type: rectanglelabels
+                        value:
+                          x: 20
+                          y: 30
+                          width: 50
+                          height: 60
+                          rotation: 0
+                          values:
+                            rectanglelabels:
+                              - Person
+                    score: 0.95
+                    model_version: yolo-v8
       tags:
         - Predictions
       x-fern-sdk-group-name: predictions
@@ -1394,11 +1517,34 @@ paths:
         $ref: "#/components/requestBodies/api_predictions_createData"
       responses:
         "200":
-          description: ""
+          description: Updated prediction
           content:
             application/json:
               schema:
                 $ref: "#/components/schemas/Prediction"
+              examples:
+                response:
+                  value:
+                    id: 1
+                    task: 1
+                    result:
+                      - original_width: 1920
+                        original_height: 1080
+                        image_rotation: 0
+                        from_name: bboxes
+                        to_name: image
+                        type: rectanglelabels
+                        value:
+                          x: 20
+                          y: 30
+                          width: 50
+                          height: 60
+                          rotation: 0
+                          values:
+                            rectanglelabels:
+                              - Person
+                    score: 0.95
+                    model_version: yolo-v8
       tags:
         - Predictions
       x-fern-audiences:
@@ -1418,11 +1564,34 @@ paths:
         $ref: "#/components/requestBodies/api_predictions_createData"
       responses:
         "200":
-          description: ""
+          description: Updated prediction
           content:
             application/json:
               schema:
                 $ref: "#/components/schemas/Prediction"
+              examples:
+                response:
+                  value:
+                    id: 1
+                    task: 1
+                    result:
+                      - original_width: 1920
+                        original_height: 1080
+                        image_rotation: 0
+                        from_name: bboxes
+                        to_name: image
+                        type: rectanglelabels
+                        value:
+                          x: 20
+                          y: 30
+                          width: 50
+                          height: 60
+                          rotation: 0
+                          values:
+                            rectanglelabels:
+                              - Person
+                    score: 0.95
+                    model_version: yolo-v8
       tags:
         - Predictions
       x-fern-sdk-group-name: predictions
@@ -4954,19 +5123,18 @@ paths:
                     id: 1
                     data:
                       image: https://example.com/image.jpg
-                      text: Hello, world!
-                    meta: {}
+                      text: Hello, AI!
                     project: 1
                     created_at: 2024-01-15T09:30:00Z
                     updated_at: 2024-01-15T09:30:00Z
-                    is_labeled: true
+                    is_labeled: false
                     overlap: 1
                     inner_id: 1
-                    total_annotations: 1
-                    cancelled_annotations: 1
-                    total_predictions: 1
-                    comment_count: 1
-                    unresolved_comment_count: 1
+                    total_annotations: 0
+                    cancelled_annotations: 0
+                    total_predictions: 0
+                    comment_count: 0
+                    unresolved_comment_count: 0
                     last_comment_updated_at: 2024-01-15T09:30:00Z
                     updated_by: 1
                     file_upload: 1
@@ -4995,11 +5163,34 @@ paths:
             type: string
       responses:
         "200":
-          description: ""
+          description: Task
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/data_manager_task_serializer"
+                $ref: "#/components/schemas/BaseTask"
+              examples:
+                response:
+                  value:
+                    id: 1
+                    data:
+                      image: https://example.com/image.jpg
+                      text: Hello, AI!
+                    project: 1
+                    created_at: 2024-01-15T09:30:00Z
+                    updated_at: 2024-01-15T09:30:00Z
+                    is_labeled: false
+                    overlap: 1
+                    inner_id: 1
+                    total_annotations: 0
+                    cancelled_annotations: 0
+                    total_predictions: 0
+                    comment_count: 0
+                    unresolved_comment_count: 0
+                    last_comment_updated_at: 2024-01-15T09:30:00Z
+                    updated_by: 1
+                    file_upload: 1
+                    comment_authors:
+                      - 1
       tags:
         - Tasks
       x-fern-sdk-group-name: tasks
@@ -5021,11 +5212,34 @@ paths:
         $ref: "#/components/requestBodies/api_tasks_createData"
       responses:
         "200":
-          description: ""
+          description: Updated task
           content:
             application/json:
               schema:
                 $ref: "#/components/schemas/BaseTask"
+              examples:
+                response:
+                  value:
+                    id: 1
+                    data:
+                      image: https://example.com/image.jpg
+                      text: Hello, AI!
+                    project: 1
+                    created_at: 2024-01-15T09:30:00Z
+                    updated_at: 2024-01-15T09:30:00Z
+                    is_labeled: false
+                    overlap: 1
+                    inner_id: 1
+                    total_annotations: 0
+                    cancelled_annotations: 0
+                    total_predictions: 0
+                    comment_count: 0
+                    unresolved_comment_count: 0
+                    last_comment_updated_at: 2024-01-15T09:30:00Z
+                    updated_by: 1
+                    file_upload: 1
+                    comment_authors:
+                      - 1
       tags:
         - Tasks
       x-fern-sdk-group-name: tasks
@@ -5072,13 +5286,40 @@ paths:
             type: integer
       responses:
         "200":
-          description: ""
+          description: Annotation
           content:
             application/json:
               schema:
                 type: array
                 items:
                   $ref: "#/components/schemas/Annotation"
+              examples:
+                response:
+                  value:
+                    - id: 1
+                      result:
+                        - original_width: 1920
+                          original_height: 1080
+                          image_rotation: 0
+                          from_name: bboxes
+                          to_name: image
+                          type: rectanglelabels
+                          value:
+                            x: 20
+                            y: 30
+                            width: 50
+                            height: 60
+                            rotation: 0
+                            values:
+                              rectanglelabels:
+                                - Person
+                      task: 1
+                      project: 1
+                      completed_by: 1
+                      updated_by: 1
+                      was_cancelled: false
+                      ground_truth: false
+                      lead_time: 10
       tags:
         - Annotations
       x-fern-sdk-group-name: annotations
@@ -5127,11 +5368,38 @@ paths:
         $ref: "#/components/requestBodies/api_annotations_partial_updateData"
       responses:
         "201":
-          description: ""
+          description: Created annotation
           content:
             application/json:
               schema:
                 $ref: "#/components/schemas/Annotation"
+              examples:
+                response:
+                  value:
+                    id: 1
+                    result:
+                      - original_width: 1920
+                        original_height: 1080
+                        image_rotation: 0
+                        from_name: bboxes
+                        to_name: image
+                        type: rectanglelabels
+                        value:
+                          x: 20
+                          y: 30
+                          width: 50
+                          height: 60
+                          rotation: 0
+                          values:
+                            rectanglelabels:
+                              - Person
+                    task: 1
+                    project: 1
+                    completed_by: 1
+                    updated_by: 1
+                    was_cancelled: false
+                    ground_truth: false
+                    lead_time: 10
       tags:
         - Annotations
       x-fern-sdk-group-name: annotations
@@ -5554,6 +5822,78 @@ components:
           schema:
             $ref: "#/components/schemas/WebhookSerializerForUpdate"
       required: true
+    api_annotations_partial_updateData:
+      content:
+        application/json:
+          schema:
+            required: []
+            type: object
+            properties:
+              result:
+                description: Labeling result in JSON format. Read more about the format in [the
+                  Label Studio
+                  documentation.](https://labelstud.io/guide/task_format)
+                type: array
+                items:
+                  type: object
+                example:
+                  - original_width: 1920
+                    original_height: 1080
+                    image_rotation: 0
+                    from_name: bboxes
+                    to_name: image
+                    type: rectanglelabels
+                    value:
+                      x: 20
+                      y: 30
+                      width: 50
+                      height: 60
+                      rotation: 0
+                      values:
+                        rectanglelabels:
+                          - Person
+              task:
+                description: Corresponding task for this annotation
+                type: integer
+              project:
+                description: Project ID for this annotation
+                type: integer
+              completed_by:
+                description: User ID of the person who created this annotation
+                type: integer
+              updated_by:
+                description: Last user who updated this annotation
+                type: integer
+              was_cancelled:
+                description: User skipped the task
+                type: boolean
+              ground_truth:
+                description: This annotation is a Ground Truth
+                type: boolean
+              lead_time:
+                description: How much time it took to annotate the task (in seconds)
+                type: number
+                example: 100.5
+            example:
+              result:
+                - original_width: 1920
+                  original_height: 1080
+                  image_rotation: 0
+                  from_name: bboxes
+                  to_name: image
+                  type: rectanglelabels
+                  value:
+                    x: 20
+                    y: 30
+                    width: 50
+                    height: 60
+                    rotation: 0
+                    values:
+                      rectanglelabels:
+                        - Person
+              was_cancelled: false
+              ground_truth: true
+      required: true
     LabelLink:
       content:
         application/json:
@@ -5665,23 +6005,6 @@ components:
               account_key:
                 description: Azure Blob account key
                 type: string
-      required: true
-    api_tasks_createData:
-      content:
-        application/json:
-          schema:
-            type: object
-            properties:
-              data:
-                title: Task data
-                description: Task data dictionary with arbitrary keys and values
-                type: object
-                example:
-                  image: https://example.com/image.jpg
-                  text: Hello, world!
-              project:
-                description: Project ID
-                type: integer
       required: true
     api_dm_views_createData:
       content:
@@ -5824,52 +6147,6 @@ components:
                 description: Scan recursively
                 type: boolean
       required: true
-    api_annotations_partial_updateData:
-      content:
-        application/json:
-          schema:
-            required: []
-            type: object
-            properties:
-              result:
-                description: Labeling result in JSON format. Read more about the format in [the
-                  Label Studio
-                  documentation.](https://labelstud.io/guide/task_format)
-                type: array
-                items:
-                  type: object
-                example:
-                  - from_name: label
-                    to_name: text
-                    type: labels
-                    value:
-                      start: 0
-                      end: 5
-                      text: hello
-                      values:
-                        - GREETING
-              task:
-                description: Corresponding task for this annotation
-                type: integer
-              project:
-                description: Project ID for this annotation
-                type: integer
-              completed_by:
-                description: User ID of the person who created this annotation
-                type: integer
-              updated_by:
-                description: Last user who updated this annotation
-                type: integer
-              was_cancelled:
-                description: User skipped the task
-                type: boolean
-              ground_truth:
-                description: This annotation is a Ground Truth
-                type: boolean
-              lead_time:
-                description: How much time it took to annotate the task (in seconds)
-                type: number
-      required: true
     api_ml_createData:
       content:
         application/json:
@@ -5915,9 +6192,6 @@ components:
       content:
         application/json:
           schema:
-            required:
-              - task
-              - result
             type: object
             properties:
               task:
@@ -5931,25 +6205,51 @@ components:
                 items:
                   type: object
                 example:
-                  - from_name: label
-                    to_name: text
-                    type: labels
+                  - original_width: 1920
+                    original_height: 1080
+                    image_rotation: 0
+                    from_name: bboxes
+                    to_name: image
+                    type: rectanglelabels
                     value:
-                      start: 0
-                      end: 5
-                      text: hello
+                      x: 20
+                      y: 30
+                      width: 50
+                      height: 60
+                      rotation: 0
                       values:
-                        - GREETING
+                        rectanglelabels:
+                          - Person
               score:
                 description: Prediction score. Can be used in Data Manager to sort task by model
-                  confidence.
+                  confidence. Task with the lowest score will be shown first.
                 type: number
                 example: 0.95
               model_version:
-                description: Model version. Can be used to tag predictions and labeling tasks
-                  with a specific model version.
+                description: Model version - tag for predictions that can be used to filter
+                  tasks in Data Manager, as well as select specific model
+                  version for showing preannotations in the labeling interface
                 type: string
-                example: yolo-v10
+                example: yolo-v8
+            example:
+              result:
+                - original_width: 1920
+                  original_height: 1080
+                  image_rotation: 0
+                  from_name: bboxes
+                  to_name: image
+                  type: rectanglelabels
+                  value:
+                    x: 20
+                    y: 30
+                    width: 50
+                    height: 60
+                    rotation: 0
+                    values:
+                      rectanglelabels:
+                        - Person
+              score: 0.95
+              model_version: yolo-v8
       required: true
     ProjectLabelConfig:
       content:
@@ -6040,6 +6340,28 @@ components:
               use_blob_urls:
                 description: Interpret objects as BLOBs and generate URLs
                 type: boolean
+      required: true
+    api_tasks_createData:
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              data:
+                title: Task data
+                description: Task data dictionary with arbitrary keys and values
+                type: object
+                example:
+                  image: https://example.com/image.jpg
+                  text: Hello, world!
+              project:
+                description: Project ID
+                type: integer
+            example:
+              data:
+                image: https://example.com/image.jpg
+                text: Hello, world!
+              project: 1
       required: true
     api_users_createData:
       content:
@@ -6813,6 +7135,9 @@ components:
             description: List of predicted regions for the task
         model_version:
           title: Model version
+          description: Model version - tag for predictions that can be used to filter
+            tasks in Data Manager, as well as select specific model version for
+            showing preannotations in the labeling interface
           type: string
         created_ago:
           title: Created ago
@@ -8688,147 +9013,6 @@ components:
         file_upload:
           title: File upload
           description: Uploaded file used as data source for this task
-          type: integer
-          nullable: true
-        comment_authors:
-          description: Users who wrote comments
-          type: array
-          items:
-            description: Users who wrote comments
-            type: integer
-          uniqueItems: true
-    data_manager_task_serializer:
-      required:
-        - data
-      type: object
-      properties:
-        id:
-          title: ID
-          type: integer
-          readOnly: true
-        predictions:
-          title: Predictions
-          type: string
-          readOnly: true
-        annotations:
-          type: array
-          items:
-            $ref: "#/components/schemas/Annotation"
-          readOnly: true
-          default: []
-        drafts:
-          title: Drafts
-          type: string
-          readOnly: true
-        annotators:
-          title: Annotators
-          type: string
-          readOnly: true
-        inner_id:
-          title: Inner id
-          type: integer
-        cancelled_annotations:
-          title: Cancelled annotations
-          type: integer
-        total_annotations:
-          title: Total annotations
-          type: integer
-        total_predictions:
-          title: Total predictions
-          type: integer
-        completed_at:
-          title: Completed at
-          type: string
-          format: date-time
-        annotations_results:
-          title: Annotations results
-          type: string
-          readOnly: true
-        predictions_results:
-          title: Predictions results
-          type: string
-          readOnly: true
-        predictions_score:
-          title: Predictions score
-          type: number
-        file_upload:
-          title: File upload
-          type: string
-          readOnly: true
-        storage_filename:
-          title: Storage filename
-          type: string
-          readOnly: true
-        annotations_ids:
-          title: Annotations ids
-          type: string
-          readOnly: true
-        predictions_model_versions:
-          title: Predictions model versions
-          type: string
-          readOnly: true
-        avg_lead_time:
-          title: Avg lead time
-          type: number
-        draft_exists:
-          title: Draft exists
-          type: boolean
-        updated_by:
-          title: Updated by
-          type: string
-          readOnly: true
-        data:
-          title: Data
-          description: User imported or uploaded data for a task. Data is formatted
-            according to the project label config. You can find examples of data
-            for your project on the Import page in the Label Studio Data Manager
-            UI.
-          type: object
-        meta:
-          title: Meta
-          description: Meta is user imported (uploaded) data and can be useful as input
-            for an ML Backend for embeddings, advanced vectors, and other info.
-            It is passed to ML during training/predicting steps.
-          type: object
-          nullable: true
-        created_at:
-          title: Created at
-          description: Time a task was created
-          type: string
-          format: date-time
-          readOnly: true
-        updated_at:
-          title: Updated at
-          description: Last time a task was updated
-          type: string
-          format: date-time
-          readOnly: true
-        is_labeled:
-          title: Is_labeled
-          description: True if the number of annotations for this task is greater than or
-            equal to the number of maximum_completions for the project
-          type: boolean
-        overlap:
-          title: Overlap
-          description: Number of distinct annotators that processed the current task
-          type: integer
-        comment_count:
-          title: Comment count
-          description: Number of comments in the task including all annotations
-          type: integer
-        unresolved_comment_count:
-          title: Unresolved comment count
-          description: Number of unresolved comments in the task including all annotations
-          type: integer
-        last_comment_updated_at:
-          title: Last comment updated at
-          description: When the last comment was updated
-          type: string
-          format: date-time
-          nullable: true
-        project:
-          title: Project
-          description: Project ID for this task
           type: integer
           nullable: true
         comment_authors:
