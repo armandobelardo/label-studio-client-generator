@@ -433,6 +433,8 @@ paths:
         - projects
         - files
       x-fern-sdk-method-name: get
+      x-fern-audiences:
+        - public
     patch:
       operationId: api_import_file-upload_partial_update
       summary: Update file upload
@@ -456,6 +458,8 @@ paths:
         - projects
         - files
       x-fern-sdk-method-name: update
+      x-fern-audiences:
+        - public
     delete:
       operationId: api_import_file-upload_delete
       summary: Delete file upload
@@ -469,6 +473,8 @@ paths:
         - projects
         - files
       x-fern-sdk-method-name: delete
+      x-fern-audiences:
+        - public
     parameters:
       - name: id
         in: path
@@ -1893,6 +1899,8 @@ paths:
         - Export
       x-fern-sdk-group-name: projects
       x-fern-sdk-method-name: create_export
+      x-fern-audiences:
+        - public
     parameters:
       - name: id
         in: path
@@ -1929,6 +1937,8 @@ paths:
         - projects
         - exports
       x-fern-sdk-method-name: list_formats
+      x-fern-audiences:
+        - public
     parameters:
       - name: id
         in: path
@@ -1996,6 +2006,8 @@ paths:
         - projects
         - exports
       x-fern-sdk-method-name: create
+      x-fern-audiences:
+        - public
     parameters:
       - name: id
         in: path
@@ -2064,6 +2076,8 @@ paths:
         - projects
         - exports
       x-fern-sdk-method-name: delete
+      x-fern-audiences:
+        - public
     parameters:
       - name: id
         in: path
@@ -2170,6 +2184,8 @@ paths:
         - projects
         - exports
       x-fern-sdk-method-name: download
+      x-fern-audiences:
+        - public
     parameters:
       - name: id
         in: path
@@ -2220,6 +2236,8 @@ paths:
         - projects
         - files
       x-fern-sdk-method-name: list
+      x-fern-audiences:
+        - public
     delete:
       operationId: api_projects_file-uploads_delete
       summary: Delete files
@@ -2235,6 +2253,8 @@ paths:
         - projects
         - files
       x-fern-sdk-method-name: delete_many
+      x-fern-audiences:
+        - public
     parameters:
       - name: id
         in: path
@@ -2438,6 +2458,8 @@ paths:
         - Import
       x-fern-sdk-group-name: tasks
       x-fern-sdk-method-name: create_many
+      x-fern-audiences:
+        - public
     parameters:
       - name: id
         in: path
@@ -5443,6 +5465,8 @@ paths:
         - projects
         - files
       x-fern-sdk-method-name: download
+      x-fern-audiences:
+        - public
     parameters:
       - name: filename
         in: path
