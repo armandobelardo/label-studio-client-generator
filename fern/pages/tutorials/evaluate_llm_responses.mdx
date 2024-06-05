@@ -6,7 +6,7 @@ editThisPageUrl: https://github.com/fern-api/fern/blob/main/fern/pages/fern-docs
 image: https://github.com/fern-api/fern/blob/main/fern/images/logo-green.png
 ---
 
-# Connect to Label Studio
+## Connect to Label Studio
 
 Let's connect to the running Label Studio instance. You need `API_KEY` that can be found in `Account & Settings` -> `API Key` section.
 
@@ -16,7 +16,7 @@ from label_studio_sdk.client import LabelStudio
 ls = LabelStudio(api_key='your-api-key')
 ```
 
-# Create a project
+## Create a project
 
 To create a project, you need to specify the `label_config` that defines the labeling interface and the labels ontology.
 
@@ -67,7 +67,7 @@ project = ls.projects.create(
 )
 ```
 
-# Get LLM response
+## Get LLM response
 
 Now, let's get the LLM response and import it into Label Studio.
 
@@ -93,7 +93,7 @@ messages += [{
 }]
 ```
 
-# Create evaluation task
+## Create evaluation task
 
 ```python
 ls.tasks.create(
