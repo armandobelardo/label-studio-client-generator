@@ -1,7 +1,4 @@
 paths:
-  /api/projects/:
-    post:
-      summary: List of Projects
   /api/tasks/:
     get:
       responses:
