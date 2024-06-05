@@ -40,6 +40,22 @@ header .fern-button{
   color: var(--sand_0);
 }
 
+.dark header .fern-button.outlined{
+  background-color: var(--sand_0);
+}
+
+.dark header .fern-button:not(.disabled).outlined.primary:hover{
+  background-color: var(--persimmon_400);
+} 
+
+.dark header .outlined .fern-button-text{
+  color: var(--sand_900);
+}
+
+.dark header .outlined .fern-button-content>svg{
+  color: var(--sand_900);
+}
+
 .fern-mdx-link{
   color: var(--grape_500);
   text-decoration: none;
