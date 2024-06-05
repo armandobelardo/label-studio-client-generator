@@ -4943,11 +4943,35 @@ paths:
         $ref: "#/components/requestBodies/api_tasks_createData"
       responses:
         "201":
-          description: ""
+          description: Created task
           content:
             application/json:
               schema:
                 $ref: "#/components/schemas/BaseTask"
+              examples:
+                response:
+                  value:
+                    id: 1
+                    data:
+                      image: https://example.com/image.jpg
+                      text: Hello, world!
+                    meta: {}
+                    project: 1
+                    created_at: 2024-01-15T09:30:00Z
+                    updated_at: 2024-01-15T09:30:00Z
+                    is_labeled: true
+                    overlap: 1
+                    inner_id: 1
+                    total_annotations: 1
+                    cancelled_annotations: 1
+                    total_predictions: 1
+                    comment_count: 1
+                    unresolved_comment_count: 1
+                    last_comment_updated_at: 2024-01-15T09:30:00Z
+                    updated_by: 1
+                    file_upload: 1
+                    comment_authors:
+                      - 1
       tags:
         - Tasks
       x-fern-sdk-group-name: tasks
@@ -5530,38 +5554,6 @@ components:
           schema:
             $ref: "#/components/schemas/WebhookSerializerForUpdate"
       required: true
-    api_annotations_partial_updateData:
-      content:
-        application/json:
-          schema:
-            required: []
-            type: object
-            properties:
-              result:
-                description: Labeling result in JSON format
-                type: object
-              task:
-                description: Corresponding task for this annotation
-                type: integer
-              project:
-                description: Project ID for this annotation
-                type: integer
-              completed_by:
-                description: User ID of the person who created this annotation
-                type: integer
-              updated_by:
-                description: Last user who updated this annotation
-                type: integer
-              was_cancelled:
-                description: User skipped the task
-                type: boolean
-              ground_truth:
-                description: This annotation is a Ground Truth
-                type: boolean
-              lead_time:
-                description: How much time it took to annotate the task
-                type: number
-      required: true
     LabelLink:
       content:
         application/json:
@@ -5673,6 +5665,23 @@ components:
               account_key:
                 description: Azure Blob account key
                 type: string
+      required: true
+    api_tasks_createData:
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              data:
+                title: Task data
+                description: Task data dictionary with arbitrary keys and values
+                type: object
+                example:
+                  image: https://example.com/image.jpg
+                  text: Hello, world!
+              project:
+                description: Project ID
+                type: integer
       required: true
     api_dm_views_createData:
       content:
@@ -5815,6 +5824,52 @@ components:
                 description: Scan recursively
                 type: boolean
       required: true
+    api_annotations_partial_updateData:
+      content:
+        application/json:
+          schema:
+            required: []
+            type: object
+            properties:
+              result:
+                description: Labeling result in JSON format. Read more about the format in [the
+                  Label Studio
+                  documentation.](https://labelstud.io/guide/task_format)
+                type: array
+                items:
+                  type: object
+                example:
+                  - from_name: label
+                    to_name: text
+                    type: labels
+                    value:
+                      start: 0
+                      end: 5
+                      text: hello
+                      values:
+                        - GREETING
+              task:
+                description: Corresponding task for this annotation
+                type: integer
+              project:
+                description: Project ID for this annotation
+                type: integer
+              completed_by:
+                description: User ID of the person who created this annotation
+                type: integer
+              updated_by:
+                description: Last user who updated this annotation
+                type: integer
+              was_cancelled:
+                description: User skipped the task
+                type: boolean
+              ground_truth:
+                description: This annotation is a Ground Truth
+                type: boolean
+              lead_time:
+                description: How much time it took to annotate the task (in seconds)
+                type: number
+      required: true
     api_ml_createData:
       content:
         application/json:
@@ -5869,16 +5924,32 @@ components:
                 description: Task ID for which the prediction is created
                 type: integer
               result:
-                description: Prediction result
+                description: Prediction result in JSON format. Read more about the format in
+                  [the Label Studio
+                  documentation.](https://labelstud.io/guide/predictions)
                 type: array
                 items:
                   type: object
+                example:
+                  - from_name: label
+                    to_name: text
+                    type: labels
+                    value:
+                      start: 0
+                      end: 5
+                      text: hello
+                      values:
+                        - GREETING
               score:
-                description: Prediction score
+                description: Prediction score. Can be used in Data Manager to sort task by model
+                  confidence.
                 type: number
+                example: 0.95
               model_version:
-                description: Model version
+                description: Model version. Can be used to tag predictions and labeling tasks
+                  with a specific model version.
                 type: string
+                example: yolo-v10
       required: true
     ProjectLabelConfig:
       content:
@@ -5969,23 +6040,6 @@ components:
               use_blob_urls:
                 description: Interpret objects as BLOBs and generate URLs
                 type: boolean
-      required: true
-    api_tasks_createData:
-      content:
-        application/json:
-          schema:
-            type: object
-            properties:
-              data:
-                title: Task data
-                description: Task data dictionary with arbitrary keys and values
-                type: object
-                example:
-                  id: 1
-                  my_image_url: /static/samples/kittens.jpg
-              project:
-                description: Project ID
-                type: integer
       required: true
     api_users_createData:
       content:
