@@ -1,5 +1,6 @@
 instances:
   - url: https://label-studio.docs.buildwithfern.com
+    custom-domain: api.labelstud.io
 title: API Reference | Label Studio
 
 tabs:
@@ -20,18 +21,18 @@ navigation:
           - public
         snippets:
           python: label-studio-sdk
-  - tab: tutorials
-    layout:
-      - section: Tutorials
-        contents:
-          - page: Evaluate LLM responses
-            path: ./pages/tutorials/evaluate_llm_responses.mdx
-          - page: Improve YOLOv8 predictions
-            path: ./pages/tutorials/improve_yolov8_predictions.mdx
-          - page: Interact with Tesseract OCR
-            path: ./pages/tutorials/interact_with_tesseract_ocr.mdx
-          - page: Create FastAPI Async Server
-            path: ./pages/tutorials/create_fastapi_async_server.mdx
+#  - tab: tutorials
+#    layout:
+#      - section: Tutorials
+#        contents:
+#          - page: Evaluate LLM responses
+#            path: ./pages/tutorials/evaluate_llm_responses.mdx
+#          - page: Improve YOLOv8 predictions
+#            path: ./pages/tutorials/improve_yolov8_predictions.mdx
+#          - page: Interact with Tesseract OCR
+#            path: ./pages/tutorials/interact_with_tesseract_ocr.mdx
+#          - page: Create FastAPI Async Server
+#            path: ./pages/tutorials/create_fastapi_async_server.mdx
 
 css: ./styles.css
 
