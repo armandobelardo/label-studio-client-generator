@@ -2366,6 +2366,8 @@ paths:
         content:
           application/json:
             schema:
+              title: tasks
+              description: List of tasks to import
               type: array
               items:
                 required: []
@@ -2456,8 +2458,8 @@ paths:
                 type: string
       tags:
         - Import
-      x-fern-sdk-group-name: tasks
-      x-fern-sdk-method-name: create_many
+      x-fern-sdk-group-name: projects
+      x-fern-sdk-method-name: import_tasks
       x-fern-audiences:
         - public
     parameters:

@@ -49,10 +49,12 @@ groups:
         output:
           location: local-file-system
           path: ../label_studio_sdk
+        smart-casing: true
         config:
           inline_request_params: false
           package_name: label_studio_sdk
           client_class_name: LabelStudio
+
           additional_init_exports:
             - from: _legacy
               imports:
