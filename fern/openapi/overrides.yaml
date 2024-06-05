@@ -452,7 +452,10 @@ paths:
       summary: List all export snapshots
       description: >
         
-        Returns a list of exported files for a specific project by ID.
+        Returns a list of export file (snapshots) for a specific project by ID. The project ID can be found in the URL when viewing the project in Label Studio, or you can retrieve all project IDs using [List all projects](../list). 
+
+
+        Included in the response is information about each snapshot, such as who created it and what format it is in. 
     post:
       summary: Create new export snapshot
       description: >
@@ -470,13 +473,22 @@ paths:
       summary: Get export snapshot by ID
       description: >
         
-        Retrieve information about an export file by export ID for a specific project.   
+        Retrieve information about a specific export file (snapshot). 
+        
+
+        You will need the export ID. You can find this in the response when you [create the snapshot via the API](create) or using [List all export snapshots](list).   
+
+
+        You will also need the project ID. This can be found in the URL when viewing the project in Label Studio, or you can retrieve all project IDs using [List all projects](../list).
         
     delete:
       summary: Delete export snapshot
       description: >
         
         Delete an export file by specified export ID.
+
+
+        You will need the export ID. You can find this in the response when you [create the snapshot via the API](create) or using [List all export snapshots](list). 
 
   "/api/projects/{id}/exports/{export_pk}/download":
     get:
@@ -486,18 +498,117 @@ paths:
         Download an export snapshot as a file in a specified format. To see what formats are supported, you can use [Get export formats](list-formats) or see [Export formats supported by Label Studio](https://labelstud.io/guide/export#Export-formats-supported-by-Label-Studio). 
 
 
-        You will need to provide the project ID and export ID (`export_pk`). The export ID is returned when you create the export. 
+        You will need to provide the project ID and export ID (`export_pk`). The export ID is returned when you create the export or you can use [List all export snapshots](list).
 
 
         The project ID can be found in the URL when viewing the project in Label Studio, or you can retrieve all project IDs using [List all projects](../list). 
         
+  "/api/projects/{id}/exports/{export_pk}/convert":
+    post:
+      summary: Export conversion
+      description: >
+        
+        You can use this to convert an export snapshot into the selected format. 
+
+
+        To see what formats are supported, you can use [Get export formats](list-formats) or see [Export formats supported by Label Studio](https://labelstud.io/guide/export#Export-formats-supported-by-Label-Studio). 
+
+
+        You will need to provide the project ID and export ID (`export_pk`). The export ID is returned when you create the export or you can use [List all export snapshots](list).
+
+
+        The project ID can be found in the URL when viewing the project in Label Studio, or you can retrieve all project IDs using [List all projects](../list). 
+
+  /api/ml/:
+    get:
+      summary: List ML backends
+      description: >
+        
+        List all configured Machine Learning (ML) backends for a specific project by ID. For more information about ML backends, see [Machine learning integration](https://labelstud.io/guide/ml). 
 
 
 
+        You will need to provide the project ID. This can be found in the URL when viewing the project in Label Studio, or you can retrieve all project IDs using [List all projects](../projects/list).
 
 
+        Use the following cURL command:
+
+        ```bash
+
+        curl https://localhost:8080/api/ml?project={project_id} -H 'Authorization: Token abc123'
+    post:
+      summary: Add ML backend
+      description: >
+        
+        Add an ML backend to a project. For more information about what you need to configure when adding an ML backend, see [Connect the model to Label studio](https://labelstud.io/guide/ml#Connect-the-model-to-Label-Studio).
+        
+
+        <Note>If you are using Docker Compose, you may need to adjust your ML backend URL. See [localhost and Docker containers](https://labelstud.io/guide/ml#localhost-and-Docker-containers).</Note>
 
 
+        <Note>If you are using files that are located in the cloud, local storage, or uploaded to Label Studio, you must configure your environment variables to allow the ML backend to interact with those files. See [Allow the ML backend to access Label Studio](https://labelstud.io/guide/ml#Allow-the-ML-backend-to-access-Label-Studio-data).</Note>
+        
+  "/api/ml/{id}":
+    get:
+      summary: Get ML backend
+      description: >
+        
+        Get details about a specific ML backend. You will need to specify an ID for the backend connection. You can find this using [List ML backends](list). 
+
+
+        For more information, see [Machine learning integration](https://labelstud.io/guide/ml).
+    patch:
+      summary: Update ML backend
+      description: >
+        
+        Update the ML backend parameters. You will need to specify an ID for the backend connection. You can find this using [List ML backends](list).
+
+
+        For more information, see [Machine learning integration](https://labelstud.io/guide/ml).
+    delete:
+      summary: Remove ML backend
+      description: >
+        
+        Remove an existing ML backend connection. You will need to specify an ID for the backend connection. You can find this using [List ML backends](list).
+
+
+        For more information, see [Machine learning integration](https://labelstud.io/guide/ml).
+
+  "/api/ml/{id}/interactive-annotating":
+    post:
+      summary: Request interactive annotations
+      description: >
+
+        Enable interactive pre-annotations for a specific task. 
+
+
+        ML-assisted labeling with interactive pre-annotations works with image segmentation and object detection tasks using rectangles, ellipses, polygons, brush masks, and keypoints, as well as with HTML and text named entity recognition tasks. Your ML backend must support the type of labeling that you’re performing, recognize the input that you create, and be able to respond with the relevant output for a prediction. For more information, see [Interactive pre-annotations](https://labelstud.io/guide/ml.html#Interactive-pre-annotations).
+
+
+        Before you can use interactive annotations, it must be enabled for you ML backend connection (`"is_interactive": true`). 
+
+        
+        You will need the task ID and the ML backend connection ID. This is available via [List ML backends](list).
+
+  "/api/ml/{id}/train":
+    post:
+      summary: Start training
+      description: >
+        
+        After you connect a model to Label Studio as a machine learning backend and annotate at least one task, you can start training the model. Training logs appear in stdout and the console.
+
+
+        For more information, see [Model training](https://labelstud.io/guide/ml.html#Model-training).
+
+
+        You will need to specify an ID for the backend connection. You can find this using [List ML backends](list).
+
+  "/api/ml/{id}/versions":
+    get:
+      summary: Get model versions
+      description: >
+      
+        Get available versions of the model. You will need to specify an ID for the backend connection. You can find this using [List ML backends](list).
 
 
 
