@@ -379,7 +379,7 @@ paths:
       requestBody:
         $ref: "#/components/requestBodies/api_dm_views_createData"
       responses:
-        "201":
+        "200":
           description: ""
           content:
             application/json:
@@ -389,6 +389,8 @@ paths:
         - Data Manager
       x-fern-sdk-group-name: views
       x-fern-sdk-method-name: update
+      x-fern-audiences:
+        - public
     delete:
       operationId: api_dm_views_delete
       summary: Delete view
@@ -1548,7 +1550,7 @@ paths:
 
         ```bash
 
-        curl -H Content-Type:application/json -H 'Authorization: Token abc123' -X POST 'https://localhost:8080/api/projects'     --data '{"label_config": "<View>[...]</View>"}'
+        curl -H Content-Type:application/json -H 'Authorization: Token abc123' -X POST 'https://localhost:8080/api/projects'     --data '{"title": "My project", "label_config": "<View></View>"}'
 
         ```
       requestBody:
@@ -1568,14 +1570,17 @@ paths:
                   title: description
                   description: Project description
                   type: string
+                  example: My first project
                 label_config:
                   title: label_config
                   description: Label config in XML format
                   type: string
+                  example: <View>[...]</View>
                 expert_instruction:
                   title: expert_instruction
-                  description: Labeling instructions
+                  description: Labeling instructions to show to the user
                   type: string
+                  example: Label all cats
                 show_instruction:
                   title: show_instruction
                   description: Show labeling instructions
@@ -1594,11 +1599,13 @@ paths:
                   type: boolean
                 reveal_preannotations_interactively:
                   title: reveal_preannotations_interactively
-                  description: Reveal preannotations interactively
+                  description: Reveal preannotations interactively. If set to True, predictions
+                    will be shown to the user only after selecting the area of
+                    interest
                   type: boolean
                 show_collab_predictions:
                   title: show_collab_predictions
-                  description: Show collaborative predictions
+                  description: Show predictions to annotators
                   type: boolean
                 maximum_annotations:
                   title: maximum_annotations
@@ -1611,8 +1618,23 @@ paths:
                   default: "#FFFFFF"
                 control_weights:
                   title: control_weights
-                  description: Control weights
+                  description: "Dict of weights for each control tag in metric calculation. Each
+                    control tag (e.g. label or choice) will have it's own key in
+                    control weight dict with weight for each label and overall
+                    weight.For example, if bounding box annotation with control
+                    tag named my_bbox should be included with 0.33 weight in
+                    agreement calculation, and the first label Car should be
+                    twice more important than Airplaine, then you have to need
+                    the specify: {'my_bbox': {'type': 'RectangleLabels',
+                    'labels': {'Car': 1.0, 'Airplaine': 0.5}, 'overall': 0.33}"
                   type: object
+                  example:
+                    my_bbox:
+                      type: RectangleLabels
+                      labels:
+                        Car: 1
+                        Airplaine: 0.5
+                      overall: 0.33
         required: true
       responses:
         "201":
@@ -1633,14 +1655,17 @@ paths:
                     title: description
                     description: Project description
                     type: string
+                    example: My first project
                   label_config:
                     title: label_config
                     description: Label config in XML format
                     type: string
+                    example: <View>[...]</View>
                   expert_instruction:
                     title: expert_instruction
-                    description: Labeling instructions
+                    description: Labeling instructions to show to the user
                     type: string
+                    example: Label all cats
                   show_instruction:
                     title: show_instruction
                     description: Show labeling instructions
@@ -1659,11 +1684,13 @@ paths:
                     type: boolean
                   reveal_preannotations_interactively:
                     title: reveal_preannotations_interactively
-                    description: Reveal preannotations interactively
+                    description: Reveal preannotations interactively. If set to True, predictions
+                      will be shown to the user only after selecting the area of
+                      interest
                     type: boolean
                   show_collab_predictions:
                     title: show_collab_predictions
-                    description: Show collaborative predictions
+                    description: Show predictions to annotators
                     type: boolean
                   maximum_annotations:
                     title: maximum_annotations
@@ -1676,8 +1703,24 @@ paths:
                     default: "#FFFFFF"
                   control_weights:
                     title: control_weights
-                    description: Control weights
+                    description: "Dict of weights for each control tag in metric calculation. Each
+                      control tag (e.g. label or choice) will have it's own key
+                      in control weight dict with weight for each label and
+                      overall weight.For example, if bounding box annotation
+                      with control tag named my_bbox should be included with
+                      0.33 weight in agreement calculation, and the first label
+                      Car should be twice more important than Airplaine, then
+                      you have to need the specify: {'my_bbox': {'type':
+                      'RectangleLabels', 'labels': {'Car': 1.0, 'Airplaine':
+                      0.5}, 'overall': 0.33}"
                     type: object
+                    example:
+                      my_bbox:
+                        type: RectangleLabels
+                        labels:
+                          Car: 1
+                          Airplaine: 0.5
+                        overall: 0.33
       tags:
         - Projects
       x-fern-sdk-group-name: projects
