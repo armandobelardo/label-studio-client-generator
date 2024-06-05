@@ -22,17 +22,31 @@ body{
 
 header .fern-button{
   border-radius: 2em;
+}
+
+.light header .fern-button.outlined{
   background-color: var(--sand_900);
 }
 
-header .fern-button:not(.disabled).outlined.primary:hover{
+.light header .fern-button:not(.disabled).outlined.primary:hover{
   background-color: var(--persimmon_400);
 } 
 
-header .fern-button-text{
+.light header .outlined .fern-button-text{
   color: var(--sand_0);
 }
 
-header .fern-button-content>svg{
+.light header .outlined .fern-button-content>svg{
   color: var(--sand_0);
+}
+
+.fern-mdx-link{
+  color: var(--grape_500);
+  text-decoration: none;
+  text-decoration-color: var(--grape_500);
+}
+
+.fern-mdx-link:hover{
+  text-decoration: underline;
+  color: var(--grape_500);
 }
