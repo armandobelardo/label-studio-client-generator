@@ -1563,6 +1563,7 @@ paths:
                   title: title
                   description: Project title
                   type: string
+                  example: My project
                 description:
                   title: description
                   description: Project description
@@ -1627,6 +1628,7 @@ paths:
                     title: title
                     description: Project title
                     type: string
+                    example: My project
                   description:
                     title: description
                     description: Project description
