@@ -2188,6 +2188,8 @@ paths:
         - projects
         - exports
       x-fern-sdk-method-name: list
+      x-fern-audiences:
+        - public
     post:
       operationId: api_projects_exports_create
       summary: Create new export snapshot
@@ -2262,6 +2264,8 @@ paths:
         - projects
         - exports
       x-fern-sdk-method-name: get
+      x-fern-audiences:
+        - public
     delete:
       operationId: api_projects_exports_delete
       summary: Delete export snapshot
@@ -2343,6 +2347,8 @@ paths:
         - projects
         - exports
       x-fern-sdk-method-name: convert
+      x-fern-audiences:
+        - public
     parameters:
       - name: id
         in: path
