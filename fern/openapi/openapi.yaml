@@ -1392,6 +1392,17 @@ paths:
       operationId: api_predictions_list
       summary: List predictions
       description: List all predictions and their IDs.
+      parameters:
+        - name: task
+          in: query
+          description: Filter predictions by task ID
+          schema:
+            type: integer
+        - name: project
+          in: query
+          description: Filter predictions by project ID
+          schema:
+            type: integer
       responses:
         "200":
           description: Predictions list
