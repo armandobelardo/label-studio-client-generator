@@ -122,11 +122,11 @@ The image is specified in the `image` key using a public URL, and the prediction
 
 For more examples, see the [Jupyter notebook example of importing pre-annotated data](https://github.com/heartexlabs/label-studio-sdk/blob/master/examples/import_preannotations/import_preannotations.ipynb).
 
-## Prepare and manage data with filters
+## Create batch of tasks to annotate
 
 You can also use the SDK to control how tasks appear in the data manager to annotators or reviewers. You can create custom filters and ordering for the tasks based on parameters that you specify with the SDK. This lets you have more granular control over which tasks in your dataset get labeled or reviewed, and in which order.
 
-### Prepare unlabeled data with filters
+### Manage annotations with filters
 
 For example, you can create a filter to prepare tasks to be annotated. For example, if you want annotators to focus on tasks in the first 1000 tasks in a dataset that contain the word "possum" in the field "text" in the task data, do the following:
 ```python
@@ -154,8 +154,6 @@ filters = Filters.create(Filters.AND, [
 ])
 ```
 
-### Manage annotations with filters
-
 For example, to create a filter that displays only tasks with an ID greater than 42 or that were annotated between November 1, 2021, and now, do the following:
 ```python
 from label_studio_sdk.data_manager import Filters, Column, Type, Operator
@@ -177,7 +175,33 @@ filters = Filters.create(Filters.OR, [
         )
     )
 ])
-
-view = ls.views.create(project=project.id, data={'filters': filters})
 ```
+
+Now you can create a view with the filter you created:
+
+```python
+view = ls.views.create(
+    title=project=project.id,
+    data={
+        'title': 'New tasks to annotate',
+        'filters': filters
+    }
+)
+```
+If will be displayed in the data manager as tab with `New tasks to annotate` name.
+
 You can use this example filter to prepare completed tasks for review in Label Studio Enterprise.
+
+
+## Export annotations
+
+Run the following code to export annotations from project's [batch view you created in the previous step](#Create-batch-of-tasks-to-annotate):
+
+```python
+tab = client.views.get(id=view.id)
+annotated_tasks = client.tasks.list(view=tab.id, fields='all')
+for annotated_task in annotated_tasks:
+    print(annotated_task.annotations)
+```
+
+Annotations are exported in the format specified in the [Label Studio JSON format](tasks.html#Basic-Label-Studio-JSON-format).
