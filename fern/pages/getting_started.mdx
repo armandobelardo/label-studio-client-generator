@@ -161,10 +161,10 @@ filters = Filters.create(Filters.AND, [
         Filters.value(1000)
     ),
     Filters.item(
-        Column.data(text),
+        Column.data("text"),
         Operator.CONTAINS,
         Type.String,
-        Filters.value("possum")
+        Filters.value("Hello")
     )
 ])
 ```
@@ -196,7 +196,7 @@ Now you can create a view with the filter you created:
 
 ```python
 view = ls.views.create(
-    title=project=project.id,
+    project=project.id,
     data={
         'title': 'New tasks to annotate',
         'filters': filters
@@ -213,10 +213,27 @@ You can use this example filter to prepare completed tasks for review in Label S
 Run the following code to export annotations from project's [batch view you created in the previous step](#Create-batch-of-tasks-to-annotate):
 
 ```python
-tab = client.views.get(id=view.id)
-annotated_tasks = client.tasks.list(view=tab.id, fields='all')
+tab = ls.views.get(id=view.id)
+annotated_tasks = ls.tasks.list(view=tab.id, fields='all')
 for annotated_task in annotated_tasks:
     print(annotated_task.annotations)
 ```
+
+## Handling Errors
+
+If you encounter an error while using the Label Studio Python SDK, you can catch the error and handle it in your script.
+
+```python
+from label_studio_sdk.core.api_error import ApiError
+
+try:
+    for annotated_task in annotated_tasks:
+        print(annotated_task.annotations)
+except ApiError as e:
+    print(e)
+```
+
+<Warning>The current limitation of Label Studio paginated API is that it raises 404 status code at the end. Please consider using the `try` and `except` blocks to handle this error. The behaviour will be improved in the future versions</Warning>
+
 
 Annotations are exported in the format specified in the [Label Studio JSON format](tasks.html#Basic-Label-Studio-JSON-format).
