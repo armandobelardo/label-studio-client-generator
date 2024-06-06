@@ -27,7 +27,6 @@ groups:
             - from: _legacy
               imports:
                 - Client
-                - data_manager
           extra_dependencies:
             pandas: '>=0.24.0'
             requests: '>=2.22.0'
@@ -60,4 +59,3 @@ groups:
             - from: _legacy
               imports:
                 - Client
-                - data_manager
