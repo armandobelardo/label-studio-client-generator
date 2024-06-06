@@ -213,6 +213,7 @@ paths:
         curl -H Content-Type:application/json -H 'Authorization: Token abc123' -X POST 'https://localhost:8080/api/projects'     --data '{"label_config": "<View>[...]</View>"}'
 
         ```
+
   "/api/projects/{id}/":
     get:
       summary: Get project by ID
@@ -250,96 +251,6 @@ paths:
         * If you make changes to the labeling configuration, any tabs that you might have created in the Data Manager are removed.
         
         </Warning>
-
-  "/api/projects/{id}/import":
-    post:
-      summary: Import tasks
-      description: >
-        
-        Use this API endpoint to import labeling tasks in bulk. Note that each POST request is limited at 250K tasks and 200 MB.
-
-        The project ID can be found in the URL when viewing the project in Label Studio, or you can retrieve all project IDs using [List all projects](list). 
-
-
-        <Note>
-        
-        Imported data is verified against a project *label_config* and must include all variables that were used in the *label_config*. 
-        
-        
-        For example, if the label configuration has a *$text* variable, then each item in a data object must include a `text` field.
-
-        </Note>
-
-
-        There are three possible ways to import tasks with this endpoint:
-
-
-        #### 1\. **POST with data**
-
-        Send JSON tasks as POST data. Only JSON is supported for POSTing files directly.
-
-
-        Update this example to specify your authorization token and Label Studio instance host, then run the following from
-
-        the command line:
-
-
-        ```bash
-
-        curl -H 'Content-Type: application/json' -H 'Authorization: Token abc123' \
-
-        -X POST 'https://localhost:8080/api/projects/1/import' --data '[{"text": "Some text 1"}, {"text": "Some text 2"}]'
-
-        ```
-
-
-        #### 2\. **POST with files**
-
-        Send tasks as files. You can attach multiple files with different names.
-
-
-        - **JSON**: text files in JavaScript object notation format
-
-        - **CSV**: text files with tables in Comma Separated Values format
-
-        - **TSV**: text files with tables in Tab Separated Value format
-
-        - **TXT**: simple text files are similar to CSV with one column and no header, supported for projects with one source only
-
-
-        Update this example to specify your authorization token, Label Studio instance host, and file name and path,
-
-        then run the following from the command line:
-
-
-        ```bash
-
-        curl -H 'Authorization: Token abc123' \
-
-        -X POST 'https://localhost:8080/api/projects/1/import' -F ‘file=@path/to/my_file.csv’
-
-        ```
-
-
-        #### 3\. **POST with URL**
-
-        You can also provide a URL to a file with labeling tasks. Supported file formats are the same as in option 2.
-
-
-        ```bash
-
-        curl -H 'Content-Type: application/json' -H 'Authorization: Token abc123' \
-
-        -X POST 'https://localhost:8080/api/projects/1/import' \
-
-        --data '[{"url": "http://example.com/test1.csv"}, {"url": "http://example.com/test2.csv"}]'
-
-        ```
-
-
-        <br>
-
-      x-fern-sdk-group-name: tasks
 
   "/api/projects/{id}/validate/":
     post:
@@ -481,8 +392,7 @@ paths:
         You will need the export ID. You can find this in the response when you [create the snapshot via the API](create) or using [List all export snapshots](list).   
 
 
-        You will also need the project ID. This can be found in the URL when viewing the project in Label Studio, or you can retrieve all project IDs using [List all projects](../list).
-        
+        You will also need the project ID. This can be found in the URL when viewing the project in Label Studio, or you can retrieve all project IDs using [List all projects](../list). 
     delete:
       summary: Delete export snapshot
       description: >
@@ -531,7 +441,6 @@ paths:
 
 
         You will need to provide the project ID. This can be found in the URL when viewing the project in Label Studio, or you can retrieve all project IDs using [List all projects](../projects/list).
-
     post:
       summary: Add ML backend
       description: >
@@ -584,7 +493,7 @@ paths:
         Before you can use interactive annotations, it must be enabled for you ML backend connection (`"is_interactive": true`). 
 
         
-        You will need the task ID and the ML backend connection ID. This is available via [List ML backends](list).
+        You will need the task ID and the ML backend connection ID. The task ID is available from the Label Studio URL when viewing the task, or you can retrieve it programmatically with [Get task list](../tasks/list). The ML backend connection ID is available via [List ML backends](list).
 
   "/api/ml/{id}/train":
     post:
@@ -665,12 +574,116 @@ paths:
       
         Delete a prediction. To find the prediction ID, use [List predictions](list).
 
+  "/api/projects/{id}/import":
+    post:
+      summary: Import tasks
+      description: >
+        
+        Use this API endpoint to import labeling tasks in bulk. Note that each POST request is limited at 250K tasks and 200 MB.
+
+        The project ID can be found in the URL when viewing the project in Label Studio, or you can retrieve all project IDs using [List all projects](../projects/list). 
 
 
+        <Note>
+        
+        Imported data is verified against a project *label_config* and must include all variables that were used in the *label_config*. 
+        
+        
+        For example, if the label configuration has a *$text* variable, then each item in a data object must include a `text` field.
+
+        </Note>
 
 
+        There are three possible ways to import tasks with this endpoint:
 
 
+        #### 1\. **POST with data**
+
+        Send JSON tasks as POST data. Only JSON is supported for POSTing files directly.
+
+
+        Update this example to specify your authorization token and Label Studio instance host, then run the following from
+
+        the command line:
+
+
+        ```bash
+
+        curl -H 'Content-Type: application/json' -H 'Authorization: Token abc123' \
+
+        -X POST 'https://localhost:8080/api/projects/1/import' --data '[{"text": "Some text 1"}, {"text": "Some text 2"}]'
+
+        ```
+
+
+        #### 2\. **POST with files**
+
+        Send tasks as files. You can attach multiple files with different names.
+
+
+        - **JSON**: text files in JavaScript object notation format
+
+        - **CSV**: text files with tables in Comma Separated Values format
+
+        - **TSV**: text files with tables in Tab Separated Value format
+
+        - **TXT**: simple text files are similar to CSV with one column and no header, supported for projects with one source only
+
+
+        Update this example to specify your authorization token, Label Studio instance host, and file name and path,
+
+        then run the following from the command line:
+
+
+        ```bash
+
+        curl -H 'Authorization: Token abc123' \
+
+        -X POST 'https://localhost:8080/api/projects/1/import' -F ‘file=@path/to/my_file.csv’
+
+        ```
+
+
+        #### 3\. **POST with URL**
+
+        You can also provide a URL to a file with labeling tasks. Supported file formats are the same as in option 2.
+
+
+        ```bash
+
+        curl -H 'Content-Type: application/json' -H 'Authorization: Token abc123' \
+
+        -X POST 'https://localhost:8080/api/projects/1/import' \
+
+        --data '[{"url": "http://example.com/test1.csv"}, {"url": "http://example.com/test2.csv"}]'
+
+        ```
+
+
+        <br>
+
+      x-fern-sdk-group-name: tasks
+
+  "/api/projects/{id}/imports/{import_pk}/":
+    get:
+      summary: Get project import info
+      description: >
+      
+        Get information about an async project import operation. This can be especially useful to monitor status, as large import jobs can take time. 
+
+
+        You will need the project ID and the unique ID of the import operation. 
+
+        
+        The project ID can be found in the URL when viewing the project in Label Studio, or you can retrieve all project IDs using [List all projects](../projects/list). 
+
+
+        The import ID is returned as part of the response when you call [Import tasks](import-tasks). 
+
+      parameters:
+        - name: id
+          in: path
+          description: The project ID.
 
   "/api/projects/{id}/tasks/":
     delete:
@@ -680,21 +693,23 @@ paths:
         Delete all tasks from a specific project.
 
 
-        The project ID can be found in the URL when viewing the project in Label Studio, or you can retrieve all project IDs using [List all projects](list) API. 
+        The project ID can be found in the URL when viewing the project in Label Studio, or you can retrieve all project IDs using [List all projects](../projects/list). 
 
       x-fern-sdk-group-name: tasks
 
-
-
-
-
-
-
-
-
-
   /api/tasks/:
     get:
+      summary: Get task list
+      description: >
+      
+        Retrieve a list of tasks. 
+        
+        
+        You can use the query parameters to filter the list by project and/or view (a tab within the Data Manager). You can also optionally add pagination to make the response easier to parse. 
+        
+        
+        The project ID can be found in the URL when viewing the project in Label Studio, or you can retrieve all project IDs using [List all projects](../projects/list). The view ID can be found using [List views](../views/list).
+    
       responses:
         200:
           description: List of Tasks
@@ -728,6 +743,52 @@ paths:
                             was_cancelled: false
                             ground_truth: false
                             lead_time: 12.34
+    post:
+      summary: Create task
+      description: >
+      
+        Create a new labeling task in Label Studio.
+
+
+        The data you provide depends on your labeling config and data type. 
+
+        
+        You will also need to provide a project ID. The project ID can be found in the URL when viewing the project in Label Studio, or you can retrieve all project IDs using [List all projects](../projects/list). 
+    
+  "/api/tasks/{id}/":
+    get:
+      summary: Get task
+      description: >
+        
+        Get task data, metadata, annotations and other attributes for a specific labeling task by task ID.
+
+        The task ID is available from the Label Studio URL when viewing the task, or you can retrieve it programmatically with [Get task list](list). 
+    delete:
+      summary: Delete task
+      description: >
+      
+        Delete a task in Label Studio. 
+
+        
+        You will need the task ID. This is available from the Label Studio URL when viewing the task, or you can retrieve it programmatically with [Get task list](list). 
+
+
+        <Warning>This action cannot be undone.</Warning>
+    patch:
+      summary: Update task
+      description: >
+        
+        Update the attributes of an existing labeling task.
+
+
+        You will need the task ID. This is available from the Label Studio URL when viewing the task, or you can retrieve it programmatically with [Get task list](list). 
+
+
+
+
+
+
+
 
 components:
   securitySchemes:
