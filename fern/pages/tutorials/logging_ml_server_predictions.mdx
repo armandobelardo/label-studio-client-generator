@@ -1,0 +1,101 @@
+---
+title: Logging ML Server Predictions
+---
+
+This code demonstrates FastAPI server with a single endpoint, assuming it serves for ML model predictions.
+The request to this endpoint automatically logged in Label Studio instance with `await client.tasks.create()` method.
+
+
+## Create a project in Label Studio
+
+Let's create a project in Label Studio to collect the predictions' requests and responses from the ML model, and aim to task human reviewers to assess the correctness of the predictions.
+
+```python
+from label_studio_sdk.client import LabelStudio
+
+ls = LabelStudio(
+    base_url='http://localhost:8080',
+    api_key='YOUR-API-KEY'
+)
+
+project = ls.projects.create(
+    title='ML Observability Project',
+    label_config='''
+        <View>
+            <Text name="text" value="$text" />
+            <Text name="context" value="$context" />
+            <Text name="predictions" value="$predictions" />
+            <Choices name="correctness" toName="text">
+                <Choice value="Correct" />
+                <Choice value="Incorrect" />
+            <Choice value="Partially correct" />
+            </Choices>
+        </View>
+    '''
+)
+print(f'PROJECT ID: {project.id}')
+```
+
+## Create FastAPI server
+
+First install dependencies:
+
+```bash
+pip install fastapi uvicorn
+```
+
+Let's create a simple FastAPI server with a single endpoint `/predict` that accepts POST requests with JSON payload.
+
+```python
+import os
+from fastapi import FastAPI, HTTPException
+from pydantic import BaseModel
+from label_studio_sdk.client import AsyncLabelStudio
+
+app = FastAPI()
+
+# Initialize the async client with the API key and project ID from running Label Studio app
+# Remember to set LABEL_STUDIO_API_KEY and LABEL_STUDIO_PROJECT_ID environment variables
+client = AsyncLabelStudio(
+    base_url="http://localhost:8080",
+    api_key=os.getenv("LABEL_STUDIO_API_KEY"),
+)
+project_id = int(os.getenv("LABEL_STUDIO_PROJECT_ID"))
+
+
+# Some dummy input data
+class UserInput(BaseModel):
+    text: str
+    context: str
+
+
+@app.post("/predict")
+async def create_item(user_input: UserInput):
+    # Get model predictions
+    # Replace this with your model prediction code
+    # predictions = await model.predict(user_input.text, user_input.context)
+    predictions = '...'
+    data = {'text': user_input.text, 'context': user_input.context, 'predictions': predictions}
+    try:
+        task = await client.tasks.create(project=project_id, data=data)
+        return task
+    except Exception as e:
+        raise HTTPException(status_code=400, detail=str(e))
+```
+
+
+## Run the server
+
+```bash
+LABEL_STUDIO_API_KEY=your-api-key LABEL_STUDIO_PROJECT_ID=project-id uvicorn fastapi_server:app --reload
+```
+
+## Logging predictions
+
+Now you can send POST requests to http://localhost:8000/predict with JSON payload:
+
+```bash
+curl -X POST "http://localhost:8000/predict" -H "Content-Type: application/json" -d '{"text": "example", "context": "context"}'
+```
+
+Open Label Studio project and see the tasks created from the server responses.

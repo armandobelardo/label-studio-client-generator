@@ -1,0 +1,192 @@
+---
+title: Improve Object Detection with YOLOv8
+---
+
+
+## Introduction
+
+In this tutorial, you will learn how to improve object detection predictions from YOLOv8 using Label Studio. You will create a project in Label Studio, import images, and annotate them with bounding boxes. You will then use the annotations to fine-tune the YOLOv8 model.
+
+First install the required packages:
+
+```bash
+pip install ultralytics
+```
+To ensure that the model is working correctly, you can load the model from the checkpoint.
+
+```python
+from ultralytics import YOLO
+
+MODEL_NAME = "yolov8n.pt"
+model = YOLO()
+```
+
+## Create a Label Studio project
+
+Create a Label Studio project with the YOLOv8 labels. You need to define the labeling configuration with the YOLOv8 labels.
+
+```python
+yolo_labels = '\n'.join([f'<Label value="{label}"/>' for label in model.names.values()])
+label_config = f'''
+<View>
+    <Image name="img" value="$image" zoom="true" width="100%" maxWidth="800" brightnessControl="true" contrastControl="true" gammaControl="true" />
+    <RectangleLabels name="label" toName="img">
+    {yolo_labels}
+    </RectangleLabels>
+</View>'''
+```
+
+Now use this `label_config` to create a project.
+
+```python
+from label_studio_sdk.client import LabelStudio
+
+API_KEY = 'YOUR_API_KEY'
+client = LabelStudio(api_key=API_KEY)
+
+project = client.projects.create(
+    title='Object detection',
+    description='Detect objects with YOLOv8',
+    label_config=label_config
+)
+```
+
+## Import images
+
+You can import images from cloud storage. If you use AWS S3, connect your project to storage bucket:
+
+```python
+storage = client.import_storage.s3.create(
+    project=project.id,
+    bucket='your-bucket',
+    prefix='images/subfolder',
+    regex_filter='.*jpg',
+    recursive_scan=True,
+    use_blob_urls=True,
+    aws_access_key_id='AKIAJZ5Q4ZQ7ZQ7ZQ7ZQ',
+    aws_secret_access_key='YOUR_SECRET_ACCESS_KEY',
+)
+```
+
+Import images from the storage:
+
+```python
+client.import_storage.s3.sync(id=storage.id)
+```
+
+## Create YOLO predictions
+
+You can collect object detections from the model and convert it to [Label Studio JSON format](/docs/tasks.html#Basic-Label-Studio-JSON-format).
+
+```python
+def predict_yolo(images):
+    results = model(images)
+    predictions = []
+    for result in results:
+        img_width, img_height = result.orig_shape
+        boxes = result.boxes.cpu().numpy()
+        prediction = {'result': [], 'score': 0.0, 'model_version': MODEL_NAME}
+        scores = []
+        for box, class_id, score in zip(boxes.xywh, boxes.cls, boxes.conf):
+            x, y, w, h = box
+            prediction['result'].append({
+                'from_name': 'label',
+                'to_name': 'img',
+                'original_width': int(img_width),
+                'original_height': int(img_height),
+                'image_rotation': 0,
+                'value': {
+                    'rotation': 0,
+                    'rectanglelabels': [result.names[class_id]],
+                    'width': w / img_width * 100,
+                    'height': h / img_height * 100,
+                    'x': (x - 0.5 * w) / img_width * 100,
+                    'y': (y - 0.5 * h) / img_height * 100
+                },
+                'score': float(score),
+                'type': 'rectanglelabels',
+            })
+            scores.append(float(score))
+        prediction['score'] = min(scores) if scores else 0.0
+        predictions.append(prediction)
+    return predictions
+```
+
+
+Now, create YOLO predictions for the imported images and save them to the Label Studio project.bucket
+You can specify scores and model versions for the predictions.
+
+```python
+from PIL import Image
+import requests
+from tqdm import tqdm
+
+project = client.projects.get(28)
+tasks = client.tasks.list(project=project.id)
+images = []
+for i, task in enumerate(tqdm(tasks)):
+    url = f'http://localhost:8080{task["data"]["image"]}'
+    image = Image.open(requests.get(url, headers={'Authorization': f'Token {API_KEY}'}, stream=True).raw)
+    predictions = predict_yolo([image])[0]
+    client.predictions.create(task=task['id'], result=predictions['result'], score=predictions['score'], model_version=predictions['model_version'])
+```
+
+## Annotate Low Confidence Predictions
+
+We can use `views` to filter and organize tasks in Label Studio. For example, we can create a view that shows only tasks with low confidence predictions for the `person` class:
+
+```python
+tab = client.views.create(
+    project=project.id,
+    data={
+        'title': 'Person low conf',
+        'filters': {
+            "conjunction": "and",
+            "items": [
+              {
+                "filter": "filter:tasks:total_predictions",
+                "operator": "greater",
+                "value": 0,
+                "type": "Number"
+              },
+              {
+                "filter": "filter:tasks:predictions_results",
+                "operator": "contains",
+                "value": "person",
+                "type": "String"
+              },
+              {
+                "filter": "filter:tasks:predictions_score",
+                "operator": "less",
+                "value": 0.3,
+                "type": "Number"
+              },
+            ]
+        }
+    }
+)
+```
+
+Mark them as `COMPLETED` when done.
+
+```python
+client.views.update(
+    id=tab.id,
+    data={'title': 'COMPLETED'}
+)
+```
+
+## Export Annotations
+
+Finally, in order to export annotations that correspond to the batch of tasks, we can use the following code:
+
+```python
+tab = client.views.get(id=tab.id)
+annotated_tasks = client.tasks.list(view=tab.id, fields='all')
+for annotated_task in annotated_tasks:
+    print(annotated_task.annotations)
+```
+
+### Convert Annotations to YOLO format
+
+Coming soon! :)
