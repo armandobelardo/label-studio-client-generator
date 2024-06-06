@@ -1,12 +1,12 @@
 You can use the Label Studio Python SDK to make annotating data a more integrated part of your data science and machine learning pipelines. This software development kit (SDK) lets you call the Label Studio API directly from scripts using predefined classes and methods.
 
 With the Label Studio Python SDK, you can perform the following tasks in a Python script:
-- [Authenticate to the Label Studio API](#Start-using-the-Label-Studio-Python-SDK).
-- [Create a Label Studio project](#Create-a-project-with-the-Label-Studio-Python-SDK), including setting up a labeling configuration.
-- [Import tasks](#Import-tasks-with-the-Label-Studio-Python-SDK).
-- [Manage pre-annotated tasks and model predictions](#Add-predictions-to-existing-tasks-with-the-Label-Studio-Python-SDK).
+- [Authenticate to the Label Studio API](#Connect-to-the-Label-Studio-API)
+- [Create a Label Studio project](#Create-a-project), including setting up a labeling configuration.
+- [Import tasks](#Import-tasks).
+- [Manage pre-annotated tasks and model predictions](#Add-model-predictions).
 - [Connect to a cloud storage provider](https://github.com/heartexlabs/label-studio-sdk/blob/master/examples/annotate_data_from_gcs/annotate_data_from_gcs.ipynb), such as Amazon S3, Microsoft Azure, or Google Cloud Services (GCS), to retrieve unlabeled tasks and store annotated tasks.
-- [Modify project settings](https://labelstud.io/sdk/project.html#label_studio_sdk.project.Project.set_params), such as task sampling or the model version used to display predictions.
+- [Manage labeling jobs](#Managing-Labeling-Jobs) by creating custom filters and ordering for tasks based on parameters that you specify.
 
 See the [full SDK reference documentation for all available modules](https://labelstud.io/sdk/), or review the available [API endpoints](/api) for any tasks that the SDK does not cover.
 
