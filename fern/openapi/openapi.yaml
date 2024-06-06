@@ -208,7 +208,7 @@ paths:
       x-fern-sdk-group-name: actions
       x-fern-sdk-method-name: list
       x-fern-audiences:
-        - internal
+        - public
     post:
       operationId: api_dm_actions_create
       summary: Post actions
@@ -221,7 +221,7 @@ paths:
       x-fern-sdk-group-name: actions
       x-fern-sdk-method-name: create
       x-fern-audiences:
-        - internal
+        - public
     parameters: []
   /api/dm/columns/:
     get:
@@ -486,7 +486,6 @@ paths:
       tags:
         - Import
       x-fern-sdk-group-name:
-        - projects
         - files
       x-fern-sdk-method-name: get
       x-fern-audiences:
@@ -511,7 +510,6 @@ paths:
       tags:
         - Import
       x-fern-sdk-group-name:
-        - projects
         - files
       x-fern-sdk-method-name: update
       x-fern-audiences:
@@ -526,7 +524,6 @@ paths:
       tags:
         - Import
       x-fern-sdk-group-name:
-        - projects
         - files
       x-fern-sdk-method-name: delete
       x-fern-audiences:
@@ -572,7 +569,7 @@ paths:
       tags:
         - Invites
       x-fern-sdk-group-name: organizations
-      x-fern-sdk-method-name: reset_invite
+      x-fern-sdk-method-name: reset_token
     parameters: []
   /api/label_links/:
     get:
@@ -617,6 +614,8 @@ paths:
         - projects
         - labels
       x-fern-sdk-method-name: list
+      x-fern-audiences:
+        - internal
     post:
       operationId: api_label_links_create
       summary: Create label links
@@ -637,6 +636,8 @@ paths:
         - projects
         - labels
       x-fern-sdk-method-name: create
+      x-fern-audiences:
+        - internal
     parameters: []
   "/api/label_links/{id}/":
     get:
@@ -656,6 +657,8 @@ paths:
         - projects
         - labels
       x-fern-sdk-method-name: get
+      x-fern-audiences:
+        - internal
     patch:
       operationId: api_label_links_partial_update
       summary: Update label link
@@ -679,6 +682,8 @@ paths:
         - projects
         - labels
       x-fern-sdk-method-name: update
+      x-fern-audiences:
+        - internal
     delete:
       operationId: api_label_links_delete
       summary: Remove label link
@@ -696,6 +701,8 @@ paths:
         - projects
         - labels
       x-fern-sdk-method-name: delete
+      x-fern-audiences:
+        - internal
     parameters:
       - name: id
         in: path
@@ -744,6 +751,8 @@ paths:
         - Labels
       x-fern-sdk-group-name: labels
       x-fern-sdk-method-name: list
+      x-fern-audiences:
+        - internal
     post:
       operationId: api_labels_create
       summary: Create labels
@@ -769,6 +778,8 @@ paths:
         - Labels
       x-fern-sdk-group-name: labels
       x-fern-sdk-method-name: create
+      x-fern-audiences:
+        - internal
     parameters: []
   /api/labels/bulk:
     post:
@@ -786,6 +797,8 @@ paths:
         - projects
         - labels
       x-fern-sdk-method-name: update_many
+      x-fern-audiences:
+        - internal
     parameters: []
   "/api/labels/{id}/":
     get:
@@ -805,6 +818,8 @@ paths:
         - Labels
       x-fern-sdk-group-name: labels
       x-fern-sdk-method-name: get
+      x-fern-audiences:
+        - internal
     patch:
       operationId: api_labels_partial_update
       summary: Update labels
@@ -827,6 +842,8 @@ paths:
         - Labels
       x-fern-sdk-group-name: labels
       x-fern-sdk-method-name: update
+      x-fern-audiences:
+        - internal
     delete:
       operationId: api_labels_delete
       summary: Remove labels
@@ -839,6 +856,8 @@ paths:
         - Labels
       x-fern-sdk-group-name: labels
       x-fern-sdk-method-name: delete
+      x-fern-audiences:
+        - internal
     parameters:
       - name: id
         in: path
@@ -1788,14 +1807,14 @@ paths:
                 control_weights:
                   title: control_weights
                   description: "Dict of weights for each control tag in metric calculation. Each
-                    control tag (e.g. label or choice) will have it's own key in
+                    control tag (e.g. label or choice) will have its own key in
                     control weight dict with weight for each label and overall
-                    weight.For example, if bounding box annotation with control
-                    tag named my_bbox should be included with 0.33 weight in
-                    agreement calculation, and the first label Car should be
-                    twice more important than Airplaine, then you have to need
-                    the specify: {'my_bbox': {'type': 'RectangleLabels',
-                    'labels': {'Car': 1.0, 'Airplaine': 0.5}, 'overall': 0.33}"
+                    weight. For example, if a bounding box annotation with a
+                    control tag named my_bbox should be included with 0.33
+                    weight in agreement calculation, and the first label Car
+                    should be twice as important as Airplane, then you need to
+                    specify: {'my_bbox': {'type': 'RectangleLabels', 'labels':
+                    {'Car': 1.0, 'Airplane': 0.5}, 'overall': 0.33}"
                   type: object
                   example:
                     my_bbox:
@@ -1873,15 +1892,14 @@ paths:
                   control_weights:
                     title: control_weights
                     description: "Dict of weights for each control tag in metric calculation. Each
-                      control tag (e.g. label or choice) will have it's own key
+                      control tag (e.g. label or choice) will have its own key
                       in control weight dict with weight for each label and
-                      overall weight.For example, if bounding box annotation
-                      with control tag named my_bbox should be included with
+                      overall weight. For example, if a bounding box annotation
+                      with a control tag named my_bbox should be included with
                       0.33 weight in agreement calculation, and the first label
-                      Car should be twice more important than Airplaine, then
-                      you have to need the specify: {'my_bbox': {'type':
-                      'RectangleLabels', 'labels': {'Car': 1.0, 'Airplaine':
-                      0.5}, 'overall': 0.33}"
+                      Car should be twice as important as Airplane, then you
+                      need to specify: {'my_bbox': {'type': 'RectangleLabels',
+                      'labels': {'Car': 1.0, 'Airplane': 0.5}, 'overall': 0.33}"
                     type: object
                     example:
                       my_bbox:
@@ -2453,7 +2471,6 @@ paths:
       tags:
         - Import
       x-fern-sdk-group-name:
-        - projects
         - files
       x-fern-sdk-method-name: list
       x-fern-audiences:
@@ -2470,7 +2487,6 @@ paths:
       tags:
         - Import
       x-fern-sdk-group-name:
-        - projects
         - files
       x-fern-sdk-method-name: delete_many
       x-fern-audiences:
@@ -2874,6 +2890,8 @@ paths:
         - Storage
       x-fern-sdk-group-name: import_storage
       x-fern-sdk-method-name: list
+      x-fern-audiences:
+        - internal
     parameters: []
   /api/storages/azure/:
     get:
@@ -2906,7 +2924,7 @@ paths:
     post:
       operationId: api_storages_azure_create
       summary: Create new storage
-      description: Get new Azure import storage
+      description: Create new Azure import storage
       requestBody:
         $ref: "#/components/requestBodies/api_storages_azure_createData"
       responses:
@@ -3112,6 +3130,8 @@ paths:
         - Storage
       x-fern-sdk-group-name: export_storage
       x-fern-sdk-method-name: list
+      x-fern-audiences:
+        - internal
     parameters: []
   /api/storages/export/azure:
     get:
@@ -4118,11 +4138,26 @@ paths:
       description: Retrieve a list of the export storages types.
       responses:
         "200":
-          description: "A list of export storages types {'name': name, 'title': title}."
+          description: ""
+          content:
+            application/json:
+              schema:
+                title: ExportStorageTypes
+                description: List of export storage types
+                type: array
+                items:
+                  type: object
+                  properties:
+                    name:
+                      type: string
+                    title:
+                      type: string
       tags:
         - Storage
       x-fern-sdk-group-name: export_storage
       x-fern-sdk-method-name: list_types
+      x-fern-audiences:
+        - public
     parameters: []
   /api/storages/gcs/:
     get:
@@ -4788,7 +4823,7 @@ paths:
     post:
       operationId: api_storages_s3_create
       summary: Create new S3 storage
-      description: Get new S3 import storage
+      description: Create new S3 import storage
       requestBody:
         $ref: "#/components/requestBodies/api_storages_s3_createData"
       responses:
@@ -5017,11 +5052,26 @@ paths:
       description: Retrieve a list of the import storages types.
       responses:
         "200":
-          description: "A list of import storages types {'name': name, 'title': title}."
+          description: ""
+          content:
+            application/json:
+              schema:
+                title: ImportStorageTypes
+                description: List of import storage types
+                type: array
+                items:
+                  type: object
+                  properties:
+                    name:
+                      type: string
+                    title:
+                      type: string
       tags:
         - Storage
       x-fern-sdk-group-name: import_storage
       x-fern-sdk-method-name: list_types
+      x-fern-audiences:
+        - public
     parameters: []
   /api/tasks/:
     get:
@@ -5807,7 +5857,6 @@ paths:
       tags:
         - Import
       x-fern-sdk-group-name:
-        - projects
         - files
       x-fern-sdk-method-name: download
       x-fern-audiences:
