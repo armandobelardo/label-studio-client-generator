@@ -9,7 +9,7 @@ With the Label Studio Python SDK, you can perform the following tasks in a Pytho
 - [Manage labeling jobs](#managing-Labeling-Jobs) by creating custom filters and ordering for tasks based on parameters that you specify.
 - [Export annotations](#export-annotations) from Label Studio.
 
-<Tip>For additional guidance on using our SDK, see [5 Tips and Tricks for Label Studio’s API and SDK](https://labelstud.io/blog/5-tips-and-tricks-for-label-studio-s-api-and-sdk/).</Tip>
+<Tip>For additional guidance on using our SDK, see [5 Tips and Tricks for Label Studio’s API and SDK](https://labelstud.io/blog/5-tips-and-tricks-for-label-studio-s-api-and-sdk/)</Tip>
 
 ## Install
 
@@ -18,7 +18,7 @@ Install the Label Studio SDK using pip:
 pip install label-studio-sdk
 ```
 
-## Connect to the Label Studio API
+## Authentication
 In your Python script, do the following:
 
 - Import the SDK.
@@ -37,7 +37,7 @@ from label_studio_sdk.client import LabelStudio
 ls = LabelStudio(base_url=LABEL_STUDIO_URL, api_key=API_KEY)
 ```
 
-## Create a project
+## Create a Project
 
 After you [connect to the Label Studio API](#Connect-to-the-Label-Studio-API), you can create a project in Label Studio using the SDK.
 Specify the project title and the labeling configuration. Choose your labeling configuration based on the type of labeling that you wish to perform. See the available [templates for Label Studio projects](https://labelstud.io/templates), or set a blank configuration with `<View></View>`.
@@ -59,7 +59,7 @@ project = ls.projects.create(
 
 For more about what you can do with the project module of the SDK, see the [project module SDK reference](https://labelstud.io/sdk/project.html).
 
-## Import tasks
+## Import Tasks
 
 You can import tasks from your script using the [Label Studio Python SDK client](#Connect-to-the-Label-Studio-API).
 
