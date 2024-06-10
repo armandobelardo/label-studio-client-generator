@@ -16,8 +16,10 @@ groups:
           package-name: label-studio-sdk
         github:
           repository: HumanSignal/label-studio-sdk
-          branch: fern-bot/05-23-2024-0427PM
-          mode: push
+          # Specify branch here if you want to push to a specific branch
+          # branch: fern-bot/05-23-2024-0427PM
+          # mode: push
+          mode: pull-request
         config:
           inline_request_params: false
           package_name: label_studio_sdk

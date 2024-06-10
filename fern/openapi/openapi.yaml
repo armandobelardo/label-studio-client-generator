@@ -2951,6 +2951,32 @@ paths:
                 required: []
                 type: object
                 properties:
+                  regex_filter:
+                    description: Cloud storage regex for filtering objects. You must specify it
+                      otherwise no objects will be imported.
+                    type: string
+                  use_blob_urls:
+                    description: Interpret objects as BLOBs and generate URLs. For example, if your
+                      bucket contains images, you can use this option to
+                      generate URLs for these images. If set to False, it will
+                      read the content of the file and load it into Label
+                      Studio.
+                    type: boolean
+                    default: false
+                  presign:
+                    description: Presign URLs for direct download
+                    type: boolean
+                    default: true
+                  presign_ttl:
+                    description: Presign TTL in minutes
+                    type: integer
+                    default: 1
+                  title:
+                    description: Storage title
+                    type: string
+                  description:
+                    description: Storage description
+                    type: string
                   project:
                     description: Project ID
                     type: integer
@@ -2960,24 +2986,12 @@ paths:
                   prefix:
                     description: Azure blob prefix name
                     type: string
-                  regex_filter:
-                    description: Cloud storage regex for filtering objects
-                    type: string
-                  use_blob_urls:
-                    description: Interpret objects as BLOBs and generate URLs
-                    type: boolean
                   account_name:
                     description: Azure Blob account name
                     type: string
                   account_key:
                     description: Azure Blob account key
                     type: string
-                  presign:
-                    description: Presign URLs for direct download
-                    type: boolean
-                  presign_ttl:
-                    description: Presign TTL in minutes
-                    type: integer
       tags:
         - "Storage: Azure"
       x-fern-sdk-group-name:
@@ -2992,13 +3006,60 @@ paths:
       operationId: api_storages_azure_validate_create
       summary: Validate import storage
       description: Validate a specific Azure import storage connection.
+      requestBody:
+        content:
+          application/json:
+            schema:
+              required: []
+              type: object
+              properties:
+                id:
+                  description: Storage ID. If set, storage with specified ID will be updated
+                  type: integer
+                regex_filter:
+                  description: Cloud storage regex for filtering objects. You must specify it
+                    otherwise no objects will be imported.
+                  type: string
+                use_blob_urls:
+                  description: Interpret objects as BLOBs and generate URLs. For example, if your
+                    bucket contains images, you can use this option to generate
+                    URLs for these images. If set to False, it will read the
+                    content of the file and load it into Label Studio.
+                  type: boolean
+                  default: false
+                presign:
+                  description: Presign URLs for direct download
+                  type: boolean
+                  default: true
+                presign_ttl:
+                  description: Presign TTL in minutes
+                  type: integer
+                  default: 1
+                title:
+                  description: Storage title
+                  type: string
+                description:
+                  description: Storage description
+                  type: string
+                project:
+                  description: Project ID
+                  type: integer
+                container:
+                  description: Azure blob container
+                  type: string
+                prefix:
+                  description: Azure blob prefix name
+                  type: string
+                account_name:
+                  description: Azure Blob account name
+                  type: string
+                account_key:
+                  description: Azure Blob account key
+                  type: string
+        required: true
       responses:
-        "201":
-          description: ""
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/AzureBlobImportStorage"
+        "200":
+          description: OK
       tags:
         - "Storage: Azure"
       x-fern-sdk-group-name:
@@ -3043,6 +3104,32 @@ paths:
                 required: []
                 type: object
                 properties:
+                  regex_filter:
+                    description: Cloud storage regex for filtering objects. You must specify it
+                      otherwise no objects will be imported.
+                    type: string
+                  use_blob_urls:
+                    description: Interpret objects as BLOBs and generate URLs. For example, if your
+                      bucket contains images, you can use this option to
+                      generate URLs for these images. If set to False, it will
+                      read the content of the file and load it into Label
+                      Studio.
+                    type: boolean
+                    default: false
+                  presign:
+                    description: Presign URLs for direct download
+                    type: boolean
+                    default: true
+                  presign_ttl:
+                    description: Presign TTL in minutes
+                    type: integer
+                    default: 1
+                  title:
+                    description: Storage title
+                    type: string
+                  description:
+                    description: Storage description
+                    type: string
                   project:
                     description: Project ID
                     type: integer
@@ -3052,24 +3139,12 @@ paths:
                   prefix:
                     description: Azure blob prefix name
                     type: string
-                  regex_filter:
-                    description: Cloud storage regex for filtering objects
-                    type: string
-                  use_blob_urls:
-                    description: Interpret objects as BLOBs and generate URLs
-                    type: boolean
                   account_name:
                     description: Azure Blob account name
                     type: string
                   account_key:
                     description: Azure Blob account key
                     type: string
-                  presign:
-                    description: Presign URLs for direct download
-                    type: boolean
-                  presign_ttl:
-                    description: Presign TTL in minutes
-                    type: integer
       tags:
         - "Storage: Azure"
       x-fern-sdk-group-name:
@@ -3191,6 +3266,16 @@ paths:
                 required: []
                 type: object
                 properties:
+                  can_delete_objects:
+                    description: Deletion from storage enabled
+                    type: boolean
+                    default: false
+                  title:
+                    description: Storage title
+                    type: string
+                  description:
+                    description: Storage description
+                    type: string
                   project:
                     description: Project ID
                     type: integer
@@ -3220,13 +3305,45 @@ paths:
       operationId: api_storages_export_azure_validate_create
       summary: Validate export storage
       description: Validate a specific Azure export storage connection.
+      requestBody:
+        content:
+          application/json:
+            schema:
+              required: []
+              type: object
+              properties:
+                id:
+                  description: Storage ID. If set, storage with specified ID will be updated
+                  type: integer
+                can_delete_objects:
+                  description: Deletion from storage enabled
+                  type: boolean
+                  default: false
+                title:
+                  description: Storage title
+                  type: string
+                description:
+                  description: Storage description
+                  type: string
+                project:
+                  description: Project ID
+                  type: integer
+                container:
+                  description: Azure blob container
+                  type: string
+                prefix:
+                  description: Azure blob prefix name
+                  type: string
+                account_name:
+                  description: Azure Blob account name
+                  type: string
+                account_key:
+                  description: Azure Blob account key
+                  type: string
+        required: true
       responses:
-        "201":
-          description: ""
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/AzureBlobExportStorage"
+        "200":
+          description: OK
       tags:
         - "Storage: Azure"
       x-fern-sdk-group-name:
@@ -3271,6 +3388,16 @@ paths:
                 required: []
                 type: object
                 properties:
+                  can_delete_objects:
+                    description: Deletion from storage enabled
+                    type: boolean
+                    default: false
+                  title:
+                    description: Storage title
+                    type: string
+                  description:
+                    description: Storage description
+                    type: string
                   project:
                     description: Project ID
                     type: integer
@@ -3385,6 +3512,15 @@ paths:
                 required: []
                 type: object
                 properties:
+                  can_delete_objects:
+                    description: Deletion from storage enabled.
+                    type: boolean
+                  title:
+                    description: Storage title
+                    type: string
+                  description:
+                    description: Storage description
+                    type: string
                   project:
                     description: Project ID
                     type: integer
@@ -3395,7 +3531,9 @@ paths:
                     description: GCS bucket prefix
                     type: string
                   google_application_credentials:
-                    description: The content of GOOGLE_APPLICATION_CREDENTIALS json file
+                    description: The content of GOOGLE_APPLICATION_CREDENTIALS json file. Check
+                      official Google Cloud Authentication documentation for
+                      more details.
                     type: string
                   google_project_id:
                     description: Google project ID
@@ -3414,13 +3552,46 @@ paths:
       operationId: api_storages_export_gcs_validate_create
       summary: Validate export storage
       description: Validate a specific GCS export storage connection.
+      requestBody:
+        content:
+          application/json:
+            schema:
+              required: []
+              type: object
+              properties:
+                id:
+                  description: Storage ID. If set, storage with specified ID will be updated
+                  type: integer
+                can_delete_objects:
+                  description: Deletion from storage enabled.
+                  type: boolean
+                title:
+                  description: Storage title
+                  type: string
+                description:
+                  description: Storage description
+                  type: string
+                project:
+                  description: Project ID
+                  type: integer
+                bucket:
+                  description: GCS bucket name
+                  type: string
+                prefix:
+                  description: GCS bucket prefix
+                  type: string
+                google_application_credentials:
+                  description: The content of GOOGLE_APPLICATION_CREDENTIALS json file. Check
+                    official Google Cloud Authentication documentation for more
+                    details.
+                  type: string
+                google_project_id:
+                  description: Google project ID
+                  type: string
+        required: true
       responses:
-        "201":
-          description: ""
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/GCSExportStorage"
+        "200":
+          description: OK
       tags:
         - "Storage: GCS"
       x-fern-sdk-group-name:
@@ -3465,6 +3636,15 @@ paths:
                 required: []
                 type: object
                 properties:
+                  can_delete_objects:
+                    description: Deletion from storage enabled.
+                    type: boolean
+                  title:
+                    description: Storage title
+                    type: string
+                  description:
+                    description: Storage description
+                    type: string
                   project:
                     description: Project ID
                     type: integer
@@ -3475,7 +3655,9 @@ paths:
                     description: GCS bucket prefix
                     type: string
                   google_application_credentials:
-                    description: The content of GOOGLE_APPLICATION_CREDENTIALS json file
+                    description: The content of GOOGLE_APPLICATION_CREDENTIALS json file. Check
+                      official Google Cloud Authentication documentation for
+                      more details.
                     type: string
                   google_project_id:
                     description: Google project ID
@@ -3579,18 +3761,29 @@ paths:
                 required: []
                 type: object
                 properties:
+                  title:
+                    description: Storage title
+                    type: string
+                  description:
+                    description: Storage description
+                    type: string
                   project:
                     description: Project ID
                     type: integer
                   path:
-                    description: Local path
+                    description: Path to local directory
                     type: string
                   regex_filter:
                     description: Regex for filtering objects
                     type: string
                   use_blob_urls:
-                    description: Interpret objects as BLOBs and generate URLs
+                    description: Interpret objects as BLOBs and generate URLs. For example, if your
+                      directory contains images, you can use this option to
+                      generate URLs for these images. If set to False, it will
+                      read the content of the file and load it into Label
+                      Studio.
                     type: boolean
+                    default: false
       tags:
         - "Storage: Local"
       x-fern-sdk-group-name:
@@ -3605,13 +3798,12 @@ paths:
       operationId: api_storages_export_localfiles_validate_create
       summary: Validate export storage
       description: Validate a specific local file export storage connection.
+      requestBody:
+        $ref: "#/components/requestBodies/api_storages_export_localfiles_validate_creat\
+          eData"
       responses:
-        "201":
-          description: ""
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/LocalFilesExportStorage"
+        "200":
+          description: Validation successful
       tags:
         - "Storage: Local"
       x-fern-sdk-group-name:
@@ -3656,18 +3848,29 @@ paths:
                 required: []
                 type: object
                 properties:
+                  title:
+                    description: Storage title
+                    type: string
+                  description:
+                    description: Storage description
+                    type: string
                   project:
                     description: Project ID
                     type: integer
                   path:
-                    description: Local path
+                    description: Path to local directory
                     type: string
                   regex_filter:
                     description: Regex for filtering objects
                     type: string
                   use_blob_urls:
-                    description: Interpret objects as BLOBs and generate URLs
+                    description: Interpret objects as BLOBs and generate URLs. For example, if your
+                      directory contains images, you can use this option to
+                      generate URLs for these images. If set to False, it will
+                      read the content of the file and load it into Label
+                      Studio.
                     type: boolean
+                    default: false
       tags:
         - "Storage: Local"
       x-fern-sdk-group-name:
@@ -3767,6 +3970,18 @@ paths:
                 required: []
                 type: object
                 properties:
+                  db:
+                    description: Database ID of database to use
+                    type: integer
+                  can_delete_objects:
+                    description: Deletion from storage enabled.
+                    type: boolean
+                  title:
+                    description: Storage title
+                    type: string
+                  description:
+                    description: Storage description
+                    type: string
                   project:
                     description: Project ID
                     type: integer
@@ -3782,9 +3997,6 @@ paths:
                   password:
                     description: Server Password (optional)
                     type: string
-                  db:
-                    description: Database ID of database to use
-                    type: integer
       tags:
         - "Storage: Redis"
       x-fern-sdk-group-name:
@@ -3799,13 +4011,47 @@ paths:
       operationId: api_storages_export_redis_validate_create
       summary: Validate export storage
       description: Validate a specific Redis export storage connection.
+      requestBody:
+        content:
+          application/json:
+            schema:
+              required: []
+              type: object
+              properties:
+                id:
+                  description: Storage ID. If set, storage with specified ID will be updated
+                  type: integer
+                db:
+                  description: Database ID of database to use
+                  type: integer
+                can_delete_objects:
+                  description: Deletion from storage enabled.
+                  type: boolean
+                title:
+                  description: Storage title
+                  type: string
+                description:
+                  description: Storage description
+                  type: string
+                project:
+                  description: Project ID
+                  type: integer
+                path:
+                  description: Storage prefix (optional)
+                  type: string
+                host:
+                  description: Server Host IP (optional)
+                  type: string
+                port:
+                  description: Server Port (optional)
+                  type: string
+                password:
+                  description: Server Password (optional)
+                  type: string
+        required: true
       responses:
-        "201":
-          description: ""
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/RedisExportStorage"
+        "200":
+          description: Validation successful
       tags:
         - "Storage: Redis"
       x-fern-sdk-group-name:
@@ -3850,6 +4096,18 @@ paths:
                 required: []
                 type: object
                 properties:
+                  db:
+                    description: Database ID of database to use
+                    type: integer
+                  can_delete_objects:
+                    description: Deletion from storage enabled.
+                    type: boolean
+                  title:
+                    description: Storage title
+                    type: string
+                  description:
+                    description: Storage description
+                    type: string
                   project:
                     description: Project ID
                     type: integer
@@ -3865,9 +4123,6 @@ paths:
                   password:
                     description: Server Password (optional)
                     type: string
-                  db:
-                    description: Database ID of database to use
-                    type: integer
       tags:
         - "Storage: Redis"
       x-fern-sdk-group-name:
@@ -3966,6 +4221,15 @@ paths:
               schema:
                 type: object
                 properties:
+                  can_delete_objects:
+                    description: Deletion from storage enabled.
+                    type: boolean
+                  title:
+                    description: Storage title
+                    type: string
+                  description:
+                    description: Storage description
+                    type: string
                   project:
                     description: Project ID
                     type: integer
@@ -4011,15 +4275,51 @@ paths:
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/S3ExportStorage"
+              type: object
+              properties:
+                id:
+                  description: Storage ID. If set, storage with specified ID will be updated
+                  type: integer
+                can_delete_objects:
+                  description: Deletion from storage enabled.
+                  type: boolean
+                title:
+                  description: Storage title
+                  type: string
+                description:
+                  description: Storage description
+                  type: string
+                project:
+                  description: Project ID
+                  type: integer
+                bucket:
+                  description: S3 bucket name
+                  type: string
+                prefix:
+                  description: S3 bucket prefix
+                  type: string
+                aws_access_key_id:
+                  description: AWS_ACCESS_KEY_ID
+                  type: string
+                aws_secret_access_key:
+                  description: AWS_SECRET_ACCESS_KEY
+                  type: string
+                aws_session_token:
+                  description: AWS_SESSION_TOKEN
+                  type: string
+                aws_sse_kms_key_id:
+                  description: AWS SSE KMS Key ID
+                  type: string
+                region_name:
+                  description: AWS Region
+                  type: string
+                s3_endpoint:
+                  description: S3 Endpoint
+                  type: string
         required: true
       responses:
-        "201":
-          description: ""
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/S3ExportStorage"
+        "200":
+          description: Validation successful
       tags:
         - Storage:S3
       x-fern-sdk-group-name:
@@ -4063,6 +4363,15 @@ paths:
               schema:
                 type: object
                 properties:
+                  can_delete_objects:
+                    description: Deletion from storage enabled.
+                    type: boolean
+                  title:
+                    description: Storage title
+                    type: string
+                  description:
+                    description: Storage description
+                    type: string
                   project:
                     description: Project ID
                     type: integer
@@ -4217,6 +4526,32 @@ paths:
                 required: []
                 type: object
                 properties:
+                  regex_filter:
+                    description: Cloud storage regex for filtering objects. You must specify it
+                      otherwise no objects will be imported.
+                    type: string
+                  use_blob_urls:
+                    description: Interpret objects as BLOBs and generate URLs. For example, if your
+                      bucket contains images, you can use this option to
+                      generate URLs for these images. If set to False, it will
+                      read the content of the file and load it into Label
+                      Studio.
+                    type: boolean
+                    default: false
+                  presign:
+                    description: Presign URLs for direct download
+                    type: boolean
+                    default: true
+                  presign_ttl:
+                    description: Presign TTL in minutes
+                    type: integer
+                    default: 1
+                  title:
+                    description: Storage title
+                    type: string
+                  description:
+                    description: Storage description
+                    type: string
                   project:
                     description: Project ID
                     type: integer
@@ -4226,24 +4561,14 @@ paths:
                   prefix:
                     description: GCS bucket prefix
                     type: string
-                  regex_filter:
-                    description: Cloud storage regex for filtering objects
-                    type: string
-                  use_blob_urls:
-                    description: Interpret objects as BLOBs and generate URLs
-                    type: boolean
                   google_application_credentials:
-                    description: The content of GOOGLE_APPLICATION_CREDENTIALS json file
+                    description: The content of GOOGLE_APPLICATION_CREDENTIALS json file. Check
+                      official Google Cloud Authentication documentation for
+                      more details.
                     type: string
                   google_project_id:
                     description: Google project ID
                     type: string
-                  presign:
-                    description: Presign URLs for direct download
-                    type: boolean
-                  presign_ttl:
-                    description: Presign TTL in minutes
-                    type: integer
       tags:
         - "Storage: GCS"
       x-fern-sdk-group-name:
@@ -4258,13 +4583,62 @@ paths:
       operationId: api_storages_gcs_validate_create
       summary: Validate import storage
       description: Validate a specific GCS import storage connection.
+      requestBody:
+        content:
+          application/json:
+            schema:
+              required: []
+              type: object
+              properties:
+                id:
+                  description: Storage ID. If set, storage with specified ID will be updated
+                  type: integer
+                regex_filter:
+                  description: Cloud storage regex for filtering objects. You must specify it
+                    otherwise no objects will be imported.
+                  type: string
+                use_blob_urls:
+                  description: Interpret objects as BLOBs and generate URLs. For example, if your
+                    bucket contains images, you can use this option to generate
+                    URLs for these images. If set to False, it will read the
+                    content of the file and load it into Label Studio.
+                  type: boolean
+                  default: false
+                presign:
+                  description: Presign URLs for direct download
+                  type: boolean
+                  default: true
+                presign_ttl:
+                  description: Presign TTL in minutes
+                  type: integer
+                  default: 1
+                title:
+                  description: Storage title
+                  type: string
+                description:
+                  description: Storage description
+                  type: string
+                project:
+                  description: Project ID
+                  type: integer
+                bucket:
+                  description: GCS bucket name
+                  type: string
+                prefix:
+                  description: GCS bucket prefix
+                  type: string
+                google_application_credentials:
+                  description: The content of GOOGLE_APPLICATION_CREDENTIALS json file. Check
+                    official Google Cloud Authentication documentation for more
+                    details.
+                  type: string
+                google_project_id:
+                  description: Google project ID
+                  type: string
+        required: true
       responses:
-        "201":
-          description: ""
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/GCSImportStorage"
+        "200":
+          description: OK
       tags:
         - "Storage: GCS"
       x-fern-sdk-group-name:
@@ -4309,6 +4683,32 @@ paths:
                 required: []
                 type: object
                 properties:
+                  regex_filter:
+                    description: Cloud storage regex for filtering objects. You must specify it
+                      otherwise no objects will be imported.
+                    type: string
+                  use_blob_urls:
+                    description: Interpret objects as BLOBs and generate URLs. For example, if your
+                      bucket contains images, you can use this option to
+                      generate URLs for these images. If set to False, it will
+                      read the content of the file and load it into Label
+                      Studio.
+                    type: boolean
+                    default: false
+                  presign:
+                    description: Presign URLs for direct download
+                    type: boolean
+                    default: true
+                  presign_ttl:
+                    description: Presign TTL in minutes
+                    type: integer
+                    default: 1
+                  title:
+                    description: Storage title
+                    type: string
+                  description:
+                    description: Storage description
+                    type: string
                   project:
                     description: Project ID
                     type: integer
@@ -4318,24 +4718,14 @@ paths:
                   prefix:
                     description: GCS bucket prefix
                     type: string
-                  regex_filter:
-                    description: Cloud storage regex for filtering objects
-                    type: string
-                  use_blob_urls:
-                    description: Interpret objects as BLOBs and generate URLs
-                    type: boolean
                   google_application_credentials:
-                    description: The content of GOOGLE_APPLICATION_CREDENTIALS json file
+                    description: The content of GOOGLE_APPLICATION_CREDENTIALS json file. Check
+                      official Google Cloud Authentication documentation for
+                      more details.
                     type: string
                   google_project_id:
                     description: Google project ID
                     type: string
-                  presign:
-                    description: Presign URLs for direct download
-                    type: boolean
-                  presign_ttl:
-                    description: Presign TTL in minutes
-                    type: integer
       tags:
         - "Storage: GCS"
       x-fern-sdk-group-name:
@@ -4442,18 +4832,29 @@ paths:
                 required: []
                 type: object
                 properties:
+                  title:
+                    description: Storage title
+                    type: string
+                  description:
+                    description: Storage description
+                    type: string
                   project:
                     description: Project ID
                     type: integer
                   path:
-                    description: Local path
+                    description: Path to local directory
                     type: string
                   regex_filter:
                     description: Regex for filtering objects
                     type: string
                   use_blob_urls:
-                    description: Interpret objects as BLOBs and generate URLs
+                    description: Interpret objects as BLOBs and generate URLs. For example, if your
+                      directory contains images, you can use this option to
+                      generate URLs for these images. If set to False, it will
+                      read the content of the file and load it into Label
+                      Studio.
                     type: boolean
+                    default: false
       tags:
         - "Storage: Local"
       x-fern-sdk-group-name:
@@ -4468,13 +4869,12 @@ paths:
       operationId: api_storages_localfiles_validate_create
       summary: Validate import storage
       description: Validate a specific local file import storage connection.
+      requestBody:
+        $ref: "#/components/requestBodies/api_storages_export_localfiles_validate_creat\
+          eData"
       responses:
-        "201":
-          description: ""
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/LocalFilesImportStorage"
+        "200":
+          description: Validation successful
       tags:
         - "Storage: Local"
       x-fern-sdk-group-name:
@@ -4519,18 +4919,29 @@ paths:
                 required: []
                 type: object
                 properties:
+                  title:
+                    description: Storage title
+                    type: string
+                  description:
+                    description: Storage description
+                    type: string
                   project:
                     description: Project ID
                     type: integer
                   path:
-                    description: Local path
+                    description: Path to local directory
                     type: string
                   regex_filter:
                     description: Regex for filtering objects
                     type: string
                   use_blob_urls:
-                    description: Interpret objects as BLOBs and generate URLs
+                    description: Interpret objects as BLOBs and generate URLs. For example, if your
+                      directory contains images, you can use this option to
+                      generate URLs for these images. If set to False, it will
+                      read the content of the file and load it into Label
+                      Studio.
                     type: boolean
+                    default: false
       tags:
         - "Storage: Local"
       x-fern-sdk-group-name:
@@ -4637,6 +5048,24 @@ paths:
                 required: []
                 type: object
                 properties:
+                  regex_filter:
+                    description: Cloud storage regex for filtering objects. You must specify it
+                      otherwise no objects will be imported.
+                    type: string
+                  use_blob_urls:
+                    description: Interpret objects as BLOBs and generate URLs. For example, if your
+                      bucket contains images, you can use this option to
+                      generate URLs for these images. If set to False, it will
+                      read the content of the file and load it into Label
+                      Studio.
+                    type: boolean
+                    default: false
+                  title:
+                    description: Storage title
+                    type: string
+                  description:
+                    description: Storage description
+                    type: string
                   project:
                     description: Project ID
                     type: integer
@@ -4652,12 +5081,6 @@ paths:
                   password:
                     description: Server Password (optional)
                     type: string
-                  regex_filter:
-                    description: Cloud storage regex for filtering objects
-                    type: string
-                  use_blob_urls:
-                    description: Interpret objects as BLOBs and generate URLs
-                    type: boolean
       tags:
         - "Storage: Redis"
       x-fern-sdk-group-name:
@@ -4672,13 +5095,52 @@ paths:
       operationId: api_storages_redis_validate_create
       summary: Validate import storage
       description: Validate a specific Redis import storage connection.
+      requestBody:
+        content:
+          application/json:
+            schema:
+              required: []
+              type: object
+              properties:
+                id:
+                  description: Storage ID. If set, storage with specified ID will be updated
+                  type: integer
+                regex_filter:
+                  description: Cloud storage regex for filtering objects. You must specify it
+                    otherwise no objects will be imported.
+                  type: string
+                use_blob_urls:
+                  description: Interpret objects as BLOBs and generate URLs. For example, if your
+                    bucket contains images, you can use this option to generate
+                    URLs for these images. If set to False, it will read the
+                    content of the file and load it into Label Studio.
+                  type: boolean
+                  default: false
+                title:
+                  description: Storage title
+                  type: string
+                description:
+                  description: Storage description
+                  type: string
+                project:
+                  description: Project ID
+                  type: integer
+                path:
+                  description: Storage prefix (optional)
+                  type: string
+                host:
+                  description: Server Host IP (optional)
+                  type: string
+                port:
+                  description: Server Port (optional)
+                  type: string
+                password:
+                  description: Server Password (optional)
+                  type: string
+        required: true
       responses:
-        "201":
-          description: ""
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/RedisImportStorage"
+        "200":
+          description: Validation successful
       tags:
         - "Storage: Redis"
       x-fern-sdk-group-name:
@@ -4723,6 +5185,24 @@ paths:
                 required: []
                 type: object
                 properties:
+                  regex_filter:
+                    description: Cloud storage regex for filtering objects. You must specify it
+                      otherwise no objects will be imported.
+                    type: string
+                  use_blob_urls:
+                    description: Interpret objects as BLOBs and generate URLs. For example, if your
+                      bucket contains images, you can use this option to
+                      generate URLs for these images. If set to False, it will
+                      read the content of the file and load it into Label
+                      Studio.
+                    type: boolean
+                    default: false
+                  title:
+                    description: Storage title
+                    type: string
+                  description:
+                    description: Storage description
+                    type: string
                   project:
                     description: Project ID
                     type: integer
@@ -4738,12 +5218,6 @@ paths:
                   password:
                     description: Server Password (optional)
                     type: string
-                  regex_filter:
-                    description: Cloud storage regex for filtering objects
-                    type: string
-                  use_blob_urls:
-                    description: Interpret objects as BLOBs and generate URLs
-                    type: boolean
       tags:
         - "Storage: Redis"
       x-fern-sdk-group-name:
@@ -4849,6 +5323,35 @@ paths:
               schema:
                 type: object
                 properties:
+                  regex_filter:
+                    description: Cloud storage regex for filtering objects. You must specify it
+                      otherwise no objects will be imported.
+                    type: string
+                  use_blob_urls:
+                    description: Interpret objects as BLOBs and generate URLs. For example, if your
+                      bucket contains images, you can use this option to
+                      generate URLs for these images. If set to False, it will
+                      read the content of the file and load it into Label
+                      Studio.
+                    type: boolean
+                    default: false
+                  presign:
+                    description: Presign URLs for download
+                    type: boolean
+                    default: true
+                  presign_ttl:
+                    description: Presign TTL in minutes
+                    type: integer
+                    default: 1
+                  recursive_scan:
+                    description: Scan recursively
+                    type: boolean
+                  title:
+                    description: Storage title
+                    type: string
+                  description:
+                    description: Storage description
+                    type: string
                   project:
                     description: Project ID
                     type: integer
@@ -4858,12 +5361,6 @@ paths:
                   prefix:
                     description: S3 bucket prefix
                     type: string
-                  regex_filter:
-                    description: Cloud storage regex for filtering objects
-                    type: string
-                  use_blob_urls:
-                    description: Interpret objects as BLOBs and generate URLs
-                    type: boolean
                   aws_access_key_id:
                     description: AWS_ACCESS_KEY_ID
                     type: string
@@ -4882,15 +5379,6 @@ paths:
                   s3_endpoint:
                     description: S3 Endpoint
                     type: string
-                  presign:
-                    description: Presign URLs for download
-                    type: boolean
-                  presign_ttl:
-                    description: Presign TTL in seconds
-                    type: integer
-                  recursive_scan:
-                    description: Scan recursively
-                    type: boolean
       tags:
         - Storage:S3
       x-fern-sdk-group-name:
@@ -4905,13 +5393,74 @@ paths:
       operationId: api_storages_s3_validate_create
       summary: Validate import storage
       description: Validate a specific S3 import storage connection.
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                id:
+                  description: Storage ID. If set, storage with specified ID will be updated
+                  type: integer
+                regex_filter:
+                  description: Cloud storage regex for filtering objects. You must specify it
+                    otherwise no objects will be imported.
+                  type: string
+                use_blob_urls:
+                  description: Interpret objects as BLOBs and generate URLs. For example, if your
+                    bucket contains images, you can use this option to generate
+                    URLs for these images. If set to False, it will read the
+                    content of the file and load it into Label Studio.
+                  type: boolean
+                  default: false
+                presign:
+                  description: Presign URLs for download
+                  type: boolean
+                  default: true
+                presign_ttl:
+                  description: Presign TTL in minutes
+                  type: integer
+                  default: 1
+                recursive_scan:
+                  description: Scan recursively
+                  type: boolean
+                title:
+                  description: Storage title
+                  type: string
+                description:
+                  description: Storage description
+                  type: string
+                project:
+                  description: Project ID
+                  type: integer
+                bucket:
+                  description: S3 bucket name
+                  type: string
+                prefix:
+                  description: S3 bucket prefix
+                  type: string
+                aws_access_key_id:
+                  description: AWS_ACCESS_KEY_ID
+                  type: string
+                aws_secret_access_key:
+                  description: AWS_SECRET_ACCESS_KEY
+                  type: string
+                aws_session_token:
+                  description: AWS_SESSION_TOKEN
+                  type: string
+                aws_sse_kms_key_id:
+                  description: AWS SSE KMS Key ID
+                  type: string
+                region_name:
+                  description: AWS Region
+                  type: string
+                s3_endpoint:
+                  description: S3 Endpoint
+                  type: string
+        required: true
       responses:
-        "201":
-          description: ""
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/S3ImportStorage"
+        "200":
+          description: Validation successful
       tags:
         - Storage:S3
       x-fern-sdk-group-name:
@@ -4955,6 +5504,35 @@ paths:
               schema:
                 type: object
                 properties:
+                  regex_filter:
+                    description: Cloud storage regex for filtering objects. You must specify it
+                      otherwise no objects will be imported.
+                    type: string
+                  use_blob_urls:
+                    description: Interpret objects as BLOBs and generate URLs. For example, if your
+                      bucket contains images, you can use this option to
+                      generate URLs for these images. If set to False, it will
+                      read the content of the file and load it into Label
+                      Studio.
+                    type: boolean
+                    default: false
+                  presign:
+                    description: Presign URLs for download
+                    type: boolean
+                    default: true
+                  presign_ttl:
+                    description: Presign TTL in minutes
+                    type: integer
+                    default: 1
+                  recursive_scan:
+                    description: Scan recursively
+                    type: boolean
+                  title:
+                    description: Storage title
+                    type: string
+                  description:
+                    description: Storage description
+                    type: string
                   project:
                     description: Project ID
                     type: integer
@@ -4964,12 +5542,6 @@ paths:
                   prefix:
                     description: S3 bucket prefix
                     type: string
-                  regex_filter:
-                    description: Cloud storage regex for filtering objects
-                    type: string
-                  use_blob_urls:
-                    description: Interpret objects as BLOBs and generate URLs
-                    type: boolean
                   aws_access_key_id:
                     description: AWS_ACCESS_KEY_ID
                     type: string
@@ -4988,15 +5560,6 @@ paths:
                   s3_endpoint:
                     description: S3 Endpoint
                     type: string
-                  presign:
-                    description: Presign URLs for download
-                    type: boolean
-                  presign_ttl:
-                    description: Presign TTL in seconds
-                    type: integer
-                  recursive_scan:
-                    description: Scan recursively
-                    type: boolean
       tags:
         - Storage:S3
       x-fern-sdk-group-name:
@@ -5892,6 +6455,36 @@ components:
           schema:
             $ref: "#/components/schemas/WebhookSerializerForUpdate"
       required: true
+    api_storages_export_localfiles_createData:
+      content:
+        application/json:
+          schema:
+            required: []
+            type: object
+            properties:
+              title:
+                description: Storage title
+                type: string
+              description:
+                description: Storage description
+                type: string
+              project:
+                description: Project ID
+                type: integer
+              path:
+                description: Path to local directory
+                type: string
+              regex_filter:
+                description: Regex for filtering objects
+                type: string
+              use_blob_urls:
+                description: Interpret objects as BLOBs and generate URLs. For example, if your
+                  directory contains images, you can use this option to generate
+                  URLs for these images. If set to False, it will read the
+                  content of the file and load it into Label Studio.
+                type: boolean
+                default: false
+      required: true
     api_annotations_partial_updateData:
       content:
         application/json:
@@ -5970,13 +6563,30 @@ components:
           schema:
             $ref: "#/components/schemas/LabelLink"
       required: true
-    api_storages_export_redis_createData:
+    api_storages_redis_createData:
       content:
         application/json:
           schema:
             required: []
             type: object
             properties:
+              regex_filter:
+                description: Cloud storage regex for filtering objects. You must specify it
+                  otherwise no objects will be imported.
+                type: string
+              use_blob_urls:
+                description: Interpret objects as BLOBs and generate URLs. For example, if your
+                  bucket contains images, you can use this option to generate
+                  URLs for these images. If set to False, it will read the
+                  content of the file and load it into Label Studio.
+                type: boolean
+                default: false
+              title:
+                description: Storage title
+                type: string
+              description:
+                description: Storage description
+                type: string
               project:
                 description: Project ID
                 type: integer
@@ -5991,89 +6601,6 @@ components:
                 type: string
               password:
                 description: Server Password (optional)
-                type: string
-              db:
-                description: Database ID of database to use
-                type: integer
-      required: true
-    api_storages_export_s3_createData:
-      content:
-        application/json:
-          schema:
-            type: object
-            properties:
-              project:
-                description: Project ID
-                type: integer
-              bucket:
-                description: S3 bucket name
-                type: string
-              prefix:
-                description: S3 bucket prefix
-                type: string
-              aws_access_key_id:
-                description: AWS_ACCESS_KEY_ID
-                type: string
-              aws_secret_access_key:
-                description: AWS_SECRET_ACCESS_KEY
-                type: string
-              aws_session_token:
-                description: AWS_SESSION_TOKEN
-                type: string
-              aws_sse_kms_key_id:
-                description: AWS SSE KMS Key ID
-                type: string
-              region_name:
-                description: AWS Region
-                type: string
-              s3_endpoint:
-                description: S3 Endpoint
-                type: string
-      required: true
-    api_storages_export_gcs_createData:
-      content:
-        application/json:
-          schema:
-            required: []
-            type: object
-            properties:
-              project:
-                description: Project ID
-                type: integer
-              bucket:
-                description: GCS bucket name
-                type: string
-              prefix:
-                description: GCS bucket prefix
-                type: string
-              google_application_credentials:
-                description: The content of GOOGLE_APPLICATION_CREDENTIALS json file
-                type: string
-              google_project_id:
-                description: Google project ID
-                type: string
-      required: true
-    api_storages_export_azure_createData:
-      content:
-        application/json:
-          schema:
-            required: []
-            type: object
-            properties:
-              project:
-                description: Project ID
-                type: integer
-              container:
-                description: Azure blob container
-                type: string
-              prefix:
-                description: Azure blob prefix name
-                type: string
-              account_name:
-                description: Azure Blob account name
-                type: string
-              account_key:
-                description: Azure Blob account key
                 type: string
       required: true
     api_dm_views_createData:
@@ -6133,89 +6660,40 @@ components:
                 description: Project ID
                 type: integer
       required: true
-    api_storages_gcs_createData:
+    api_storages_export_redis_createData:
       content:
         application/json:
           schema:
             required: []
             type: object
             properties:
+              db:
+                description: Database ID of database to use
+                type: integer
+              can_delete_objects:
+                description: Deletion from storage enabled.
+                type: boolean
+              title:
+                description: Storage title
+                type: string
+              description:
+                description: Storage description
+                type: string
               project:
                 description: Project ID
                 type: integer
-              bucket:
-                description: GCS bucket name
+              path:
+                description: Storage prefix (optional)
                 type: string
-              prefix:
-                description: GCS bucket prefix
+              host:
+                description: Server Host IP (optional)
                 type: string
-              regex_filter:
-                description: Cloud storage regex for filtering objects
+              port:
+                description: Server Port (optional)
                 type: string
-              use_blob_urls:
-                description: Interpret objects as BLOBs and generate URLs
-                type: boolean
-              google_application_credentials:
-                description: The content of GOOGLE_APPLICATION_CREDENTIALS json file
+              password:
+                description: Server Password (optional)
                 type: string
-              google_project_id:
-                description: Google project ID
-                type: string
-              presign:
-                description: Presign URLs for direct download
-                type: boolean
-              presign_ttl:
-                description: Presign TTL in minutes
-                type: integer
-      required: true
-    api_storages_s3_createData:
-      content:
-        application/json:
-          schema:
-            type: object
-            properties:
-              project:
-                description: Project ID
-                type: integer
-              bucket:
-                description: S3 bucket name
-                type: string
-              prefix:
-                description: S3 bucket prefix
-                type: string
-              regex_filter:
-                description: Cloud storage regex for filtering objects
-                type: string
-              use_blob_urls:
-                description: Interpret objects as BLOBs and generate URLs
-                type: boolean
-              aws_access_key_id:
-                description: AWS_ACCESS_KEY_ID
-                type: string
-              aws_secret_access_key:
-                description: AWS_SECRET_ACCESS_KEY
-                type: string
-              aws_session_token:
-                description: AWS_SESSION_TOKEN
-                type: string
-              aws_sse_kms_key_id:
-                description: AWS SSE KMS Key ID
-                type: string
-              region_name:
-                description: AWS Region
-                type: string
-              s3_endpoint:
-                description: S3 Endpoint
-                type: string
-              presign:
-                description: Presign URLs for download
-                type: boolean
-              presign_ttl:
-                description: Presign TTL in seconds
-                type: integer
-              recursive_scan:
-                description: Scan recursively
-                type: boolean
       required: true
     api_ml_createData:
       content:
@@ -6334,6 +6812,31 @@ components:
             required: []
             type: object
             properties:
+              regex_filter:
+                description: Cloud storage regex for filtering objects. You must specify it
+                  otherwise no objects will be imported.
+                type: string
+              use_blob_urls:
+                description: Interpret objects as BLOBs and generate URLs. For example, if your
+                  bucket contains images, you can use this option to generate
+                  URLs for these images. If set to False, it will read the
+                  content of the file and load it into Label Studio.
+                type: boolean
+                default: false
+              presign:
+                description: Presign URLs for direct download
+                type: boolean
+                default: true
+              presign_ttl:
+                description: Presign TTL in minutes
+                type: integer
+                default: 1
+              title:
+                description: Storage title
+                type: string
+              description:
+                description: Storage description
+                type: string
               project:
                 description: Project ID
                 type: integer
@@ -6343,73 +6846,267 @@ components:
               prefix:
                 description: Azure blob prefix name
                 type: string
-              regex_filter:
-                description: Cloud storage regex for filtering objects
-                type: string
-              use_blob_urls:
-                description: Interpret objects as BLOBs and generate URLs
-                type: boolean
               account_name:
                 description: Azure Blob account name
                 type: string
               account_key:
                 description: Azure Blob account key
                 type: string
-              presign:
-                description: Presign URLs for direct download
-                type: boolean
-              presign_ttl:
-                description: Presign TTL in minutes
-                type: integer
       required: true
-    api_storages_export_localfiles_createData:
+    api_storages_export_azure_createData:
       content:
         application/json:
           schema:
             required: []
             type: object
             properties:
+              can_delete_objects:
+                description: Deletion from storage enabled
+                type: boolean
+                default: false
+              title:
+                description: Storage title
+                type: string
+              description:
+                description: Storage description
+                type: string
+              project:
+                description: Project ID
+                type: integer
+              container:
+                description: Azure blob container
+                type: string
+              prefix:
+                description: Azure blob prefix name
+                type: string
+              account_name:
+                description: Azure Blob account name
+                type: string
+              account_key:
+                description: Azure Blob account key
+                type: string
+      required: true
+    api_storages_export_gcs_createData:
+      content:
+        application/json:
+          schema:
+            required: []
+            type: object
+            properties:
+              can_delete_objects:
+                description: Deletion from storage enabled.
+                type: boolean
+              title:
+                description: Storage title
+                type: string
+              description:
+                description: Storage description
+                type: string
+              project:
+                description: Project ID
+                type: integer
+              bucket:
+                description: GCS bucket name
+                type: string
+              prefix:
+                description: GCS bucket prefix
+                type: string
+              google_application_credentials:
+                description: The content of GOOGLE_APPLICATION_CREDENTIALS json file. Check
+                  official Google Cloud Authentication documentation for more
+                  details.
+                type: string
+              google_project_id:
+                description: Google project ID
+                type: string
+      required: true
+    api_storages_export_localfiles_validate_createData:
+      content:
+        application/json:
+          schema:
+            required: []
+            type: object
+            properties:
+              id:
+                description: Storage ID. If set, storage with specified ID will be updated
+                type: integer
+              title:
+                description: Storage title
+                type: string
+              description:
+                description: Storage description
+                type: string
               project:
                 description: Project ID
                 type: integer
               path:
-                description: Local path
+                description: Path to local directory
                 type: string
               regex_filter:
                 description: Regex for filtering objects
                 type: string
               use_blob_urls:
-                description: Interpret objects as BLOBs and generate URLs
+                description: Interpret objects as BLOBs and generate URLs. For example, if your
+                  directory contains images, you can use this option to generate
+                  URLs for these images. If set to False, it will read the
+                  content of the file and load it into Label Studio.
                 type: boolean
+                default: false
       required: true
-    api_storages_redis_createData:
+    api_storages_export_s3_createData:
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              can_delete_objects:
+                description: Deletion from storage enabled.
+                type: boolean
+              title:
+                description: Storage title
+                type: string
+              description:
+                description: Storage description
+                type: string
+              project:
+                description: Project ID
+                type: integer
+              bucket:
+                description: S3 bucket name
+                type: string
+              prefix:
+                description: S3 bucket prefix
+                type: string
+              aws_access_key_id:
+                description: AWS_ACCESS_KEY_ID
+                type: string
+              aws_secret_access_key:
+                description: AWS_SECRET_ACCESS_KEY
+                type: string
+              aws_session_token:
+                description: AWS_SESSION_TOKEN
+                type: string
+              aws_sse_kms_key_id:
+                description: AWS SSE KMS Key ID
+                type: string
+              region_name:
+                description: AWS Region
+                type: string
+              s3_endpoint:
+                description: S3 Endpoint
+                type: string
+      required: true
+    api_storages_gcs_createData:
       content:
         application/json:
           schema:
             required: []
             type: object
             properties:
+              regex_filter:
+                description: Cloud storage regex for filtering objects. You must specify it
+                  otherwise no objects will be imported.
+                type: string
+              use_blob_urls:
+                description: Interpret objects as BLOBs and generate URLs. For example, if your
+                  bucket contains images, you can use this option to generate
+                  URLs for these images. If set to False, it will read the
+                  content of the file and load it into Label Studio.
+                type: boolean
+                default: false
+              presign:
+                description: Presign URLs for direct download
+                type: boolean
+                default: true
+              presign_ttl:
+                description: Presign TTL in minutes
+                type: integer
+                default: 1
+              title:
+                description: Storage title
+                type: string
+              description:
+                description: Storage description
+                type: string
               project:
                 description: Project ID
                 type: integer
-              path:
-                description: Storage prefix (optional)
+              bucket:
+                description: GCS bucket name
                 type: string
-              host:
-                description: Server Host IP (optional)
+              prefix:
+                description: GCS bucket prefix
                 type: string
-              port:
-                description: Server Port (optional)
+              google_application_credentials:
+                description: The content of GOOGLE_APPLICATION_CREDENTIALS json file. Check
+                  official Google Cloud Authentication documentation for more
+                  details.
                 type: string
-              password:
-                description: Server Password (optional)
+              google_project_id:
+                description: Google project ID
                 type: string
+      required: true
+    api_storages_s3_createData:
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
               regex_filter:
-                description: Cloud storage regex for filtering objects
+                description: Cloud storage regex for filtering objects. You must specify it
+                  otherwise no objects will be imported.
                 type: string
               use_blob_urls:
-                description: Interpret objects as BLOBs and generate URLs
+                description: Interpret objects as BLOBs and generate URLs. For example, if your
+                  bucket contains images, you can use this option to generate
+                  URLs for these images. If set to False, it will read the
+                  content of the file and load it into Label Studio.
                 type: boolean
+                default: false
+              presign:
+                description: Presign URLs for download
+                type: boolean
+                default: true
+              presign_ttl:
+                description: Presign TTL in minutes
+                type: integer
+                default: 1
+              recursive_scan:
+                description: Scan recursively
+                type: boolean
+              title:
+                description: Storage title
+                type: string
+              description:
+                description: Storage description
+                type: string
+              project:
+                description: Project ID
+                type: integer
+              bucket:
+                description: S3 bucket name
+                type: string
+              prefix:
+                description: S3 bucket prefix
+                type: string
+              aws_access_key_id:
+                description: AWS_ACCESS_KEY_ID
+                type: string
+              aws_secret_access_key:
+                description: AWS_SECRET_ACCESS_KEY
+                type: string
+              aws_session_token:
+                description: AWS_SESSION_TOKEN
+                type: string
+              aws_sse_kms_key_id:
+                description: AWS SSE KMS Key ID
+                type: string
+              region_name:
+                description: AWS Region
+                type: string
+              s3_endpoint:
+                description: S3 Endpoint
+                type: string
       required: true
     api_tasks_createData:
       content:
