@@ -7176,12 +7176,22 @@ components:
         [your-token]"</code></pre>'
   schemas:
     Annotation:
+      required:
+        - result
       type: object
       properties:
         id:
           title: ID
           type: integer
           readOnly: true
+        result:
+          title: Annotation result list
+          type: array
+          description: List of annotation results for the task
+          items:
+            type: object
+            title: Annotation result items (regions)
+            description: List of annotated regions for the task
         created_username:
           title: Created username
           description: Username string
@@ -7201,11 +7211,6 @@ components:
           title: Unique id
           type: string
           minLength: 1
-        result:
-          title: Result
-          description: The main value of annotator work - labeling result in JSON format
-          type: object
-          nullable: true
         was_cancelled:
           title: Was cancelled
           description: User skipped the task
