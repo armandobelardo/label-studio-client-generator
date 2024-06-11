@@ -7176,8 +7176,6 @@ components:
         [your-token]"</code></pre>'
   schemas:
     Annotation:
-      required:
-        - result
       type: object
       properties:
         id:
