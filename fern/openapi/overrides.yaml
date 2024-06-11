@@ -1616,7 +1616,7 @@ components:
           format: date-time
           description: Completion time of the task
         file_upload:
-          type: integer
+          type: string
           description: File upload ID for this task
         storage_filename:
           type: string
