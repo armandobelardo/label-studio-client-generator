@@ -23,7 +23,11 @@ groups:
         config:
           inline_request_params: false
           package_name: label_studio_sdk
-          client_class_name: LabelStudio
+          client:
+            class_name: LabelStudioBase
+            filename: base_client.py
+            exported_class_name: LabelStudio
+            exported_filename: client.py
           # deprecated version 0.0.x of the SDK - to be removed in the future
           additional_init_exports:
             - from: _legacy
