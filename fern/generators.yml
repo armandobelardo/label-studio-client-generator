@@ -55,7 +55,11 @@ groups:
         config:
           inline_request_params: false
           package_name: label_studio_sdk
-          client_class_name: LabelStudio
+          client:
+            class_name: LabelStudioBase
+            filename: base_client.py
+            exported_class_name: LabelStudio
+            exported_filename: client.py
 
           additional_init_exports:
             - from: _legacy
