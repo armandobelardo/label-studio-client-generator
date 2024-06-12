@@ -3330,21 +3330,7 @@ paths:
             type: integer
       responses:
         "204":
-          description: List of deleted task IDs
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  tasks:
-                    type: array
-                    items:
-                      description: Task object
-                      type: object
-                      properties:
-                        id:
-                          description: Task ID
-                          type: integer
+          description: Tasks deleted
       tags:
         - Projects
       x-fern-sdk-group-name: projects
