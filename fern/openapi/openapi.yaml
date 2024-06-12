@@ -212,10 +212,305 @@ paths:
     post:
       operationId: api_dm_actions_create
       summary: Post actions
-      description: Perform an action with the selected items from a specific view.
+      description: Perform a Data Manager action with the selected tasks and filters.
+      parameters:
+        - name: id
+          in: query
+          description: Action name ID, the full list of actions can be retrieved with a
+            GET request
+          schema:
+            type: string
+            enum:
+              - retrieve_tasks_predictions
+              - predictions_to_annotations
+              - remove_duplicates
+              - delete_tasks
+              - delete_ground_truths
+              - delete_tasks_annotations
+              - delete_tasks_reviews
+              - delete_tasks_predictions
+              - delete_reviewers
+              - delete_annotators
+        - name: project
+          in: query
+          description: Project ID
+          schema:
+            type: integer
+        - name: view
+          in: query
+          description: View ID (optional, it has higher priority than filters,
+            selectedItems and ordering from the request body payload)
+          schema:
+            type: integer
+      requestBody:
+        content:
+          application/json:
+            schema:
+              description: Data payload containing task filters, selected task items, and
+                ordering
+              type: object
+              properties:
+                filters:
+                  description: 'Filters to apply on tasks. You can use [the helper class `Filters`
+                    from this page](https://labelstud.io/sdk/data_manager.html)
+                    to create Data Manager Filters.<br>Example: `{"conjunction":
+                    "or", "items": [{"filter": "filter:tasks:completed_at",
+                    "operator": "greater", "type": "Datetime", "value":
+                    "2021-01-01T00:00:00.000Z"}]}`'
+                  required:
+                    - conjunction
+                    - items
+                  type: object
+                  properties:
+                    conjunction:
+                      description: Logical conjunction for the filters. This conjunction (either "or"
+                        or "and") will be applied to all items in the filters
+                        list. It is not possible to combine "or" and "and"
+                        within one list of filters. All filters will be either
+                        combined with "or" or with "and", but not a mix of both.
+                      type: string
+                      enum:
+                        - or
+                        - and
+                    items:
+                      description: List of filter items
+                      type: array
+                      items:
+                        required:
+                          - filter
+                          - operator
+                          - type
+                          - value
+                        type: object
+                        properties:
+                          filter:
+                            description: "Filter identifier, it should start with `filter:tasks:` prefix,
+                              e.g. `filter:tasks:agreement`. For `task.data`
+                              fields it may look like
+                              `filter:tasks:data.field_name`. Possible
+                              values:<br><li>`filter:tasks:agreement`<br>
+                              (Number) Agreement for annotation results for a
+                              specific task (Enterprise
+                              only)</li><br><li>`filter:tasks:annotations_resul\
+                              ts`<br> (String) Annotation results for the
+                              tasks</li><br><li>`filter:tasks:annotators`<br>
+                              (List) Annotators that completed the task
+                              (Community). Can include assigned annotators
+                              (Enterprise only). Important note: the filter
+                              `type` should be List, but the filter `value` is
+                              integer</li><br><li>`filter:tasks:cancelled_annot\
+                              ations`<br> (Number) Number of cancelled or
+                              skipped annotations for the
+                              task</li><br><li>`filter:tasks:comments`<br>
+                              (Number) Number of comments in a
+                              task</li><br><li>`filter:tasks:completed_at`<br>
+                              (Datetime) Time when a task was fully
+                              annotated</li><br><li>`filter:tasks:created_at`<b\
+                              r> (Datetime) Time the task was created
+                              at</li><br><li>`filter:tasks:file_upload`<br>
+                              (String) Name of the file uploaded to create the
+                              tasks</li><br><li>`filter:tasks:ground_truth`<br>
+                              (Boolean) Ground truth status of the
+                              tasks</li><br><li>`filter:tasks:id`<br> (Number)
+                              Task ID</li><br><li>`filter:tasks:inner_id`<br>
+                              (Number) Task Inner ID, it starts from 1 for all
+                              projects</li><br><li>`filter:tasks:predictions_mo\
+                              del_versions`<br> (String) Model version used for
+                              the
+                              predictions</li><br><li>`filter:tasks:predictions\
+                              _results`<br> (String) Prediction results for the
+                              tasks</li><br><li>`filter:tasks:predictions_score\
+                              `<br> (Number) Prediction score for the
+                              task</li><br><li>`filter:tasks:reviewed`<br>
+                              (Boolean) Whether the tasks have been reviewed
+                              (Enterprise
+                              only)</li><br><li>`filter:tasks:reviewers`<br>
+                              (String) Reviewers that reviewed the task, or
+                              assigned reviewers (Enterprise only). Important
+                              note: the filter `type` should be List, but the
+                              filter `value` is
+                              integer</li><br><li>`filter:tasks:reviews_accepte\
+                              d`<br> (Number) Number of annotations accepted for
+                              a task in review (Enterprise
+                              only)</li><br><li>`filter:tasks:reviews_rejected`\
+                              <br> (Number) Number of annotations rejected for a
+                              task in review (Enterprise
+                              only)</li><br><li>`filter:tasks:total_annotations\
+                              `<br> (Number) Total number of annotations on a
+                              task</li><br><li>`filter:tasks:total_predictions`\
+                              <br> (Number) Total number of predictions for the
+                              task</li><br><li>`filter:tasks:unresolved_comment\
+                              _count`<br> (Number) Number of unresolved comments
+                              in a
+                              task</li><br><li>`filter:tasks:updated_at`<br>
+                              (Datetime) Time the task was updated at (e.g. new
+                              annotation was created, review added, etc)</li>"
+                            type: string
+                            enum:
+                              - filter:tasks:agreement
+                              - filter:tasks:annotations_results
+                              - filter:tasks:annotators
+                              - filter:tasks:cancelled_annotations
+                              - filter:tasks:comments
+                              - filter:tasks:completed_at
+                              - filter:tasks:created_at
+                              - filter:tasks:file_upload
+                              - filter:tasks:ground_truth
+                              - filter:tasks:id
+                              - filter:tasks:inner_id
+                              - filter:tasks:predictions_model_versions
+                              - filter:tasks:predictions_results
+                              - filter:tasks:predictions_score
+                              - filter:tasks:reviewed
+                              - filter:tasks:reviewers
+                              - filter:tasks:reviews_accepted
+                              - filter:tasks:reviews_rejected
+                              - filter:tasks:total_annotations
+                              - filter:tasks:total_predictions
+                              - filter:tasks:unresolved_comment_count
+                              - filter:tasks:updated_at
+                          operator:
+                            description: 'Filter operator. Possible values:<br><li>`contains`<br>
+                              Contains</li><br><li>`ends_with`<br> Ends
+                              with</li><br><li>`equal`<br> Equal
+                              to</li><br><li>`exists`<br>
+                              Exists</li><br><li>`greater`<br> Greater
+                              than</li><br><li>`greater_or_equal`<br> Greater
+                              than or equal to</li><br><li>`in`<br> Is between
+                              min and max values, so the filter `value` should
+                              be e.g. `{"min": 1, "max":
+                              7}`</li><br><li>`less`<br> Less
+                              than</li><br><li>`less_or_equal`<br> Less than or
+                              equal to</li><br><li>`not_contains`<br> Does not
+                              contain</li><br><li>`not_equal`<br> Not equal
+                              to</li><br><li>`not_exists`<br> Does not
+                              exist</li><br><li>`not_in`<br> Is not between min
+                              and max values, so the filter `value` should be
+                              e.g. `{"min": 1, "max":
+                              7}`</li><br><li>`starts_with`<br> Starts
+                              with</li>'
+                            type: string
+                            enum:
+                              - contains
+                              - ends_with
+                              - equal
+                              - exists
+                              - greater
+                              - greater_or_equal
+                              - in
+                              - less
+                              - less_or_equal
+                              - not_contains
+                              - not_equal
+                              - not_exists
+                              - not_in
+                              - starts_with
+                          type:
+                            description: Type of the filter value. Possible values:<br><li>`Boolean`<br>
+                              Boolean</li><br><li>`Datetime`<br> Datetime string
+                              in `strftime('%Y-%m-%dT%H:%M:%S.%fZ')`
+                              format</li><br><li>`List`<br> List of
+                              items</li><br><li>`Number`<br> Float or
+                              Integer</li><br><li>`String`<br>
+                              String</li><br><li>`Unknown`<br> Unknown is
+                              explicitly converted to string format</li>
+                            type: string
+                          value:
+                            description: Value to filter by
+                            type: string
+                            oneOf:
+                              - description: String
+                                type: string
+                              - description: Integer
+                                type: integer
+                              - description: Float
+                                type: number
+                                format: float
+                              - description: Boolean
+                                type: boolean
+                              - description: Dictionary
+                                type: object
+                              - description: List of strings or integers
+                                type: array
+                                items:
+                                  type: string
+                                  oneOf:
+                                    - type: string
+                                    - type: integer
+                selectedItems:
+                  description: 'Task selection by IDs. If filters are applied, the selection will
+                    be applied to the filtered tasks.If "all" is `false`,
+                    `"included"` must be used. If "all" is `true`, `"excluded"`
+                    must be used.<br>Examples: `{"all": false, "included": [1,
+                    2, 3]}` or `{"all": true, "excluded": [4, 5]}`'
+                  required:
+                    - all
+                  type: object
+                  oneOf:
+                    - title: "all: false"
+                      required:
+                        - all
+                      type: object
+                      properties:
+                        all:
+                          description: No tasks are selected
+                          type: boolean
+                          enum:
+                            - false
+                        included:
+                          description: List of included task IDs
+                          type: array
+                          items:
+                            type: integer
+                    - title: "all: true"
+                      required:
+                        - all
+                      type: object
+                      properties:
+                        all:
+                          description: All tasks are selected
+                          type: boolean
+                          enum:
+                            - true
+                        excluded:
+                          description: List of excluded task IDs
+                          type: array
+                          items:
+                            type: integer
+                ordering:
+                  description: List of fields to order by. Fields are similar to filters but
+                    without the `filter:` prefix. To reverse the order, add a
+                    minus sign before the field name, e.g. `-tasks:created_at`.
+                  type: array
+                  items:
+                    type: string
+                    enum:
+                      - tasks:agreement
+                      - tasks:annotations_results
+                      - tasks:annotators
+                      - tasks:cancelled_annotations
+                      - tasks:comments
+                      - tasks:completed_at
+                      - tasks:created_at
+                      - tasks:file_upload
+                      - tasks:ground_truth
+                      - tasks:id
+                      - tasks:inner_id
+                      - tasks:predictions_model_versions
+                      - tasks:predictions_results
+                      - tasks:predictions_score
+                      - tasks:reviewed
+                      - tasks:reviewers
+                      - tasks:reviews_accepted
+                      - tasks:reviews_rejected
+                      - tasks:total_annotations
+                      - tasks:total_predictions
+                      - tasks:unresolved_comment_count
+                      - tasks:updated_at
+        required: true
       responses:
-        "201":
-          description: ""
+        "200":
+          description: Action performed successfully
       tags:
         - Data Manager
       x-fern-sdk-group-name: actions
@@ -369,48 +664,240 @@ paths:
                     type: object
                     properties:
                       filters:
-                        description: Filters for the view
+                        description: 'Filters to apply on tasks. You can use [the helper class `Filters`
+                          from this
+                          page](https://labelstud.io/sdk/data_manager.html) to
+                          create Data Manager Filters.<br>Example:
+                          `{"conjunction": "or", "items": [{"filter":
+                          "filter:tasks:completed_at", "operator": "greater",
+                          "type": "Datetime", "value":
+                          "2021-01-01T00:00:00.000Z"}]}`'
+                        required:
+                          - conjunction
+                          - items
                         type: object
                         properties:
                           conjunction:
-                            description: Type of conjunction
+                            description: Logical conjunction for the filters. This conjunction (either "or"
+                              or "and") will be applied to all items in the
+                              filters list. It is not possible to combine "or"
+                              and "and" within one list of filters. All filters
+                              will be either combined with "or" or with "and",
+                              but not a mix of both.
                             type: string
                             enum:
-                              - and
                               - or
+                              - and
                           items:
-                            description: Filter items
+                            description: List of filter items
                             type: array
                             items:
+                              required:
+                                - filter
+                                - operator
+                                - type
+                                - value
                               type: object
                               properties:
                                 filter:
-                                  description: Field name
+                                  description: "Filter identifier, it should start with `filter:tasks:` prefix,
+                                    e.g. `filter:tasks:agreement`. For
+                                    `task.data` fields it may look like
+                                    `filter:tasks:data.field_name`. Possible
+                                    values:<br><li>`filter:tasks:agreement`<br>
+                                    (Number) Agreement for annotation results
+                                    for a specific task (Enterprise
+                                    only)</li><br><li>`filter:tasks:annotations\
+                                    _results`<br> (String) Annotation results
+                                    for the
+                                    tasks</li><br><li>`filter:tasks:annotators`\
+                                    <br> (List) Annotators that completed the
+                                    task (Community). Can include assigned
+                                    annotators (Enterprise only). Important
+                                    note: the filter `type` should be List, but
+                                    the filter `value` is
+                                    integer</li><br><li>`filter:tasks:cancelled\
+                                    _annotations`<br> (Number) Number of
+                                    cancelled or skipped annotations for the
+                                    task</li><br><li>`filter:tasks:comments`<br>
+                                    (Number) Number of comments in a
+                                    task</li><br><li>`filter:tasks:completed_at\
+                                    `<br> (Datetime) Time when a task was fully
+                                    annotated</li><br><li>`filter:tasks:created\
+                                    _at`<br> (Datetime) Time the task was
+                                    created
+                                    at</li><br><li>`filter:tasks:file_upload`<b\
+                                    r> (String) Name of the file uploaded to
+                                    create the
+                                    tasks</li><br><li>`filter:tasks:ground_trut\
+                                    h`<br> (Boolean) Ground truth status of the
+                                    tasks</li><br><li>`filter:tasks:id`<br>
+                                    (Number) Task
+                                    ID</li><br><li>`filter:tasks:inner_id`<br>
+                                    (Number) Task Inner ID, it starts from 1 for
+                                    all
+                                    projects</li><br><li>`filter:tasks:predicti\
+                                    ons_model_versions`<br> (String) Model
+                                    version used for the
+                                    predictions</li><br><li>`filter:tasks:predi\
+                                    ctions_results`<br> (String) Prediction
+                                    results for the
+                                    tasks</li><br><li>`filter:tasks:predictions\
+                                    _score`<br> (Number) Prediction score for
+                                    the
+                                    task</li><br><li>`filter:tasks:reviewed`<br>
+                                    (Boolean) Whether the tasks have been
+                                    reviewed (Enterprise
+                                    only)</li><br><li>`filter:tasks:reviewers`<\
+                                    br> (String) Reviewers that reviewed the
+                                    task, or assigned reviewers (Enterprise
+                                    only). Important note: the filter `type`
+                                    should be List, but the filter `value` is
+                                    integer</li><br><li>`filter:tasks:reviews_a\
+                                    ccepted`<br> (Number) Number of annotations
+                                    accepted for a task in review (Enterprise
+                                    only)</li><br><li>`filter:tasks:reviews_rej\
+                                    ected`<br> (Number) Number of annotations
+                                    rejected for a task in review (Enterprise
+                                    only)</li><br><li>`filter:tasks:total_annot\
+                                    ations`<br> (Number) Total number of
+                                    annotations on a
+                                    task</li><br><li>`filter:tasks:total_predic\
+                                    tions`<br> (Number) Total number of
+                                    predictions for the
+                                    task</li><br><li>`filter:tasks:unresolved_c\
+                                    omment_count`<br> (Number) Number of
+                                    unresolved comments in a
+                                    task</li><br><li>`filter:tasks:updated_at`<\
+                                    br> (Datetime) Time the task was updated at
+                                    (e.g. new annotation was created, review
+                                    added, etc)</li>"
                                   type: string
-                                type:
-                                  description: Field type
-                                  type: string
+                                  enum:
+                                    - filter:tasks:agreement
+                                    - filter:tasks:annotations_results
+                                    - filter:tasks:annotators
+                                    - filter:tasks:cancelled_annotations
+                                    - filter:tasks:comments
+                                    - filter:tasks:completed_at
+                                    - filter:tasks:created_at
+                                    - filter:tasks:file_upload
+                                    - filter:tasks:ground_truth
+                                    - filter:tasks:id
+                                    - filter:tasks:inner_id
+                                    - filter:tasks:predictions_model_versions
+                                    - filter:tasks:predictions_results
+                                    - filter:tasks:predictions_score
+                                    - filter:tasks:reviewed
+                                    - filter:tasks:reviewers
+                                    - filter:tasks:reviews_accepted
+                                    - filter:tasks:reviews_rejected
+                                    - filter:tasks:total_annotations
+                                    - filter:tasks:total_predictions
+                                    - filter:tasks:unresolved_comment_count
+                                    - filter:tasks:updated_at
                                 operator:
-                                  description: Filter operator
+                                  description: 'Filter operator. Possible values:<br><li>`contains`<br>
+                                    Contains</li><br><li>`ends_with`<br> Ends
+                                    with</li><br><li>`equal`<br> Equal
+                                    to</li><br><li>`exists`<br>
+                                    Exists</li><br><li>`greater`<br> Greater
+                                    than</li><br><li>`greater_or_equal`<br>
+                                    Greater than or equal
+                                    to</li><br><li>`in`<br> Is between min and
+                                    max values, so the filter `value` should be
+                                    e.g. `{"min": 1, "max":
+                                    7}`</li><br><li>`less`<br> Less
+                                    than</li><br><li>`less_or_equal`<br> Less
+                                    than or equal
+                                    to</li><br><li>`not_contains`<br> Does not
+                                    contain</li><br><li>`not_equal`<br> Not
+                                    equal to</li><br><li>`not_exists`<br> Does
+                                    not exist</li><br><li>`not_in`<br> Is not
+                                    between min and max values, so the filter
+                                    `value` should be e.g. `{"min": 1, "max":
+                                    7}`</li><br><li>`starts_with`<br> Starts
+                                    with</li>'
+                                  type: string
+                                  enum:
+                                    - contains
+                                    - ends_with
+                                    - equal
+                                    - exists
+                                    - greater
+                                    - greater_or_equal
+                                    - in
+                                    - less
+                                    - less_or_equal
+                                    - not_contains
+                                    - not_equal
+                                    - not_exists
+                                    - not_in
+                                    - starts_with
+                                type:
+                                  description: Type of the filter value. Possible values:<br><li>`Boolean`<br>
+                                    Boolean</li><br><li>`Datetime`<br> Datetime
+                                    string in
+                                    `strftime('%Y-%m-%dT%H:%M:%S.%fZ')`
+                                    format</li><br><li>`List`<br> List of
+                                    items</li><br><li>`Number`<br> Float or
+                                    Integer</li><br><li>`String`<br>
+                                    String</li><br><li>`Unknown`<br> Unknown is
+                                    explicitly converted to string format</li>
                                   type: string
                                 value:
-                                  description: Filter value
+                                  description: Value to filter by
                                   type: string
+                                  oneOf:
+                                    - description: String
+                                      type: string
+                                    - description: Integer
+                                      type: integer
+                                    - description: Float
+                                      type: number
+                                      format: float
+                                    - description: Boolean
+                                      type: boolean
+                                    - description: Dictionary
+                                      type: object
+                                    - description: List of strings or integers
+                                      type: array
+                                      items:
+                                        type: string
+                                        oneOf:
+                                          - type: string
+                                          - type: integer
                       ordering:
-                        description: Ordering for the view
+                        description: List of fields to order by. Fields are similar to filters but
+                          without the `filter:` prefix. To reverse the order,
+                          add a minus sign before the field name, e.g.
+                          `-tasks:created_at`.
                         type: array
                         items:
-                          type: object
-                          properties:
-                            column:
-                              description: Field name
-                              type: string
-                            direction:
-                              description: Order direction
-                              type: string
-                              enum:
-                                - asc
-                                - desc
+                          type: string
+                          enum:
+                            - tasks:agreement
+                            - tasks:annotations_results
+                            - tasks:annotators
+                            - tasks:cancelled_annotations
+                            - tasks:comments
+                            - tasks:completed_at
+                            - tasks:created_at
+                            - tasks:file_upload
+                            - tasks:ground_truth
+                            - tasks:id
+                            - tasks:inner_id
+                            - tasks:predictions_model_versions
+                            - tasks:predictions_results
+                            - tasks:predictions_score
+                            - tasks:reviewed
+                            - tasks:reviewers
+                            - tasks:reviews_accepted
+                            - tasks:reviews_rejected
+                            - tasks:total_annotations
+                            - tasks:total_predictions
+                            - tasks:unresolved_comment_count
+                            - tasks:updated_at
                   project:
                     description: Project ID
                     type: integer
@@ -2843,7 +3330,21 @@ paths:
             type: integer
       responses:
         "204":
-          description: ""
+          description: List of deleted task IDs
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  tasks:
+                    type: array
+                    items:
+                      description: Task object
+                      type: object
+                      properties:
+                        id:
+                          description: Task ID
+                          type: integer
       tags:
         - Projects
       x-fern-sdk-group-name: projects
@@ -5711,7 +6212,8 @@ paths:
           description: >-
             Additional query to filter tasks. It must be JSON encoded string of
             dict containing one of the following parameters: `{"filters": ...,
-            "selectedItems": ..., "ordering": ...}`
+            "selectedItems": ..., "ordering": ...}`. Check Data Manager > Create
+            View for more details about filters, selectedItems and ordering.
 
 
             * **filters**: dict with `"conjunction"` string (`"or"` or `"and"`) and list of filters in `"items"` array. Each filter is a dictionary with keys: `"filter"`, `"operator"`, `"type"`, `"value"`. [Read more about available filters](https://labelstud.io/sdk/data_manager.html)<br/>                   Example: `{"conjunction": "or", "items": [{"filter": "filter:tasks:completed_at", "operator": "greater", "type": "Datetime", "value": "2021-01-01T00:00:00.000Z"}]}`
@@ -6619,63 +7121,6 @@ components:
                 description: Server Password (optional)
                 type: string
       required: true
-    api_dm_views_createData:
-      content:
-        application/json:
-          schema:
-            type: object
-            properties:
-              data:
-                description: Custom view data
-                type: object
-                properties:
-                  filters:
-                    description: Filters for the view
-                    type: object
-                    properties:
-                      conjunction:
-                        description: Type of conjunction
-                        type: string
-                        enum:
-                          - and
-                          - or
-                      items:
-                        description: Filter items
-                        type: array
-                        items:
-                          type: object
-                          properties:
-                            filter:
-                              description: Field name
-                              type: string
-                            type:
-                              description: Field type
-                              type: string
-                            operator:
-                              description: Filter operator
-                              type: string
-                            value:
-                              description: Filter value
-                              type: string
-                  ordering:
-                    description: Ordering for the view
-                    type: array
-                    items:
-                      type: object
-                      properties:
-                        column:
-                          description: Field name
-                          type: string
-                        direction:
-                          description: Order direction
-                          type: string
-                          enum:
-                            - asc
-                            - desc
-              project:
-                description: Project ID
-                type: integer
-      required: true
     api_storages_export_redis_createData:
       content:
         application/json:
@@ -6710,6 +7155,244 @@ components:
               password:
                 description: Server Password (optional)
                 type: string
+      required: true
+    api_dm_views_createData:
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              data:
+                description: Custom view data
+                type: object
+                properties:
+                  filters:
+                    description: 'Filters to apply on tasks. You can use [the helper class `Filters`
+                      from this
+                      page](https://labelstud.io/sdk/data_manager.html) to
+                      create Data Manager Filters.<br>Example: `{"conjunction":
+                      "or", "items": [{"filter": "filter:tasks:completed_at",
+                      "operator": "greater", "type": "Datetime", "value":
+                      "2021-01-01T00:00:00.000Z"}]}`'
+                    required:
+                      - conjunction
+                      - items
+                    type: object
+                    properties:
+                      conjunction:
+                        description: Logical conjunction for the filters. This conjunction (either "or"
+                          or "and") will be applied to all items in the filters
+                          list. It is not possible to combine "or" and "and"
+                          within one list of filters. All filters will be either
+                          combined with "or" or with "and", but not a mix of
+                          both.
+                        type: string
+                        enum:
+                          - or
+                          - and
+                      items:
+                        description: List of filter items
+                        type: array
+                        items:
+                          required:
+                            - filter
+                            - operator
+                            - type
+                            - value
+                          type: object
+                          properties:
+                            filter:
+                              description: "Filter identifier, it should start with `filter:tasks:` prefix,
+                                e.g. `filter:tasks:agreement`. For `task.data`
+                                fields it may look like
+                                `filter:tasks:data.field_name`. Possible
+                                values:<br><li>`filter:tasks:agreement`<br>
+                                (Number) Agreement for annotation results for a
+                                specific task (Enterprise
+                                only)</li><br><li>`filter:tasks:annotations_res\
+                                ults`<br> (String) Annotation results for the
+                                tasks</li><br><li>`filter:tasks:annotators`<br>
+                                (List) Annotators that completed the task
+                                (Community). Can include assigned annotators
+                                (Enterprise only). Important note: the filter
+                                `type` should be List, but the filter `value` is
+                                integer</li><br><li>`filter:tasks:cancelled_ann\
+                                otations`<br> (Number) Number of cancelled or
+                                skipped annotations for the
+                                task</li><br><li>`filter:tasks:comments`<br>
+                                (Number) Number of comments in a
+                                task</li><br><li>`filter:tasks:completed_at`<br>
+                                (Datetime) Time when a task was fully
+                                annotated</li><br><li>`filter:tasks:created_at`\
+                                <br> (Datetime) Time the task was created
+                                at</li><br><li>`filter:tasks:file_upload`<br>
+                                (String) Name of the file uploaded to create the
+                                tasks</li><br><li>`filter:tasks:ground_truth`<b\
+                                r> (Boolean) Ground truth status of the
+                                tasks</li><br><li>`filter:tasks:id`<br> (Number)
+                                Task ID</li><br><li>`filter:tasks:inner_id`<br>
+                                (Number) Task Inner ID, it starts from 1 for all
+                                projects</li><br><li>`filter:tasks:predictions_\
+                                model_versions`<br> (String) Model version used
+                                for the
+                                predictions</li><br><li>`filter:tasks:predictio\
+                                ns_results`<br> (String) Prediction results for
+                                the
+                                tasks</li><br><li>`filter:tasks:predictions_sco\
+                                re`<br> (Number) Prediction score for the
+                                task</li><br><li>`filter:tasks:reviewed`<br>
+                                (Boolean) Whether the tasks have been reviewed
+                                (Enterprise
+                                only)</li><br><li>`filter:tasks:reviewers`<br>
+                                (String) Reviewers that reviewed the task, or
+                                assigned reviewers (Enterprise only). Important
+                                note: the filter `type` should be List, but the
+                                filter `value` is
+                                integer</li><br><li>`filter:tasks:reviews_accep\
+                                ted`<br> (Number) Number of annotations accepted
+                                for a task in review (Enterprise
+                                only)</li><br><li>`filter:tasks:reviews_rejecte\
+                                d`<br> (Number) Number of annotations rejected
+                                for a task in review (Enterprise
+                                only)</li><br><li>`filter:tasks:total_annotatio\
+                                ns`<br> (Number) Total number of annotations on
+                                a
+                                task</li><br><li>`filter:tasks:total_prediction\
+                                s`<br> (Number) Total number of predictions for
+                                the
+                                task</li><br><li>`filter:tasks:unresolved_comme\
+                                nt_count`<br> (Number) Number of unresolved
+                                comments in a
+                                task</li><br><li>`filter:tasks:updated_at`<br>
+                                (Datetime) Time the task was updated at (e.g.
+                                new annotation was created, review added,
+                                etc)</li>"
+                              type: string
+                              enum:
+                                - filter:tasks:agreement
+                                - filter:tasks:annotations_results
+                                - filter:tasks:annotators
+                                - filter:tasks:cancelled_annotations
+                                - filter:tasks:comments
+                                - filter:tasks:completed_at
+                                - filter:tasks:created_at
+                                - filter:tasks:file_upload
+                                - filter:tasks:ground_truth
+                                - filter:tasks:id
+                                - filter:tasks:inner_id
+                                - filter:tasks:predictions_model_versions
+                                - filter:tasks:predictions_results
+                                - filter:tasks:predictions_score
+                                - filter:tasks:reviewed
+                                - filter:tasks:reviewers
+                                - filter:tasks:reviews_accepted
+                                - filter:tasks:reviews_rejected
+                                - filter:tasks:total_annotations
+                                - filter:tasks:total_predictions
+                                - filter:tasks:unresolved_comment_count
+                                - filter:tasks:updated_at
+                            operator:
+                              description: 'Filter operator. Possible values:<br><li>`contains`<br>
+                                Contains</li><br><li>`ends_with`<br> Ends
+                                with</li><br><li>`equal`<br> Equal
+                                to</li><br><li>`exists`<br>
+                                Exists</li><br><li>`greater`<br> Greater
+                                than</li><br><li>`greater_or_equal`<br> Greater
+                                than or equal to</li><br><li>`in`<br> Is between
+                                min and max values, so the filter `value` should
+                                be e.g. `{"min": 1, "max":
+                                7}`</li><br><li>`less`<br> Less
+                                than</li><br><li>`less_or_equal`<br> Less than
+                                or equal to</li><br><li>`not_contains`<br> Does
+                                not contain</li><br><li>`not_equal`<br> Not
+                                equal to</li><br><li>`not_exists`<br> Does not
+                                exist</li><br><li>`not_in`<br> Is not between
+                                min and max values, so the filter `value` should
+                                be e.g. `{"min": 1, "max":
+                                7}`</li><br><li>`starts_with`<br> Starts
+                                with</li>'
+                              type: string
+                              enum:
+                                - contains
+                                - ends_with
+                                - equal
+                                - exists
+                                - greater
+                                - greater_or_equal
+                                - in
+                                - less
+                                - less_or_equal
+                                - not_contains
+                                - not_equal
+                                - not_exists
+                                - not_in
+                                - starts_with
+                            type:
+                              description: Type of the filter value. Possible values:<br><li>`Boolean`<br>
+                                Boolean</li><br><li>`Datetime`<br> Datetime
+                                string in `strftime('%Y-%m-%dT%H:%M:%S.%fZ')`
+                                format</li><br><li>`List`<br> List of
+                                items</li><br><li>`Number`<br> Float or
+                                Integer</li><br><li>`String`<br>
+                                String</li><br><li>`Unknown`<br> Unknown is
+                                explicitly converted to string format</li>
+                              type: string
+                            value:
+                              description: Value to filter by
+                              type: string
+                              oneOf:
+                                - description: String
+                                  type: string
+                                - description: Integer
+                                  type: integer
+                                - description: Float
+                                  type: number
+                                  format: float
+                                - description: Boolean
+                                  type: boolean
+                                - description: Dictionary
+                                  type: object
+                                - description: List of strings or integers
+                                  type: array
+                                  items:
+                                    type: string
+                                    oneOf:
+                                      - type: string
+                                      - type: integer
+                  ordering:
+                    description: List of fields to order by. Fields are similar to filters but
+                      without the `filter:` prefix. To reverse the order, add a
+                      minus sign before the field name, e.g.
+                      `-tasks:created_at`.
+                    type: array
+                    items:
+                      type: string
+                      enum:
+                        - tasks:agreement
+                        - tasks:annotations_results
+                        - tasks:annotators
+                        - tasks:cancelled_annotations
+                        - tasks:comments
+                        - tasks:completed_at
+                        - tasks:created_at
+                        - tasks:file_upload
+                        - tasks:ground_truth
+                        - tasks:id
+                        - tasks:inner_id
+                        - tasks:predictions_model_versions
+                        - tasks:predictions_results
+                        - tasks:predictions_score
+                        - tasks:reviewed
+                        - tasks:reviewers
+                        - tasks:reviews_accepted
+                        - tasks:reviews_rejected
+                        - tasks:total_annotations
+                        - tasks:total_predictions
+                        - tasks:unresolved_comment_count
+                        - tasks:updated_at
+              project:
+                description: Project ID
+                type: integer
       required: true
     api_ml_createData:
       content:

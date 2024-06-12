@@ -2,6 +2,12 @@
 
 ## Development
 
+### Create openapi.yaml
+
+```
+swagger2openapi --yaml --outfile ./fern/openapi/openapi.yaml http://localhost:8080/docs/api?format=openapi
+```
+
 ### Generate docs
 
 ```
