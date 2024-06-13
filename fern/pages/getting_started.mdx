@@ -201,6 +201,7 @@ view = ls.views.create(
         'filters': filters
     }
 )
+tab = ls.views.get(id=view.id)
 ```
 If will be displayed in the data manager as tab with `New tasks to annotate` name.
 
@@ -212,11 +213,16 @@ You can use this example filter to prepare completed tasks for review in Label S
 Run the following code to export annotations from project's [batch view you created in the previous step](#Create-batch-of-tasks-to-annotate):
 
 ```python
-tab = ls.views.get(id=view.id)
-annotated_tasks = ls.tasks.list(view=tab.id, fields='all')
-for annotated_task in annotated_tasks:
-    print(annotated_task.annotations)
+tasks = ls.tasks.list(view=tab.id, fields='all')
+for task in tasks:
+    # You can access annotations in Label Studio JSON format
+    print(task.annotations)
+    # And also annotation drafts and predictions
+    print(task.predictions)
+    print(task.drafts)
 ```
+
+Read more about export formats in the [Label Studio SDK documentation](https://labelstud.io/guide/export).
 
 ## Handling Errors
 
