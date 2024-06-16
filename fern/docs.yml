@@ -21,18 +21,18 @@ navigation:
           - public
         snippets:
           python: label-studio-sdk
-#  - tab: tutorials
-#    layout:
-#      - section: Tutorials
-#        contents:
-#          - page: Evaluate LLM responses
-#            path: ./pages/tutorials/evaluate_llm_responses.mdx
-#          - page: Improve YOLOv8 predictions
-#            path: ./pages/tutorials/improve_yolov8_predictions.mdx
-#          - page: Interact with Tesseract OCR
-#            path: ./pages/tutorials/interact_with_tesseract_ocr.mdx
-#          - page: Create FastAPI Async Server
-#            path: ./pages/tutorials/create_fastapi_async_server.mdx
+  - tab: tutorials
+    layout:
+      - section: Tutorials
+        contents:
+          - page: Evaluate LLM Responses
+            path: ./pages/tutorials/evaluate_llm_responses.mdx
+          - page: Improve Object Detection with YOLO
+            path: ./pages/tutorials/improve_object_detection_with_yolo.mdx
+          - page: Interactive OCR with Tesseract
+            path: ./pages/tutorials/interactive_ocr_with_tesseract.mdx
+          - page: Logging ML Server Predictions
+            path: ./pages/tutorials/logging_ml_server_predictions.mdx
 
 css: ./styles.css
 
