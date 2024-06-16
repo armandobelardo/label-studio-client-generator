@@ -17,6 +17,11 @@ Install the Label Studio SDK using pip:
 ```
 pip install label-studio-sdk
 ```
+or
+```
+poetry add label-studio-sdk
+```
+
 
 ## Authentication
 In your Python script, do the following:
@@ -224,7 +229,9 @@ for task in tasks:
 
 Read more about export formats in the [Label Studio SDK documentation](https://labelstud.io/guide/export).
 
-## Handling Errors
+## Advanced
+
+### Handling Errors
 
 If you encounter an error while using the Label Studio Python SDK, you can catch the error and handle it in your script.
 
@@ -239,8 +246,6 @@ except ApiError as e:
 ```
 
 Annotations are exported in the format specified in the [Label Studio JSON format](tasks.html#Basic-Label-Studio-JSON-format).
-
-## Advanced
 
 ### Timeouts
 By default, requests time out after 60 seconds. You can configure this with a 
