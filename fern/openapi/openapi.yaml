@@ -7979,9 +7979,8 @@ components:
           default: ""
           minLength: 1
         completed_by:
-          title: User details
-          type: object
-          description: User details who completed this annotation.
+          title: Completed by
+          type: integer
         unique_id:
           title: Unique id
           type: string
@@ -10569,7 +10568,7 @@ components:
             description: Users who wrote comments
             type: integer
           uniqueItems: true
-    AnnotationDraft:
+    AnnotationsDMField:
       type: object
       properties:
         id:
@@ -10584,6 +10583,117 @@ components:
             type: object
             title: Annotation result items (regions)
             description: List of annotated regions for the task
+        created_username:
+          title: Created username
+          description: Username string
+          type: string
+          readOnly: true
+        created_ago:
+          title: Created ago
+          description: Time delta from creation time
+          type: string
+          readOnly: true
+          default: ""
+          minLength: 1
+        completed_by:
+          title: User details
+          type: object
+          description: User details who completed this annotation.
+        unique_id:
+          title: Unique id
+          type: string
+          minLength: 1
+        was_cancelled:
+          title: Was cancelled
+          description: User skipped the task
+          type: boolean
+        ground_truth:
+          title: Ground_truth
+          description: This annotation is a Ground Truth (ground_truth)
+          type: boolean
+        created_at:
+          title: Created at
+          description: Creation time
+          type: string
+          format: date-time
+          readOnly: true
+        updated_at:
+          title: Updated at
+          description: Last updated time
+          type: string
+          format: date-time
+          readOnly: true
+        draft_created_at:
+          title: Draft created at
+          description: Draft creation time
+          type: string
+          format: date-time
+          nullable: true
+        lead_time:
+          title: Lead time
+          description: How much time it took to annotate the task
+          type: number
+          nullable: true
+        import_id:
+          title: Import id
+          description: Original annotation ID that was at the import step or NULL if this
+            annotation wasn't imported
+          type: integer
+          nullable: true
+        last_action:
+          title: Last action
+          description: Action which was performed in the last annotation history item
+          type: string
+          enum:
+            - prediction
+            - propagated_annotation
+            - imported
+            - submitted
+            - updated
+            - skipped
+            - accepted
+            - rejected
+            - fixed_and_accepted
+            - deleted_review
+          nullable: true
+        task:
+          title: Task
+          description: Corresponding task for this annotation
+          type: integer
+          nullable: true
+        project:
+          title: Project
+          description: Project ID for this annotation
+          type: integer
+          nullable: true
+        updated_by:
+          title: Updated by
+          description: Last user who updated this annotation
+          type: integer
+          nullable: true
+        parent_prediction:
+          title: Parent prediction
+          description: Points to the prediction from which this annotation was created
+          type: integer
+          nullable: true
+        parent_annotation:
+          title: Parent annotation
+          description: Points to the parent annotation from which this annotation was
+            created
+          type: integer
+          nullable: true
+        last_created_by:
+          title: Last created by
+          description: User who created the last annotation history item
+          type: integer
+          nullable: true
+    AnnotationDraftDMField:
+      type: object
+      properties:
+        id:
+          title: ID
+          type: integer
+          readOnly: true
         user:
           title: User
           type: string
@@ -10600,6 +10710,14 @@ components:
           readOnly: true
           default: ""
           minLength: 1
+        result:
+          title: Annotation result list
+          type: array
+          description: List of annotation results for the task
+          items:
+            type: object
+            title: Annotation result items (regions)
+            description: List of annotated regions for the task
         lead_time:
           title: Lead time
           description: How much time it took to annotate the task
@@ -10656,20 +10774,23 @@ components:
         annotations:
           type: array
           items:
-            $ref: "#/components/schemas/Annotation"
+            $ref: "#/components/schemas/AnnotationsDMField"
           readOnly: true
           default: []
         drafts:
           type: array
           items:
-            $ref: "#/components/schemas/AnnotationDraft"
+            $ref: "#/components/schemas/AnnotationDraftDMField"
           readOnly: true
           default: []
         annotators:
+          title: Annotators IDs
           type: array
+          readOnly: true
+          description: Annotators IDs who annotated this task
           items:
             type: integer
-          readOnly: true
+            title: User IDs
         inner_id:
           title: Inner id
           type: integer
