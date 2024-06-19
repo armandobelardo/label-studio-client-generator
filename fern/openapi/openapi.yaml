@@ -10687,75 +10687,6 @@ components:
           description: User who created the last annotation history item
           type: integer
           nullable: true
-    AnnotationDraftDMField:
-      type: object
-      properties:
-        id:
-          title: ID
-          type: integer
-          readOnly: true
-        user:
-          title: User
-          type: string
-          minLength: 1
-        created_username:
-          title: Created username
-          description: User name string
-          type: string
-          readOnly: true
-        created_ago:
-          title: Created ago
-          description: Delta time from creation time
-          type: string
-          readOnly: true
-          default: ""
-          minLength: 1
-        result:
-          title: Annotation result list
-          type: array
-          description: List of annotation results for the task
-          items:
-            type: object
-            title: Annotation result items (regions)
-            description: List of annotated regions for the task
-        lead_time:
-          title: Lead time
-          description: How much time it took to annotate the task
-          type: number
-          nullable: true
-        was_postponed:
-          title: Was postponed
-          description: User postponed this draft (clicked a forward button) in the label
-            stream
-          type: boolean
-        import_id:
-          title: Import id
-          description: Original draft ID that was at the import step or NULL if this draft
-            wasn't imported
-          type: integer
-          nullable: true
-        created_at:
-          title: Created at
-          description: Creation time
-          type: string
-          format: date-time
-          readOnly: true
-        updated_at:
-          title: Updated at
-          description: Last update time
-          type: string
-          format: date-time
-          readOnly: true
-        task:
-          title: Task
-          description: Corresponding task for this draft
-          type: integer
-          nullable: true
-        annotation:
-          title: Annotation
-          description: Corresponding annotation for this draft
-          type: integer
-          nullable: true
     data_manager_task_serializer:
       required:
         - data
@@ -10766,11 +10697,46 @@ components:
           type: integer
           readOnly: true
         predictions:
+          title: Predictions
           type: array
-          items:
-            $ref: "#/components/schemas/Prediction"
           readOnly: true
-          default: []
+          description: Predictions for this task
+          items:
+            type: object
+            title: Prediction object
+            properties:
+              result:
+                type: array
+                title: Prediction result
+                items:
+                  type: object
+                  title: Prediction result item
+              score:
+                type: number
+                title: Prediction score
+              model_version:
+                type: string
+                title: Model version
+              model:
+                type: object
+                title: ML Backend instance
+              model_run:
+                type: object
+                title: Model Run instance
+              task:
+                type: integer
+                title: Task ID related to the prediction
+              project:
+                type: number
+                title: Project ID related to the prediction
+              created_at:
+                type: string
+                format: date-time
+                title: Creation time
+              updated_at:
+                type: string
+                format: date-time
+                title: Last update time
         annotations:
           type: array
           items:
@@ -10778,11 +10744,28 @@ components:
           readOnly: true
           default: []
         drafts:
+          title: Annotation drafts
           type: array
-          items:
-            $ref: "#/components/schemas/AnnotationDraftDMField"
           readOnly: true
-          default: []
+          description: Drafts for this task
+          items:
+            type: object
+            title: Draft object
+            properties:
+              result:
+                type: array
+                title: Draft result
+                items:
+                  type: object
+                  title: Draft result item
+              created_at:
+                type: string
+                format: date-time
+                title: Creation time
+              updated_at:
+                type: string
+                format: date-time
+                title: Last update time
         annotators:
           title: Annotators IDs
           type: array
