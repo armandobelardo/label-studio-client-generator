@@ -168,45 +168,34 @@ filters = Filters.create(Filters.AND, [
 ])
 ```
 
-For example, to create a filter that displays only tasks with an ID greater than 42 or that were annotated between November 1, 2021, and now, do the following:
+Most often it is very useful to create a view with annotated tasks to review:
+
 ```python
 from label_studio_sdk.data_manager import Filters, Column, Type, Operator
 
-filters = Filters.create(Filters.OR, [
-    Filters.item(
-        Column.id,
-        Operator.GREATER,
-        Type.Number,
-        Filters.value(42)
-    ),
+filters = Filters.create(Filters.AND, [
     Filters.item(
         Column.completed_at,
-        Operator.IN,
-        Type.Datetime,
-        Filters.value(
-            datetime(2021, 11, 1),
-            datetime.now()
-        )
+        Operator.EMPTY,
+        Type.Boolean,
+        Filters.value(False)
     )
 ])
 ```
 
-Now you can create a view with the filter you created:
+To create a filtered tasks view, use the following code:
 
 ```python
 view = ls.views.create(
     project=project.id,
     data={
-        'title': 'New tasks to annotate',
+        'title': 'Tasks Sample',
         'filters': filters
     }
 )
 tab = ls.views.get(id=view.id)
 ```
-If will be displayed in the data manager as tab with `New tasks to annotate` name.
-
-You can use this example filter to prepare completed tasks for review in Label Studio Enterprise.
-
+If will be displayed in the data manager as tab with `Tasks Sample` name.
 
 ## Export Annotations
 
