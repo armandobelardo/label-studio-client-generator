@@ -2317,88 +2317,7 @@ paths:
 
         ```
       requestBody:
-        content:
-          application/json:
-            schema:
-              title: Project
-              description: Project
-              type: object
-              properties:
-                title:
-                  title: title
-                  description: Project title
-                  type: string
-                  example: My project
-                description:
-                  title: description
-                  description: Project description
-                  type: string
-                  example: My first project
-                label_config:
-                  title: label_config
-                  description: Label config in XML format
-                  type: string
-                  example: <View>[...]</View>
-                expert_instruction:
-                  title: expert_instruction
-                  description: Labeling instructions to show to the user
-                  type: string
-                  example: Label all cats
-                show_instruction:
-                  title: show_instruction
-                  description: Show labeling instructions
-                  type: boolean
-                show_skip_button:
-                  title: show_skip_button
-                  description: Show skip button
-                  type: boolean
-                enable_empty_annotation:
-                  title: enable_empty_annotation
-                  description: Allow empty annotations
-                  type: boolean
-                show_annotation_history:
-                  title: show_annotation_history
-                  description: Show annotation history
-                  type: boolean
-                reveal_preannotations_interactively:
-                  title: reveal_preannotations_interactively
-                  description: Reveal preannotations interactively. If set to True, predictions
-                    will be shown to the user only after selecting the area of
-                    interest
-                  type: boolean
-                show_collab_predictions:
-                  title: show_collab_predictions
-                  description: Show predictions to annotators
-                  type: boolean
-                maximum_annotations:
-                  title: maximum_annotations
-                  description: Maximum annotations per task
-                  type: integer
-                color:
-                  title: color
-                  description: Project color in HEX format
-                  type: string
-                  default: "#FFFFFF"
-                control_weights:
-                  title: control_weights
-                  description: "Dict of weights for each control tag in metric calculation. Each
-                    control tag (e.g. label or choice) will have its own key in
-                    control weight dict with weight for each label and overall
-                    weight. For example, if a bounding box annotation with a
-                    control tag named my_bbox should be included with 0.33
-                    weight in agreement calculation, and the first label Car
-                    should be twice as important as Airplane, then you need to
-                    specify: {'my_bbox': {'type': 'RectangleLabels', 'labels':
-                    {'Car': 1.0, 'Airplane': 0.5}, 'overall': 0.33}"
-                  type: object
-                  example:
-                    my_bbox:
-                      type: RectangleLabels
-                      labels:
-                        Car: 1
-                        Airplaine: 0.5
-                      overall: 0.33
-        required: true
+        $ref: "#/components/requestBodies/api_projects_createData"
       responses:
         "201":
           description: ""
@@ -2578,18 +2497,91 @@ paths:
       summary: Update project
       description: Update the project settings for a specific project.
       requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: "#/components/schemas/Project"
-        required: true
+        $ref: "#/components/requestBodies/api_projects_createData"
       responses:
         "200":
           description: ""
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/Project"
+                title: Project
+                description: Project
+                type: object
+                properties:
+                  title:
+                    title: title
+                    description: Project title
+                    type: string
+                    example: My project
+                  description:
+                    title: description
+                    description: Project description
+                    type: string
+                    example: My first project
+                  label_config:
+                    title: label_config
+                    description: Label config in XML format
+                    type: string
+                    example: <View>[...]</View>
+                  expert_instruction:
+                    title: expert_instruction
+                    description: Labeling instructions to show to the user
+                    type: string
+                    example: Label all cats
+                  show_instruction:
+                    title: show_instruction
+                    description: Show labeling instructions
+                    type: boolean
+                  show_skip_button:
+                    title: show_skip_button
+                    description: Show skip button
+                    type: boolean
+                  enable_empty_annotation:
+                    title: enable_empty_annotation
+                    description: Allow empty annotations
+                    type: boolean
+                  show_annotation_history:
+                    title: show_annotation_history
+                    description: Show annotation history
+                    type: boolean
+                  reveal_preannotations_interactively:
+                    title: reveal_preannotations_interactively
+                    description: Reveal preannotations interactively. If set to True, predictions
+                      will be shown to the user only after selecting the area of
+                      interest
+                    type: boolean
+                  show_collab_predictions:
+                    title: show_collab_predictions
+                    description: Show predictions to annotators
+                    type: boolean
+                  maximum_annotations:
+                    title: maximum_annotations
+                    description: Maximum annotations per task
+                    type: integer
+                  color:
+                    title: color
+                    description: Project color in HEX format
+                    type: string
+                    default: "#FFFFFF"
+                  control_weights:
+                    title: control_weights
+                    description: "Dict of weights for each control tag in metric calculation. Each
+                      control tag (e.g. label or choice) will have its own key
+                      in control weight dict with weight for each label and
+                      overall weight. For example, if a bounding box annotation
+                      with a control tag named my_bbox should be included with
+                      0.33 weight in agreement calculation, and the first label
+                      Car should be twice as important as Airplane, then you
+                      need to specify: {'my_bbox': {'type': 'RectangleLabels',
+                      'labels': {'Car': 1.0, 'Airplane': 0.5}, 'overall': 0.33}"
+                    type: object
+                    example:
+                      my_bbox:
+                        type: RectangleLabels
+                        labels:
+                          Car: 1
+                          Airplaine: 0.5
+                        overall: 0.33
       tags:
         - Projects
       x-fern-sdk-group-name: projects
@@ -6342,8 +6334,8 @@ paths:
                       image: https://example.com/image.jpg
                       text: Hello, AI!
                     project: 1
-                    created_at: 2024-01-15T09:30:00Z
-                    updated_at: 2024-01-15T09:30:00Z
+                    created_at: 2024-06-18T23:45:46.048490Z
+                    updated_at: 2024-06-18T23:45:46.048538Z
                     is_labeled: false
                     overlap: 1
                     inner_id: 1
@@ -6389,27 +6381,38 @@ paths:
               examples:
                 response:
                   value:
-                    id: 1
+                    id: 13
+                    predictions: []
+                    annotations: []
+                    drafts: []
+                    annotators: []
+                    inner_id: 2
+                    cancelled_annotations: 0
+                    total_annotations: 0
+                    total_predictions: 0
+                    completed_at: null
+                    annotations_results: ""
+                    predictions_results: ""
+                    predictions_score: null
+                    file_upload: 6b25fc23-some_3.mp4
+                    storage_filename: null
+                    annotations_ids: ""
+                    predictions_model_versions: ""
+                    avg_lead_time: null
+                    draft_exists: false
+                    updated_by: []
                     data:
-                      image: https://example.com/image.jpg
-                      text: Hello, AI!
-                    project: 1
-                    created_at: 2024-01-15T09:30:00Z
-                    updated_at: 2024-01-15T09:30:00Z
+                      image: /data/upload/1/6b25fc23-some_3.mp4
+                    meta: {}
+                    created_at: 2024-06-18T23:45:46.048490Z
+                    updated_at: 2024-06-18T23:45:46.048538Z
                     is_labeled: false
                     overlap: 1
-                    inner_id: 1
-                    total_annotations: 0
-                    cancelled_annotations: 0
-                    total_predictions: 0
                     comment_count: 0
                     unresolved_comment_count: 0
-                    last_comment_updated_at: 2024-01-15T09:30:00Z
-                    updated_by:
-                      - user_id: 1
-                    file_upload: 42d46c4c-my-pic.jpeg
-                    comment_authors:
-                      - 1
+                    last_comment_updated_at: null
+                    project: 1
+                    comment_authors: []
       tags:
         - Tasks
       x-fern-sdk-group-name: tasks
@@ -6444,8 +6447,8 @@ paths:
                       image: https://example.com/image.jpg
                       text: Hello, AI!
                     project: 1
-                    created_at: 2024-01-15T09:30:00Z
-                    updated_at: 2024-01-15T09:30:00Z
+                    created_at: 2024-06-18T23:45:46.048490Z
+                    updated_at: 2024-06-18T23:45:46.048538Z
                     is_labeled: false
                     overlap: 1
                     inner_id: 1
@@ -7035,6 +7038,89 @@ servers:
   - url: http://localhost:8080
 components:
   requestBodies:
+    api_projects_createData:
+      content:
+        application/json:
+          schema:
+            title: Project
+            description: Project
+            type: object
+            properties:
+              title:
+                title: title
+                description: Project title
+                type: string
+                example: My project
+              description:
+                title: description
+                description: Project description
+                type: string
+                example: My first project
+              label_config:
+                title: label_config
+                description: Label config in XML format
+                type: string
+                example: <View>[...]</View>
+              expert_instruction:
+                title: expert_instruction
+                description: Labeling instructions to show to the user
+                type: string
+                example: Label all cats
+              show_instruction:
+                title: show_instruction
+                description: Show labeling instructions
+                type: boolean
+              show_skip_button:
+                title: show_skip_button
+                description: Show skip button
+                type: boolean
+              enable_empty_annotation:
+                title: enable_empty_annotation
+                description: Allow empty annotations
+                type: boolean
+              show_annotation_history:
+                title: show_annotation_history
+                description: Show annotation history
+                type: boolean
+              reveal_preannotations_interactively:
+                title: reveal_preannotations_interactively
+                description: Reveal preannotations interactively. If set to True, predictions
+                  will be shown to the user only after selecting the area of
+                  interest
+                type: boolean
+              show_collab_predictions:
+                title: show_collab_predictions
+                description: Show predictions to annotators
+                type: boolean
+              maximum_annotations:
+                title: maximum_annotations
+                description: Maximum annotations per task
+                type: integer
+              color:
+                title: color
+                description: Project color in HEX format
+                type: string
+                default: "#FFFFFF"
+              control_weights:
+                title: control_weights
+                description: "Dict of weights for each control tag in metric calculation. Each
+                  control tag (e.g. label or choice) will have its own key in
+                  control weight dict with weight for each label and overall
+                  weight. For example, if a bounding box annotation with a
+                  control tag named my_bbox should be included with 0.33 weight
+                  in agreement calculation, and the first label Car should be
+                  twice as important as Airplane, then you need to specify:
+                  {'my_bbox': {'type': 'RectangleLabels', 'labels': {'Car': 1.0,
+                  'Airplane': 0.5}, 'overall': 0.33}"
+                type: object
+                example:
+                  my_bbox:
+                    type: RectangleLabels
+                    labels:
+                      Car: 1
+                      Airplaine: 0.5
+                    overall: 0.33
+      required: true
     WebhookSerializerForUpdate:
       content:
         application/json:
